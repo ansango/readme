@@ -2,6 +2,7 @@
 import DistroLogo from "../components/logos/distro-logo.astro";
 import { getCollection } from "astro:content";
 import Layout from "../layouts/default.astro";
+import { BUILD_INFO } from "../lib/build-info";
 
 const chapters = (
 	await getCollection("chapters", ({ data }) => !data.draft)
@@ -29,9 +30,8 @@ const formatRange = (a: Date, b: Date) => {
 	return `${formatDate(a)} → ${formatDate(b)}`;
 };
 
-const pkg = await import("../package.json", { with: { type: "json" } });
-const astroVersion = pkg.default.dependencies.astro;
-const tailwindVersion = pkg.default.dependencies.tailwindcss;
+const astroVersion = BUILD_INFO.astro;
+const tailwindVersion = BUILD_INFO.tailwindcss;
 
 const info: { k: string; v: string; dim?: boolean }[] = [
 	{ k: "Book", v: "Linux Basics for Hackers" },
