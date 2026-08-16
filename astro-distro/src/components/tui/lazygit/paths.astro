@@ -1,0 +1,28 @@
+---
+import Container from "../commons/container.astro";
+import Content from "../commons/content.astro";
+import Label from "../commons/label.astro";
+import Paragraph from "../commons/paragraph.astro";
+
+export interface PathEntry {
+  name: string;
+  current?: boolean;
+}
+
+export interface Props {
+  paths: PathEntry[];
+}
+
+const { paths } = Astro.props;
+---
+
+<Container>
+  <Label>paths (local)</Label>
+  <Content>
+    {paths.map(({ name, current }) => (
+      <Paragraph class={current ? "" : "ml-3.5"}>
+        {current ? <span class="font-medium text-accent">* {name}</span> : name}
+      </Paragraph>
+    ))}
+  </Content>
+</Container>
