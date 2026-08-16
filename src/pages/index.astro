@@ -1,12 +1,13 @@
 ---
 import DistroLogo from "../components/logos/distro-logo.astro";
+import ChapterList from "../components/chapter-list.astro";
 import { getCollection } from "astro:content";
 import Layout from "../layouts/default.astro";
 import { BUILD_INFO } from "../lib/build-info";
 
 const chapters = (
 	await getCollection("chapters", ({ data }) => !data.draft)
-).sort((a, b) => a.slug.localeCompare(b.slug));
+).sort((a, b) => a.id.localeCompare(b.id));
 
 const total = chapters.length;
 const totalTags = new Set(chapters.flatMap((c) => c.data.tags)).size;
@@ -36,7 +37,7 @@ const tailwindVersion = BUILD_INFO.tailwindcss;
 const info: { k: string; v: string; dim?: boolean }[] = [
 	{ k: "Book", v: "Linux Basics for Hackers" },
 	{ k: "Author", v: "OccupyTheWeb" },
-	{ k: "Chapters", v: `${total} (${chapters[0].slug.slice(0, 2)}–${chapters.at(-1)!.slug.slice(0, 2)})` },
+	{ k: "Chapters", v: `${total} (${chapters[0].id.slice(0, 2)}–${chapters.at(-1)!.id.slice(0, 2)})` },
 	{ k: "Tags", v: `${totalTags}` },
 	{ k: "Started", v: formatDate(dateRange.min) },
 	{ k: "Updated", v: formatDate(dateRange.max) },
@@ -81,39 +82,6 @@ const info: { k: string; v: string; dim?: boolean }[] = [
 		>
 			chapters
 		</h2>
-		<ol class="space-y-1">
-			{
-				chapters.map((chapter, idx) => (
-					<li
-						class="group rounded border border-transparent px-3 py-2 transition hover:border-dim hover:bg-foreground/5"
-					>
-						<a
-							href={`/capitulos/${chapter.slug}/`}
-							class="flex items-baseline gap-3"
-						>
-							<span class="font-mono text-xs text-accent">
-								{String(idx + 1).padStart(2, "0")}
-							</span>
-							<span class="flex-1">
-								<span class="block font-medium group-hover:text-accent">
-									{chapter.data.title}
-								</span>
-								{chapter.data.description && (
-									<span class="block text-sm text-dim">
-										{chapter.data.description}
-									</span>
-								)}
-							</span>
-							<time
-								datetime={chapter.data.date.toISOString()}
-								class="font-mono text-xs text-dim"
-							>
-								{formatDate(chapter.data.date)}
-							</time>
-						</a>
-					</li>
-				))
-			}
-		</ol>
+		<ChapterList />
 	</section>
 </Layout>

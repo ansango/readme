@@ -1,11 +1,11 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, render, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/default.astro";
 
 export async function getStaticPaths() {
 	const chapters = await getCollection("chapters", ({ data }) => !data.draft);
 	return chapters.map((chapter) => ({
-		params: { slug: chapter.slug },
+		params: { slug: chapter.id },
 		props: { chapter },
 	}));
 }
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { chapter } = Astro.props;
-const { Content } = await chapter.render();
+const { Content } = await render(chapter);
 
 const formatDate = (d: Date) =>
 	d.toLocaleDateString("es-ES", {
@@ -29,11 +29,11 @@ const formatDate = (d: Date) =>
 	<article class="mx-auto max-w-3xl px-4 py-10">
 		<header class="mb-8 border-b border-dim pb-6">
 			<a
-				href="/"
+				href="/capitulos/"
 				class="text-sm text-accent hover:underline"
 				aria-label="Volver al índice"
 			>
-				← Linux Basics for Hackers
+				← Capítulos
 			</a>
 			<h1
 				class="mt-4 font-mono text-2xl font-medium text-foreground md:text-3xl"
@@ -81,7 +81,7 @@ const formatDate = (d: Date) =>
 		</div>
 
 		<footer class="mt-12 border-t border-dim pt-6 text-xs text-dim">
-			<a href="/" class="text-accent hover:underline">
+			<a href="/capitulos/" class="text-accent hover:underline">
 				← Volver al índice de capítulos
 			</a>
 		</footer>
@@ -177,7 +177,6 @@ const formatDate = (d: Date) =>
 		border-top: 1px solid var(--color-border, #1a1d22);
 		margin: 2rem 0;
 	}
-	/* Obsidian callouts via remark-directive: render as styled blockquote */
 	.chapter-body :global(.callout) {
 		border-left: 3px solid var(--color-accent, #1793d1);
 		background: var(--color-panel, #0e1014);
@@ -196,7 +195,6 @@ const formatDate = (d: Date) =>
 	.chapter-body :global(.callout-content > :last-child) {
 		margin-bottom: 0;
 	}
-	/* wikilinks */
 	.chapter-body :global(.wikilink) {
 		color: var(--color-accent, #1793d1);
 	}

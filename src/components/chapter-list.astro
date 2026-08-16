@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+
+const chapters = (
+	await getCollection("chapters", ({ data }) => !data.draft)
+).sort((a, b) => a.id.localeCompare(b.id));
+
+const formatDate = (d: Date) =>
+	d.toLocaleDateString("es-ES", {
+		day: "2-digit",
+		month: "short",
+		year: "numeric",
+	});
+---
+
+<ol class="space-y-1">
+	{
+		chapters.map((chapter, idx) => (
+			<li class="group rounded border border-transparent px-3 py-2 transition hover:border-dim hover:bg-foreground/5">
+				<a
+					href={`/capitulos/${chapter.id}/`}
+					class="flex items-baseline gap-3"
+				>
+					<span class="font-mono text-xs text-accent">
+						{String(idx + 1).padStart(2, "0")}
+					</span>
+					<span class="flex-1">
+						<span class="block font-medium group-hover:text-accent">
+							{chapter.data.title}
+						</span>
+						{chapter.data.description && (
+							<span class="block text-sm text-dim">
+								{chapter.data.description}
+							</span>
+						)}
+					</span>
+					<time
+						datetime={chapter.data.date.toISOString()}
+						class="font-mono text-xs text-dim"
+					>
+						{formatDate(chapter.data.date)}
+					</time>
+				</a>
+			</li>
+		))
+	}
+</ol>
