@@ -1,0 +1,394 @@
+{
+	"systems": [
+		{
+			"slug": "arch",
+			"font": "Iosevka Term",
+			"colors": {
+				"bg": "#08090b",
+				"panel": "#0e1014",
+				"border": "#1a1d22",
+				"fg": "#d8d8d8",
+				"dim": "#5e6470",
+				"accent": "#1793d1",
+				"c1": "#1793d1",
+				"c2": "#7eb8d8",
+				"c3": "#0d5a85"
+			}
+		},
+		{
+			"slug": "archcraft",
+			"font": "JetBrains Mono",
+			"colors": {
+				"bg": "#08070c",
+				"panel": "#100e16",
+				"border": "#1c1825",
+				"fg": "#d8d8d8",
+				"dim": "#6a6273",
+				"accent": "#9d6fd3",
+				"c1": "#9d6fd3",
+				"c2": "#c1a3e8",
+				"c3": "#5a3b8c"
+			}
+		},
+		{
+			"slug": "debian",
+			"font": "JetBrains Mono",
+			"colors": {
+				"bg": "#0b0709",
+				"panel": "#140d11",
+				"border": "#241419",
+				"fg": "#d8d8d8",
+				"dim": "#6b5f66",
+				"accent": "#d70a53",
+				"c1": "#d70a53",
+				"c2": "#e8608f",
+				"c3": "#8c0736"
+			}
+		},
+		{
+			"slug": "ubuntu",
+			"font": "Ubuntu Mono",
+			"colors": {
+				"bg": "#0b0806",
+				"panel": "#150f0b",
+				"border": "#261a13",
+				"fg": "#d8d8d8",
+				"dim": "#6f6259",
+				"accent": "#e95420",
+				"c1": "#e95420",
+				"c2": "#f3a68b",
+				"c3": "#772953"
+			}
+		},
+		{
+			"slug": "linuxmint",
+			"font": "Monospace",
+			"colors": {
+				"bg": "#070b08",
+				"panel": "#0e1410",
+				"border": "#182019",
+				"fg": "#d8d8d8",
+				"dim": "#5f6b62",
+				"accent": "#86be43",
+				"c1": "#86be43",
+				"c2": "#b5d888",
+				"c3": "#4f6e25"
+			}
+		},
+		{
+			"slug": "kali",
+			"font": "Hack",
+			"colors": {
+				"bg": "#07080b",
+				"panel": "#0d1016",
+				"border": "#171c26",
+				"fg": "#d8d8d8",
+				"dim": "#5f6672",
+				"accent": "#367bf0",
+				"c1": "#367bf0",
+				"c2": "#8fb4f7",
+				"c3": "#1b4590"
+			}
+		},
+		{
+			"slug": "fedora",
+			"font": "DejaVu Sans Mono",
+			"colors": {
+				"bg": "#070a0d",
+				"panel": "#0d1218",
+				"border": "#161e28",
+				"fg": "#d8d8d8",
+				"dim": "#5e6773",
+				"accent": "#51a2da",
+				"c1": "#51a2da",
+				"c2": "#a3cded",
+				"c3": "#294172"
+			}
+		},
+		{
+			"slug": "opensuse",
+			"font": "Liberation Mono",
+			"colors": {
+				"bg": "#080a07",
+				"panel": "#0e120c",
+				"border": "#1a2015",
+				"fg": "#d8d8d8",
+				"dim": "#626b5b",
+				"accent": "#73ba25",
+				"c1": "#73ba25",
+				"c2": "#aad97a",
+				"c3": "#3f6b0f"
+			}
+		},
+		{
+			"slug": "alpine",
+			"font": "Monospace",
+			"colors": {
+				"bg": "#07090b",
+				"panel": "#0d1116",
+				"border": "#161d24",
+				"fg": "#d8d8d8",
+				"dim": "#5e6873",
+				"accent": "#3fa9e0",
+				"c1": "#3fa9e0",
+				"c2": "#9ed4f0",
+				"c3": "#0d597f"
+			}
+		},
+		{
+			"slug": "gentoo",
+			"font": "Hack",
+			"colors": {
+				"bg": "#0a070c",
+				"panel": "#140d18",
+				"border": "#251a2b",
+				"fg": "#d8d8d8",
+				"dim": "#6c5e75",
+				"accent": "#6e3fa3",
+				"c1": "#6e3fa3",
+				"c2": "#a07ec8",
+				"c3": "#3f235e"
+			}
+		},
+		{
+			"slug": "manjaro",
+			"font": "Noto Sans Mono",
+			"colors": {
+				"bg": "#080b07",
+				"panel": "#0e130c",
+				"border": "#192016",
+				"fg": "#d8d8d8",
+				"dim": "#5f6b5b",
+				"accent": "#35bf5c",
+				"c1": "#35bf5c",
+				"c2": "#87d99b",
+				"c3": "#1f6e34"
+			}
+		},
+		{
+			"slug": "centos",
+			"font": "DejaVu Sans Mono",
+			"colors": {
+				"bg": "#0b0710",
+				"panel": "#150d1c",
+				"border": "#26162e",
+				"fg": "#d8d8d8",
+				"dim": "#6c5d75",
+				"accent": "#932279",
+				"c1": "#932279",
+				"c2": "#bb6ca8",
+				"c3": "#571444"
+			}
+		},
+		{
+			"slug": "void",
+			"font": "Monospace",
+			"colors": {
+				"bg": "#07090b",
+				"panel": "#0d1116",
+				"border": "#161c24",
+				"fg": "#d8d8d8",
+				"dim": "#5e6770",
+				"accent": "#478061",
+				"c1": "#478061",
+				"c2": "#84b59d",
+				"c3": "#264a37"
+			}
+		},
+		{
+			"slug": "nixos",
+			"font": "Iosevka Term",
+			"colors": {
+				"bg": "#070a0d",
+				"panel": "#0c1118",
+				"border": "#161e2a",
+				"fg": "#d8d8d8",
+				"dim": "#5b6775",
+				"accent": "#5277c3",
+				"c1": "#5277c3",
+				"c2": "#8aa7e0",
+				"c3": "#2d467a"
+			}
+		},
+		{
+			"slug": "slackware",
+			"font": "Monospace",
+			"colors": {
+				"bg": "#080707",
+				"panel": "#100c0c",
+				"border": "#1f1717",
+				"fg": "#d8d8d8",
+				"dim": "#6a605f",
+				"accent": "#d63e3e",
+				"c1": "#d63e3e",
+				"c2": "#ec8a8a",
+				"c3": "#7c2424"
+			}
+		},
+		{
+			"slug": "pop",
+			"font": "Cantarell",
+			"colors": {
+				"bg": "#0c0807",
+				"panel": "#180f0c",
+				"border": "#2c1a14",
+				"fg": "#d8d8d8",
+				"dim": "#6f605a",
+				"accent": "#fa754e",
+				"c1": "#fa754e",
+				"c2": "#ffae8d",
+				"c3": "#923b1d"
+			}
+		},
+		{
+			"slug": "elementary",
+			"font": "Inter",
+			"colors": {
+				"bg": "#07090c",
+				"panel": "#0d1117",
+				"border": "#161c25",
+				"fg": "#d8d8d8",
+				"dim": "#5d6773",
+				"accent": "#64b1d8",
+				"c1": "#64b1d8",
+				"c2": "#9bd0eb",
+				"c3": "#34637e"
+			}
+		},
+		{
+			"slug": "cachyos",
+			"font": "Iosevka Term",
+			"colors": {
+				"bg": "#07090c",
+				"panel": "#0c1119",
+				"border": "#161e2c",
+				"fg": "#d8d8d8",
+				"dim": "#5b6775",
+				"accent": "#4f8bf7",
+				"c1": "#4f8bf7",
+				"c2": "#8db1f9",
+				"c3": "#2a4f95"
+			}
+		},
+		{
+			"slug": "windows",
+			"font": "Cascadia Mono",
+			"colors": {
+				"bg": "#070809",
+				"panel": "#0c0e11",
+				"border": "#16181c",
+				"fg": "#d8d8d8",
+				"dim": "#5f646b",
+				"accent": "#0078d4",
+				"c1": "#0078d4",
+				"c2": "#4ba6e8",
+				"c3": "#004377"
+			}
+		},
+		{
+			"slug": "macos",
+			"font": "SF Mono",
+			"colors": {
+				"bg": "#070809",
+				"panel": "#0d0f12",
+				"border": "#181b20",
+				"fg": "#d8d8d8",
+				"dim": "#5f646b",
+				"accent": "#007aff",
+				"c1": "#007aff",
+				"c2": "#4ba5ff",
+				"c3": "#003f99"
+			}
+		},
+		{
+			"slug": "android",
+			"font": "Roboto Mono",
+			"colors": {
+				"bg": "#070b08",
+				"panel": "#0d1410",
+				"border": "#172019",
+				"fg": "#d8d8d8",
+				"dim": "#5d6b62",
+				"accent": "#3ddc84",
+				"c1": "#3ddc84",
+				"c2": "#85eab1",
+				"c3": "#1f7c4a"
+			}
+		},
+		{
+			"slug": "raspbian",
+			"font": "DejaVu Sans Mono",
+			"colors": {
+				"bg": "#0b0608",
+				"panel": "#160d10",
+				"border": "#2a171b",
+				"fg": "#d8d8d8",
+				"dim": "#6e5d61",
+				"accent": "#c51a4a",
+				"c1": "#c51a4a",
+				"c2": "#e16a8a",
+				"c3": "#760e2b"
+			}
+		},
+		{
+			"slug": "proxmox",
+			"font": "Monospace",
+			"colors": {
+				"bg": "#0c0807",
+				"panel": "#180f0c",
+				"border": "#2c1a14",
+				"fg": "#d8d8d8",
+				"dim": "#6f605a",
+				"accent": "#e5700b",
+				"c1": "#e5700b",
+				"c2": "#f0a05a",
+				"c3": "#864107"
+			}
+		},
+		{
+			"slug": "truenas_scale",
+			"font": "Monospace",
+			"colors": {
+				"bg": "#07090c",
+				"panel": "#0d1117",
+				"border": "#161d25",
+				"fg": "#d8d8d8",
+				"dim": "#5d6773",
+				"accent": "#0095d5",
+				"c1": "#0095d5",
+				"c2": "#4db8e8",
+				"c3": "#005680"
+			}
+		},
+		{
+			"slug": "parrot",
+			"font": "Hack",
+			"colors": {
+				"bg": "#07090c",
+				"panel": "#0c1118",
+				"border": "#161e2a",
+				"fg": "#d8d8d8",
+				"dim": "#5b6775",
+				"accent": "#15c0c7",
+				"c1": "#15c0c7",
+				"c2": "#6cd8dd",
+				"c3": "#0c6e72"
+			}
+		},
+		{
+			"slug": "gnu",
+			"font": "Monospace",
+			"colors": {
+				"bg": "#0b0907",
+				"panel": "#16110d",
+				"border": "#2a2017",
+				"fg": "#d8d8d8",
+				"dim": "#6e6259",
+				"accent": "#d9a400",
+				"c1": "#d9a400",
+				"c2": "#e8c454",
+				"c3": "#7f5d00"
+			}
+		}
+	]
+}

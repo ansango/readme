@@ -1,0 +1,119 @@
+---
+import DistroLogo from "../components/logos/distro-logo.astro";
+import { getCollection } from "astro:content";
+import Layout from "../layouts/default.astro";
+
+const chapters = (
+	await getCollection("chapters", ({ data }) => !data.draft)
+).sort((a, b) => a.slug.localeCompare(b.slug));
+
+const total = chapters.length;
+const totalTags = new Set(chapters.flatMap((c) => c.data.tags)).size;
+const dateRange = chapters.reduce(
+	(acc, c) => ({
+		min: c.data.date < acc.min ? c.data.date : acc.min,
+		max: c.data.mod > acc.max ? c.data.mod : acc.max,
+	}),
+	{ min: chapters[0].data.date, max: chapters[0].data.mod },
+);
+
+const formatDate = (d: Date) =>
+	d.toLocaleDateString("es-ES", {
+		day: "2-digit",
+		month: "short",
+		year: "numeric",
+	});
+
+const formatRange = (a: Date, b: Date) => {
+	if (a.getTime() === b.getTime()) return formatDate(a);
+	return `${formatDate(a)} → ${formatDate(b)}`;
+};
+
+const pkg = await import("../package.json", { with: { type: "json" } });
+const astroVersion = pkg.default.dependencies.astro;
+const tailwindVersion = pkg.default.dependencies.tailwindcss;
+
+const info: { k: string; v: string; dim?: boolean }[] = [
+	{ k: "Book", v: "Linux Basics for Hackers" },
+	{ k: "Author", v: "OccupyTheWeb" },
+	{ k: "Chapters", v: `${total} (${chapters[0].slug.slice(0, 2)}–${chapters.at(-1)!.slug.slice(0, 2)})` },
+	{ k: "Tags", v: `${totalTags}` },
+	{ k: "Started", v: formatDate(dateRange.min) },
+	{ k: "Updated", v: formatDate(dateRange.max) },
+	{ k: "Range", v: formatRange(dateRange.min, dateRange.max), dim: true },
+	{ k: "Format", v: "Markdown · Obsidian" },
+	{ k: "Engine", v: astroVersion.replace(/^\^/, "") },
+	{ k: "Render", v: tailwindVersion.replace(/^\^/, "") },
+];
+---
+
+<Layout
+	title="Linux Basics for Hackers · Wiki"
+	description={`Wiki de ${total} capítulos sobre Linux, sysadmin y hacking.`}
+>
+	<div
+		class="mb-10 flex flex-col items-start gap-6 md:flex-row md:gap-12"
+	>
+		<DistroLogo />
+		<div>
+			<div class="mb-1.5 font-medium text-accent">
+				<h1 class="inline border-b border-dim pb-0.5">
+					linux-basics<span class="text-dim">@</span>hackers
+				</h1>
+			</div>
+
+			{
+				info.map(({ k, v, dim }) => (
+					<div class="mb-[0.05rem] flex items-center gap-2">
+						<span class="inline-block min-w-[90px] font-medium text-accent">
+							{k}
+						</span>
+						<span class:list={[dim && "text-dim"]}>{v}</span>
+					</div>
+				))
+			}
+		</div>
+	</div>
+
+	<section class="my-10">
+		<h2
+			class="mb-4 border-b border-dim pb-1 font-mono text-sm font-medium text-accent"
+		>
+			chapters
+		</h2>
+		<ol class="space-y-1">
+			{
+				chapters.map((chapter, idx) => (
+					<li
+						class="group rounded border border-transparent px-3 py-2 transition hover:border-dim hover:bg-foreground/5"
+					>
+						<a
+							href={`/capitulos/${chapter.slug}/`}
+							class="flex items-baseline gap-3"
+						>
+							<span class="font-mono text-xs text-accent">
+								{String(idx + 1).padStart(2, "0")}
+							</span>
+							<span class="flex-1">
+								<span class="block font-medium group-hover:text-accent">
+									{chapter.data.title}
+								</span>
+								{chapter.data.description && (
+									<span class="block text-sm text-dim">
+										{chapter.data.description}
+									</span>
+								)}
+							</span>
+							<time
+								datetime={chapter.data.date.toISOString()}
+								class="font-mono text-xs text-dim"
+							>
+								{formatDate(chapter.data.date)}
+							</time>
+						</a>
+					</li>
+				))
+			}
+		</ol>
+	</section>
+</Layout>
