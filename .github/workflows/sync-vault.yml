@@ -11,7 +11,7 @@ name: sync-vault
 env:
   # Configurable via Settings → Secrets and variables → Actions → Variables.
   # Workflow inputs (workflow_dispatch) override them.
-  VAULT_REPO: ${{ vars.VAULT_REPO || 'ansango.vault' }}
+  VAULT_REPO: ${{ vars.VAULT_REPO || 'ansango/ansango.vault' }}
   VAULT_REF: ${{ vars.VAULT_REF || '' }}
   VAULT_MANIFEST: ${{ vars.VAULT_MANIFEST || '3.resources/wikis/books.md' }}
   VAULT_DIR: ${{ vars.VAULT_DIR || 'vault' }}
