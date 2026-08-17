@@ -100,7 +100,7 @@ Feedback loop:
   Confirmación: el modelo "tenía razón"
 ```
 
-> [!warning> Los feedback loops son el problema más difícil
+> [!warning] Los feedback loops son el problema más difícil
 > El modelo **se refuerza a sí mismo**. Sin intervención externa, las predicciones se vuelven profecías autocumplidas.
 
 ## Responsabilidad y accountability
