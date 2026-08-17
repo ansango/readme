@@ -1,7 +1,9 @@
 ---
-layout: ../layouts/about.astro
 title: About
 description: Aviso legal, atribución y nota de copyright de esta wiki
+date: 2026-08-17
+mod: 2026-08-17
+draft: false
 ---
 
 # About

@@ -33,13 +33,16 @@ src/
 │   └── tui/                        # (legacy from the theme, unused)
 ├── config.json                     # 26 systems: [slug, font, colors{...}]
 ├── content/
-│   └── linux-para-hackers/         # book "Linux Basics for Hackers" (20 .md)
-├── content.config.ts               # defineCollection + Chapter/ChapterData types
+│   ├── linux-para-hackers/         # book "Linux Basics for Hackers" (20 .md)
+│   └── pages/                      # standalone pages (about.md) → /{id}/
+├── content.config.ts               # defineCollection + Chapter/Page types
 ├── layouts/
-│   └── default.astro               # base layout, uses config.json
+│   ├── default.astro               # base layout, uses config.json
+│   └── page.astro                  # layout of the `pages` collection
 ├── lib/
 │   ├── books.ts                    # class Books: groupByBook, findIndex, listFromChapters
 │   ├── chapters.ts                 # class Chapters: all(), getNumbered, totalReadingTime
+│   ├── pages.ts                    # class Pages: all() (standalone pages)
 │   ├── date-formatter.ts           # class DateFormatter: iso, longDate
 │   ├── book-slug.ts                # bookSlugFromId / chapterIdFromId
 │   ├── build-info.ts               # hardcoded versions
@@ -54,6 +57,7 @@ src/
 │       └── wikilink.ts             # [[link|alias]] → /{book}/{chapter}/
 └── pages/
     ├── index.astro                 # / book list
+    ├── [page].astro                # /{page}/ from the `pages` collection
     └── [book]/
         ├── index.astro             # /{book}/ (renders chapter 00-)
         └── [chapter].astro         # /{book}/{chapter}/ (chapters 01+)
@@ -98,7 +102,10 @@ Supported callout types (aligned with Obsidian): `note, abstract, info, tip, suc
 ### Content collections (Content Layer API)
 
 - Defined in `src/content.config.ts` (NOT `src/content/config.ts` — legacy path).
-- Each entry has `.id` (NOT `.slug`). With the glob loader `*/**/*.md` the id has the form `<book-slug>/<chapter-id>` (e.g. `linux-para-hackers/01-introduccion-a-linux-y-distribuciones-debian`).
+- Two collections:
+  - `chapters` — loader `["*/**/*.md", "!pages/**"]` over `src/content`. Id = `<book-slug>/<chapter-id>` (e.g. `linux-para-hackers/01-introduccion-...`). The negated pattern keeps `src/content/pages/` out of the bookshelf.
+  - `pages` — loader `*.md` over `src/content/pages`. Id = flat filename (`about`), rendered at `/{id}/` by `src/pages/[page].astro` with `src/layouts/page.astro`. Schema: `title, description, date, mod, draft` (no `tags`).
+- Each entry has `.id` (NOT `.slug`).
 - Render with `await render(entry)` (NOT `entry.render()`).
 
 ```ts
@@ -116,6 +123,7 @@ const chap = chapterIdFromId(chapter.id);      // "01-introduccion-..."
 - `/` → bookshelf: iterates groups by `<book-slug>` and shows the title, author and chapter count of each. Does not render chapter content.
 - `/{book-slug}/` → book home: renders the `00-…` chapter (the index of that wiki).
 - `/{book-slug}/{chapter-id}/` → individual chapter (`01-…` and beyond). The `00-…` is not generated here because it already lives on the book's home.
+- `/{page}/` → standalone page from the `pages` collection (currently `/about/`). Slugs must not collide with book slugs.
 - `/capitulos/*` → 301 redirect to `/linux-para-hackers/:splat`. Defined in `public/_redirects` (Cloudflare Pages applies it at the edge in production) **and** duplicated in `astro.config.ts` → `redirects` (so the dev server honors it). Maintained for SEO/backlinks.
 
 The chapter that acts as the index must start with `00-` and lives in `src/content/<book-slug>/00-…md`. The list of chapters of a book lives in that markdown (not duplicated in code).

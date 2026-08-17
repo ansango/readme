@@ -1,0 +1,29 @@
+---
+import { render } from "astro:content";
+import type { Page } from "../content.config";
+import Layout from "../layouts/page.astro";
+import { Pages } from "../lib/pages";
+
+export async function getStaticPaths() {
+  const pages = await Pages.all();
+  return pages.map((page) => ({
+    params: { page: page.id },
+    props: { page },
+  }));
+}
+
+interface Props {
+  page: Page;
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+---
+
+<Layout
+  id={page.id}
+  title={page.data.title}
+  description={page.data.description}
+>
+  <Content />
+</Layout>

@@ -2,15 +2,12 @@
 import Layout from "./default.astro";
 
 interface Props {
+  id: string;
   title: string;
   description?: string;
 }
 
-// Las páginas `.md` reciben el frontmatter vía `Astro.props.frontmatter`.
-// Usamos ese cuando existe (camino del about.md actual) y caemos a
-// `Astro.props` por si en el futuro se invoca este layout desde un .astro.
-const fm = "frontmatter" in Astro.props ? Astro.props.frontmatter : Astro.props;
-const { title, description } = fm;
+const { id, title, description } = Astro.props;
 ---
 
 <Layout title={title} description={description}>
@@ -18,7 +15,7 @@ const { title, description } = fm;
     <header class="mb-8 border-b border-dim pb-6 not-prose">
       <a href="/" class="text-sm text-accent hover:underline">← Home</a>
       <h1
-        id="about"
+        id={id}
         class="mt-4 font-mono font-medium text-foreground md:text-7xl"
       >
         {title}
