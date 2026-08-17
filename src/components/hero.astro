@@ -1,3 +1,7 @@
+---
+import DistroLogo from "./logos/distro-logo.astro";
+---
+
 <header class="mb-10 font-mono border border-dim">
   <!-- Barra de título tipo ventana: traffic lights + filename -->
   <div
@@ -13,6 +17,9 @@
   <div
     class="flex flex-col gap-5 p-5 sm:flex-row sm:items-start sm:gap-6 sm:p-6 md:gap-8 md:p-8"
   >
+    <DistroLogo
+      class="shrink-0 max-w-[55%] sm:max-w-[14rem] md:max-w-[16rem]"
+    />
     <div class="min-w-0 flex-1 text-sm leading-relaxed sm:text-base space-y-4">
       <p>
         Esta web es mi colección de apuntes sobre libros de tecnología. Cada
