@@ -8,8 +8,8 @@
  * contexto de Astro). El 404 se delega al router.
  */
 
+import type { Link, PhrasingContent, Root, Text } from "mdast";
 import type { Plugin } from "unified";
-import type { Root, Text, PhrasingContent, Link } from "mdast";
 
 const WIKILINK = /\[\[([^\]\n|]+?)(?:\|([^\]\n]+?))?\]\]/g;
 
@@ -39,8 +39,16 @@ function walk(
 
 	const newChildren: Array<unknown> = [];
 
-	for (const child of node.children as Array<{ type?: string; value?: string; children?: Array<unknown> }>) {
-		if (child.type === "text" && typeof child.value === "string" && child.value.includes("[[")) {
+	for (const child of node.children as Array<{
+		type?: string;
+		value?: string;
+		children?: Array<unknown>;
+	}>) {
+		if (
+			child.type === "text" &&
+			typeof child.value === "string" &&
+			child.value.includes("[[")
+		) {
 			const segments = splitWikilinks(child.value);
 			for (const seg of segments) {
 				if (seg.type === "text") {
@@ -59,7 +67,11 @@ function walk(
 					newChildren.push(linkNode);
 				}
 			}
-		} else if (child.type === "text" || child.type === "inlineCode" || child.type === "link") {
+		} else if (
+			child.type === "text" ||
+			child.type === "inlineCode" ||
+			child.type === "link"
+		) {
 			newChildren.push(child);
 		} else {
 			walk(child as { children?: Array<unknown> });

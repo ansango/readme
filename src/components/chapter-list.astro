@@ -2,20 +2,19 @@
 import { getCollection } from "astro:content";
 
 const chapters = (
-	await getCollection("chapters", ({ data }) => !data.draft)
+  await getCollection("chapters", ({ data }) => !data.draft)
 ).sort((a, b) => a.id.localeCompare(b.id));
 
 const formatDate = (d: Date) =>
-	d.toLocaleDateString("es-ES", {
-		day: "2-digit",
-		month: "short",
-		year: "numeric",
-	});
+  d.toLocaleDateString("es-ES", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 ---
 
 <ol class="space-y-1">
-	{
-		chapters.map((chapter, idx) => (
+  {chapters.map((chapter, idx) => (
 			<li class="group rounded border border-transparent px-3 py-2 transition hover:border-dim hover:bg-foreground/5">
 				<a
 					href={`/capitulos/${chapter.id}/`}
@@ -42,6 +41,5 @@ const formatDate = (d: Date) =>
 					</time>
 				</a>
 			</li>
-		))
-	}
+		))}
 </ol>

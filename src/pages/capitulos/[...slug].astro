@@ -1,67 +1,62 @@
 ---
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { type CollectionEntry, getCollection, render } from "astro:content";
 import Layout from "../../layouts/default.astro";
 
 export async function getStaticPaths() {
-	const chapters = await getCollection("chapters", ({ data }) => !data.draft);
-	return chapters.map((chapter) => ({
-		params: { slug: chapter.id },
-		props: { chapter },
-	}));
+  const chapters = await getCollection("chapters", ({ data }) => !data.draft);
+  return chapters.map((chapter) => ({
+    params: { slug: chapter.id },
+    props: { chapter },
+  }));
 }
 
 interface Props {
-	chapter: CollectionEntry<"chapters">;
+  chapter: CollectionEntry<"chapters">;
 }
 
 const { chapter } = Astro.props;
 const { Content } = await render(chapter);
 
 const formatDate = (d: Date) =>
-	d.toLocaleDateString("es-ES", {
-		day: "2-digit",
-		month: "short",
-		year: "numeric",
-	});
+  d.toLocaleDateString("es-ES", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 ---
 
 <Layout title={chapter.data.title} description={chapter.data.description}>
-	<article class="mx-auto max-w-3xl px-4 py-10">
-		<header class="mb-8 border-b border-dim pb-6">
-			<a
-				href="/capitulos/"
-				class="text-sm text-accent hover:underline"
-				aria-label="Volver al índice"
-			>
-				← Capítulos
-			</a>
-			<h1
-				class="mt-4 font-mono text-2xl font-medium text-foreground md:text-3xl"
-			>
-				{chapter.data.title}
-			</h1>
-			{
-				chapter.data.description && (
+  <article class="mx-auto max-w-3xl px-4 py-10">
+    <header class="mb-8 border-b border-dim pb-6">
+      <a
+        href="/capitulos/"
+        class="text-sm text-accent hover:underline"
+        aria-label="Volver al índice"
+      >
+        ← Capítulos
+      </a>
+      <h1
+        class="mt-4 font-mono text-2xl font-medium text-foreground md:text-3xl"
+      >
+        {chapter.data.title}
+      </h1>
+      {chapter.data.description && (
 					<p class="mt-2 text-sm text-dim md:text-base">
 						{chapter.data.description}
 					</p>
-				)
-			}
-			<div
-				class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-dim"
-			>
-				<time datetime={chapter.data.date.toISOString()}>
-					{formatDate(chapter.data.date)}
-				</time>
-				{
-					chapter.data.date.getTime() !== chapter.data.mod.getTime() && (
+				)}
+      <div
+        class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-dim"
+      >
+        <time datetime={chapter.data.date.toISOString()}>
+          {formatDate(chapter.data.date)}
+        </time>
+        {chapter.data.date.getTime() !== chapter.data.mod.getTime() && (
 						<time datetime={chapter.data.mod.toISOString()}>
 							actualizado {formatDate(chapter.data.mod)}
 						</time>
-					)
-				}
-				{
-					chapter.data.tags.length > 0 && (
+					)}
+        {chapter.data.tags.length > 0 && (
 						<span class="flex flex-wrap gap-1">
 							{chapter.data.tags.map((tag) => (
 								<span class="rounded border border-dim px-1.5 py-0.5">
@@ -69,137 +64,134 @@ const formatDate = (d: Date) =>
 								</span>
 							))}
 						</span>
-					)
-				}
-			</div>
-		</header>
+					)}
+      </div>
+    </header>
 
-		<div
-			class="chapter-body space-y-4 leading-relaxed text-foreground"
-		>
-			<Content />
-		</div>
+    <div class="chapter-body space-y-4 leading-relaxed text-foreground">
+      <Content />
+    </div>
 
-		<footer class="mt-12 border-t border-dim pt-6 text-xs text-dim">
-			<a href="/capitulos/" class="text-accent hover:underline">
-				← Volver al índice de capítulos
-			</a>
-		</footer>
-	</article>
+    <footer class="mt-12 border-t border-dim pt-6 text-xs text-dim">
+      <a href="/capitulos/" class="text-accent hover:underline">
+        ← Volver al índice de capítulos
+      </a>
+    </footer>
+  </article>
 </Layout>
 
 <style>
-	.chapter-body :global(h1) {
-		margin-top: 2rem;
-		font-family: var(--font-mono, monospace);
-		font-size: 1.6rem;
-		font-weight: 500;
-	}
-	.chapter-body :global(h2) {
-		margin-top: 2rem;
-		font-family: var(--font-mono, monospace);
-		font-size: 1.35rem;
-		font-weight: 500;
-		border-bottom: 1px solid var(--color-border, #1a1d22);
-		padding-bottom: 0.25rem;
-	}
-	.chapter-body :global(h3) {
-		margin-top: 1.5rem;
-		font-family: var(--font-mono, monospace);
-		font-size: 1.15rem;
-		font-weight: 500;
-		color: var(--color-accent, #1793d1);
-	}
-	.chapter-body :global(h4),
-	.chapter-body :global(h5),
-	.chapter-body :global(h6) {
-		margin-top: 1.25rem;
-		font-weight: 500;
-	}
-	.chapter-body :global(p) {
-		line-height: 1.7;
-	}
-	.chapter-body :global(a) {
-		color: var(--color-accent, #1793d1);
-		text-decoration: underline;
-		text-underline-offset: 2px;
-	}
-	.chapter-body :global(ul),
-	.chapter-body :global(ol) {
-		padding-left: 1.5rem;
-	}
-	.chapter-body :global(li) {
-		margin: 0.25rem 0;
-	}
-	.chapter-body :global(code) {
-		font-family: var(--font-mono, monospace);
-		background: var(--color-panel, #0e1014);
-		padding: 0.1em 0.3em;
-		border-radius: 3px;
-		font-size: 0.9em;
-	}
-	.chapter-body :global(pre) {
-		background: var(--color-panel, #0e1014);
-		border: 1px solid var(--color-border, #1a1d22);
-		border-radius: 4px;
-		padding: 1rem;
-		overflow-x: auto;
-		margin: 1rem 0;
-	}
-	.chapter-body :global(pre code) {
-		background: transparent;
-		padding: 0;
-	}
-	.chapter-body :global(blockquote) {
-		border-left: 3px solid var(--color-accent, #1793d1);
-		padding: 0.25rem 0 0.25rem 1rem;
-		color: var(--color-dim, #5e6470);
-		margin: 1rem 0;
-	}
-	.chapter-body :global(table) {
-		width: 100%;
-		border-collapse: collapse;
-		margin: 1rem 0;
-		font-size: 0.9em;
-	}
-	.chapter-body :global(th),
-	.chapter-body :global(td) {
-		border: 1px solid var(--color-border, #1a1d22);
-		padding: 0.4rem 0.6rem;
-		text-align: left;
-	}
-	.chapter-body :global(th) {
-		background: var(--color-panel, #0e1014);
-		font-weight: 500;
-	}
-	.chapter-body :global(hr) {
-		border: 0;
-		border-top: 1px solid var(--color-border, #1a1d22);
-		margin: 2rem 0;
-	}
-	.chapter-body :global(.callout) {
-		border-left: 3px solid var(--color-accent, #1793d1);
-		background: var(--color-panel, #0e1014);
-		padding: 0.5rem 1rem;
-		margin: 1rem 0;
-		border-radius: 0 4px 4px 0;
-	}
-	.chapter-body :global(.callout-title) {
-		font-weight: 500;
-		color: var(--color-accent, #1793d1);
-		margin-bottom: 0.25rem;
-	}
-	.chapter-body :global(.callout-content > :first-child) {
-		margin-top: 0;
-	}
-	.chapter-body :global(.callout-content > :last-child) {
-		margin-bottom: 0;
-	}
-	.chapter-body :global(.wikilink) {
-		color: var(--color-accent, #1793d1);
-	}
-	.chapter-body :global(.wikilink-broken) {
-		color: var(--color-dim, #5e6470);
-		text-decoration: line-through;
-	}
+  .chapter-body :global(h1) {
+    margin-top: 2rem;
+    font-family: var(--font-mono, monospace);
+    font-size: 1.6rem;
+    font-weight: 500;
+  }
+  .chapter-body :global(h2) {
+    margin-top: 2rem;
+    font-family: var(--font-mono, monospace);
+    font-size: 1.35rem;
+    font-weight: 500;
+    border-bottom: 1px solid var(--color-border, #1a1d22);
+    padding-bottom: 0.25rem;
+  }
+  .chapter-body :global(h3) {
+    margin-top: 1.5rem;
+    font-family: var(--font-mono, monospace);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--color-accent, #1793d1);
+  }
+  .chapter-body :global(h4),
+  .chapter-body :global(h5),
+  .chapter-body :global(h6) {
+    margin-top: 1.25rem;
+    font-weight: 500;
+  }
+  .chapter-body :global(p) {
+    line-height: 1.7;
+  }
+  .chapter-body :global(a) {
+    color: var(--color-accent, #1793d1);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .chapter-body :global(ul),
+  .chapter-body :global(ol) {
+    padding-left: 1.5rem;
+  }
+  .chapter-body :global(li) {
+    margin: 0.25rem 0;
+  }
+  .chapter-body :global(code) {
+    font-family: var(--font-mono, monospace);
+    background: var(--color-panel, #0e1014);
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+  .chapter-body :global(pre) {
+    background: var(--color-panel, #0e1014);
+    border: 1px solid var(--color-border, #1a1d22);
+    border-radius: 4px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+  .chapter-body :global(pre code) {
+    background: transparent;
+    padding: 0;
+  }
+  .chapter-body :global(blockquote) {
+    border-left: 3px solid var(--color-accent, #1793d1);
+    padding: 0.25rem 0 0.25rem 1rem;
+    color: var(--color-dim, #5e6470);
+    margin: 1rem 0;
+  }
+  .chapter-body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9em;
+  }
+  .chapter-body :global(th),
+  .chapter-body :global(td) {
+    border: 1px solid var(--color-border, #1a1d22);
+    padding: 0.4rem 0.6rem;
+    text-align: left;
+  }
+  .chapter-body :global(th) {
+    background: var(--color-panel, #0e1014);
+    font-weight: 500;
+  }
+  .chapter-body :global(hr) {
+    border: 0;
+    border-top: 1px solid var(--color-border, #1a1d22);
+    margin: 2rem 0;
+  }
+  .chapter-body :global(.callout) {
+    border-left: 3px solid var(--color-accent, #1793d1);
+    background: var(--color-panel, #0e1014);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .chapter-body :global(.callout-title) {
+    font-weight: 500;
+    color: var(--color-accent, #1793d1);
+    margin-bottom: 0.25rem;
+  }
+  .chapter-body :global(.callout-content > :first-child) {
+    margin-top: 0;
+  }
+  .chapter-body :global(.callout-content > :last-child) {
+    margin-bottom: 0;
+  }
+  .chapter-body :global(.wikilink) {
+    color: var(--color-accent, #1793d1);
+  }
+  .chapter-body :global(.wikilink-broken) {
+    color: var(--color-dim, #5e6470);
+    text-decoration: line-through;
+  }
 </style>

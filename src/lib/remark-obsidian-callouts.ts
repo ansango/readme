@@ -25,16 +25,16 @@
  *   cuyo PRIMER text empieza por [!type].
  */
 
-import type { Plugin } from "unified";
 import type {
-	Root,
 	Blockquote,
-	Paragraph,
-	Text,
 	ContainerDirective,
+	Paragraph,
 	PhrasingContent,
+	Root,
+	Text,
 } from "mdast";
-import { visit, SKIP } from "unist-util-visit";
+import type { Plugin } from "unified";
+import { SKIP, visit } from "unist-util-visit";
 
 const OBSIDIAN_CALLOUT =
 	/^\s*\[!([a-zA-Z][a-zA-Z0-9-_]*)\](?:\s+([^\n]+?))?(?=\n|$)/;
@@ -65,10 +65,7 @@ export const remarkObsidianCallouts: Plugin<[], Root> = () => {
 			// mdast concatena todas las líneas del blockquote en un único
 			// text separadas por '\n', así que buscamos el primer newline
 			// después del match para separar el título del contenido.
-			const newlineIdx = firstChild.value.indexOf(
-				"\n",
-				match[0].length,
-			);
+			const newlineIdx = firstChild.value.indexOf("\n", match[0].length);
 			const restOfFirstText =
 				newlineIdx === -1 ? "" : firstChild.value.slice(newlineIdx + 1);
 

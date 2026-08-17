@@ -18,8 +18,8 @@
  * la forma <div class="callout callout-{name}">.
  */
 
-import type { Plugin } from "unified";
 import type { Root } from "mdast";
+import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
 
 const TYPES = new Set([
@@ -39,60 +39,75 @@ const TYPES = new Set([
 
 export const remarkCallouts: Plugin<[], Root> = () => {
 	return (tree) => {
-		visit(tree, (node: { type?: string; name?: string; children?: Array<unknown>; data?: { hName?: string; hProperties?: Record<string, unknown>; directiveLabel?: unknown } }) => {
-			if (
-				(node.type === "containerDirective" || node.type === "leafDirective") &&
-				node.name &&
-				TYPES.has(node.name)
-			) {
-				const data = (node.data ??= {});
-				data.hName = "div";
-				data.hProperties = {
-					className: ["callout", `callout-${node.name}`],
+		visit(
+			tree,
+			(node: {
+				type?: string;
+				name?: string;
+				children?: Array<unknown>;
+				data?: {
+					hName?: string;
+					hProperties?: Record<string, unknown>;
+					directiveLabel?: unknown;
 				};
-
-				// Si remark-directive marcó el primer hijo con directiveLabel,
-				// lo movemos a un wrapper .callout-title y dejamos el resto
-				// en .callout-content.
-				const children = node.children as Array<{
-					type?: string;
-					data?: { directiveLabel?: unknown };
-					children?: Array<unknown>;
-				}>;
-
+			}) => {
 				if (
-					node.type === "containerDirective" &&
-					children.length > 0 &&
-					children[0].type === "paragraph" &&
-					children[0].data?.directiveLabel
+					(node.type === "containerDirective" ||
+						node.type === "leafDirective") &&
+					node.name &&
+					TYPES.has(node.name)
 				) {
-					const first = children[0];
-					const rest = children.slice(1);
-					const titleChildren = first.children ?? [];
+					const data = (node.data ??= {});
+					data.hName = "div";
+					data.hProperties = {
+						className: ["callout", `callout-${node.name}`],
+					};
 
-					const wrapped = [
-						{
-							type: "paragraph",
-							data: {
-								hName: "div",
-								hProperties: { className: ["callout-title"] },
-							},
-							children: titleChildren,
-						},
-						...rest.map((c) => ({
-							...c,
-							data: {
-								...(c as { data?: Record<string, unknown> }).data,
-								hProperties: {
-									...(((c as { data?: { hProperties?: Record<string, unknown> } }).data?.hProperties) ?? {}),
-									className: ["callout-content"],
+					// Si remark-directive marcó el primer hijo con directiveLabel,
+					// lo movemos a un wrapper .callout-title y dejamos el resto
+					// en .callout-content.
+					const children = node.children as Array<{
+						type?: string;
+						data?: { directiveLabel?: unknown };
+						children?: Array<unknown>;
+					}>;
+
+					if (
+						node.type === "containerDirective" &&
+						children.length > 0 &&
+						children[0].type === "paragraph" &&
+						children[0].data?.directiveLabel
+					) {
+						const first = children[0];
+						const rest = children.slice(1);
+						const titleChildren = first.children ?? [];
+
+						const wrapped = [
+							{
+								type: "paragraph",
+								data: {
+									hName: "div",
+									hProperties: { className: ["callout-title"] },
 								},
+								children: titleChildren,
 							},
-						})),
-					];
-					node.children = wrapped as never;
+							...rest.map((c) => ({
+								...c,
+								data: {
+									...(c as { data?: Record<string, unknown> }).data,
+									hProperties: {
+										...((
+											c as { data?: { hProperties?: Record<string, unknown> } }
+										).data?.hProperties ?? {}),
+										className: ["callout-content"],
+									},
+								},
+							})),
+						];
+						node.children = wrapped as never;
+					}
 				}
-			}
-		});
+			},
+		);
 	};
 };
