@@ -80,15 +80,6 @@ const formatDate = (d: Date) =>
 					</time>
 				)}
         <span>{formatReadingTime(reading.minutes)} de lectura</span>
-        {chapter.data.tags.length > 0 && (
-					<span class="flex flex-wrap gap-1">
-						{chapter.data.tags.map((tag) => (
-							<span class="rounded border border-dim px-1.5 py-0.5">
-								{tag}
-							</span>
-						))}
-					</span>
-				)}
       </div>
     </header>
 
