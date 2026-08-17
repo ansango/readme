@@ -1,0 +1,66 @@
+name: sync-vault
+
+# "on:" is a YAML 1.1 boolean — quote it to stay explicit.
+"on":
+  # Weekly safety net — republish changes committed directly to the vault.
+  schedule:
+    - cron: "0 6 * * 6"
+  # Manual trigger for testing or out-of-band syncs.
+  workflow_dispatch:
+
+env:
+  # Configurable via Settings → Secrets and variables → Actions → Variables.
+  # Workflow inputs (workflow_dispatch) override them.
+  VAULT_REPO: ${{ vars.VAULT_REPO || 'ansango.vault' }}
+  VAULT_REF: ${{ vars.VAULT_REF || '' }}
+  VAULT_MANIFEST: ${{ vars.VAULT_MANIFEST || '3.resources/wikis/books.md' }}
+  VAULT_DIR: ${{ vars.VAULT_DIR || 'vault' }}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: checkout readme
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.README_TOKEN }}
+
+      - name: checkout vault
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.VAULT_REPO }}
+          ref: ${{ env.VAULT_REF || '' }}
+          path: ${{ env.VAULT_DIR }}
+          token: ${{ secrets.VAULT_TOKEN }}
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: install deps
+        run: npm ci
+
+      - name: sync books
+        run: |
+          node tools/sync-vault/index.mjs \
+            --manifest "${{ env.VAULT_DIR }}/${{ env.VAULT_MANIFEST }}" \
+            --vault "${{ env.VAULT_DIR }}" \
+            --out src/content
+
+      - name: commit if changed
+        run: |
+          VAULT_SHA=$(git -C "${{ env.VAULT_DIR }}" rev-parse --short HEAD)
+          echo "Synced from vault @ ${VAULT_SHA}" > .sync-stamp
+          git config user.email "hola@ansango.com"
+          git config user.name "vault-sync"
+          git add src/content .sync-stamp
+          if git diff --cached --quiet; then
+            echo "no changes — nothing to commit"
+            exit 0
+          fi
+          git commit -m "chore(sync): vault @ ${VAULT_SHA}"
+          git push
