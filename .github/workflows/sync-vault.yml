@@ -13,7 +13,7 @@ env:
   # Workflow inputs (workflow_dispatch) override them.
   VAULT_REPO: ${{ vars.VAULT_REPO || 'ansango/ansango.vault' }}
   VAULT_REF: ${{ vars.VAULT_REF || '' }}
-  VAULT_MANIFEST: ${{ vars.VAULT_MANIFEST || '3.resources/wikis/books.md' }}
+  VAULT_MANIFEST: ${{ vars.VAULT_MANIFEST || '1.projects/ansango/readme/books.md' }}
   VAULT_DIR: ${{ vars.VAULT_DIR || 'vault' }}
 
 jobs:
