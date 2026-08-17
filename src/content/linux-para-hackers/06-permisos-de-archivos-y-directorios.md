@@ -3,7 +3,7 @@ title: Permisos de archivos y directorios
 description: "Cómo funcionan los permisos de lectura, escritura y ejecución en Linux (propietario, grupo y otros), chown, chmod en notación octal y simbólica, umask y los bits especiales SUID/SGID"
 date: 2026-07-11
 mod: 2026-07-11
-draft: false
+published: true
 tags: [linux, sysadmin, permisos]
 ---
 

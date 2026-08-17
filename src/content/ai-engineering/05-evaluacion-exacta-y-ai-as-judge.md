@@ -3,7 +3,7 @@ title: Evaluación exacta y AI as judge
 description: "Más allá de la perplexity: corrección funcional, métricas de similarity, embeddings, LLM-as-a-judge y evaluación comparativa entre modelos"
 date: 2026-08-17
 mod: 2026-08-17
-draft: false
+published: true
 tags: [ai, llm, evaluation, llm-as-judge, rag, embeddings]
 ---
 

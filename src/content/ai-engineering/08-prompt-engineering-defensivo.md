@@ -3,7 +3,7 @@ title: Prompt engineering defensivo
 description: "La otra cara del prompt: extracción de system prompts, jailbreaking, prompt injection y defensas prácticas para proteger un sistema de IA"
 date: 2026-08-17
 mod: 2026-08-17
-draft: false
+published: true
 tags: [ai, llm, security, prompt-injection, jailbreak]
 ---
 

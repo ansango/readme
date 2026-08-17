@@ -3,7 +3,7 @@ title: Métricas de evaluación de lenguaje
 description: "Cómo se mide la calidad de un modelo de lenguaje: entropía, cross-entropy, bits-per-character y perplexity como métricas intrínsecas para comparar modelos"
 date: 2026-08-17
 mod: 2026-08-17
-draft: false
+published: true
 tags: [ai, llm, evaluation, metrics, perplexity, entropy]
 ---
 

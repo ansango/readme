@@ -3,7 +3,7 @@ title: Ingeniería de datos
 description: "El capítulo que más determina la calidad de un sistema de IA: curación de datos, augmentation, síntesis con AI, model distillation y el pipeline de procesamiento"
 date: 2026-08-17
 mod: 2026-08-17
-draft: false
+published: true
 tags: [ai, llm, data-engineering, data-curation, data-synthesis, distillation]
 ---
 

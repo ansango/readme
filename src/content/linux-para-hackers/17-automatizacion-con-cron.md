@@ -3,7 +3,7 @@ title: Automatización con cron
 description: "Programar tareas periódicas con cron y crontab, sus atajos habituales, y cómo gestionar qué servicios arrancan junto con el sistema"
 date: 2026-07-11
 mod: 2026-07-11
-draft: false
+published: true
 tags: [linux, sysadmin, cron]
 ---
 

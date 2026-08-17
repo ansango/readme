@@ -3,7 +3,7 @@ title: "RAG: arquitectura y optimización"
 description: "Retrieval-Augmented Generation: cómo dar contexto externo al modelo, las arquitecturas más comunes, los algoritmos de retrieval, cómo optimizar la calidad y los patrones para ir más allá del texto"
 date: 2026-08-17
 mod: 2026-08-17
-draft: false
+published: true
 tags: [ai, llm, rag, retrieval, embeddings, vector-db]
 ---
 

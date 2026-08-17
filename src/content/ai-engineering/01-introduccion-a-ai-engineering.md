@@ -3,7 +3,7 @@ title: Introducción a AI Engineering
 description: "Por qué el campo se llama AI engineering, cómo evolucionamos de los modelos de lenguaje a los foundation models, casos de uso típicos, cómo planificar una aplicación y qué capas forman el stack"
 date: 2026-08-17
 mod: 2026-08-17
-draft: false
+published: true
 tags: [ai, ai-engineering, foundation-models, llm]
 ---
 

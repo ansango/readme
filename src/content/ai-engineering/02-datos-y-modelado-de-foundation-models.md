@@ -3,7 +3,7 @@ title: Datos y modelado de foundation models
 description: "Cómo se entrena un foundation model: datos de entrenamiento, arquitectura del transformer y cómo el tamaño del modelo determina sus capacidades"
 date: 2026-08-17
 mod: 2026-08-17
-draft: false
+published: true
 tags: [ai, llm, foundation-models, transformer, training]
 ---
 
