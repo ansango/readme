@@ -47,42 +47,75 @@ const fmtDate = (d: Date) => d.toISOString().slice(0, 10);
 // Línea de caja estilo cabecera de README. Se trunca con overflow-hidden
 // para que no rompa el layout en pantallas estrechas.
 const HRULE = "─".repeat(60);
+
+// ASCII art: stack de libros. Solo visible en sm+ (≥640px) y oculto
+// en móvil para no saturar pantallas estrechas.
+const BOOK_STACK = `╔════╗
+║▓▓▓▓║
+╠════╣
+║▓▓▓▓║
+╠════╣
+║▓▓▓▓║
+╚════╝`;
 ---
 
 <Layout title="README" description="Wikis de libros que he leído">
-  <header class="mb-10 font-mono">
+  <header class="mb-10 font-mono border border-dim">
+    <!-- Barra de título tipo ventana: traffic lights + filename -->
     <div
-      class="mb-3 select-none overflow-hidden whitespace-nowrap text-dim text-2xs"
+      class="flex items-center gap-1.5 border-b border-dim px-3 py-1.5 text-dim text-2xs sm:gap-2 sm:px-4 sm:py-2"
     >
-      {HRULE}
+      <span class="text-accent">●</span>
+      <span>○</span>
+      <span>○</span>
+      <span class="ml-2 truncate sm:ml-3">README.md</span>
     </div>
-    <h1 class="mb-2 font-medium text-accent text-2xl leading-none">README</h1>
-    <p class="mb-3 italic text-dim">wikis de libros que he leído</p>
+
+    <!-- Cuerpo: art a la izquierda, contenido a la derecha -->
     <div
-      class="mb-4 select-none overflow-hidden whitespace-nowrap text-dim text-2xs"
+      class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6 md:gap-8 md:p-8"
     >
-      {HRULE}
-    </div>
-    <div class="flex flex-wrap gap-2 text-xs">
-      <span class="border border-dim px-2 py-0.5 text-dim">
-        {bookList.length}
-        {bookList.length === 1 ? " libro" : " libros"}
-      </span>
-      <span class="border border-dim px-2 py-0.5 text-dim">
-        {chapters.length}
-        {chapters.length === 1 ? " capítulo" : " capítulos"}
-      </span>
-      {totalTags > 0 && (
-        <span class="border border-dim px-2 py-0.5 text-dim">
-          {totalTags}
-          {totalTags === 1 ? " tag" : " tags"}
-        </span>
-      )}
-    </div>
-    <div
-      class="mt-3 select-none overflow-hidden whitespace-nowrap text-dim text-2xs"
-    >
-      {HRULE}
+      <pre
+        class="hidden shrink-0 select-none text-dim text-xs leading-none sm:block"
+        aria-hidden="true"
+      >{BOOK_STACK}</pre>
+
+      <div class="min-w-0 flex-1">
+        <h1
+          class="mb-2 font-medium text-accent text-2xl leading-none sm:text-3xl"
+        >
+          README
+        </h1>
+        <p class="mb-3 italic text-dim text-sm sm:mb-4 sm:text-base">
+          wikis de libros que he leído
+        </p>
+        <div
+          class="mb-3 select-none overflow-hidden whitespace-nowrap text-dim text-2xs sm:mb-4"
+        >
+          {HRULE}
+        </div>
+        <div class="mb-3 flex flex-wrap gap-2 text-xs sm:mb-4">
+          <span class="border border-dim px-2 py-0.5 text-dim">
+            {bookList.length}
+            {bookList.length === 1 ? " libro" : " libros"}
+          </span>
+          <span class="border border-dim px-2 py-0.5 text-dim">
+            {chapters.length}
+            {chapters.length === 1 ? " capítulo" : " capítulos"}
+          </span>
+          {totalTags > 0 && (
+            <span class="border border-dim px-2 py-0.5 text-dim">
+              {totalTags}
+              {totalTags === 1 ? " tag" : " tags"}
+            </span>
+          )}
+        </div>
+        <div
+          class="select-none overflow-hidden whitespace-nowrap text-dim text-2xs"
+        >
+          {HRULE}
+        </div>
+      </div>
     </div>
   </header>
 
