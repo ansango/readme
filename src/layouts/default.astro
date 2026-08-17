@@ -1,7 +1,5 @@
 ---
 import DistroToggle from "../components/distro-toggle.astro";
-import config from "../config.json";
-import { FONT_FAMILY, fontStack } from "../lib/fonts";
 import { DEFAULT_THEME, STORAGE_KEY, themes } from "../lib/themes";
 import "../styles/global.css";
 
@@ -19,27 +17,6 @@ const {
   theme = DEFAULT_THEME,
   lang = "es",
 } = Astro.props;
-
-const distroVisibilityCss = [
-  "[data-distro]{display:none}",
-  ...themes.map(
-    (slug) => `[data-theme="${slug}"] [data-distro="${slug}"]{display:revert}`,
-  ),
-].join("");
-
-const themeColorsCss = config.systems
-  .map(
-    (s) =>
-      `[data-theme="${s.slug}"]{--color-bg:${s.colors.bg};--color-panel:${s.colors.panel};--color-border:${s.colors.border};--color-fg:${s.colors.fg};--color-dim:${s.colors.dim};--color-accent:${s.colors.accent};--color-c1:${s.colors.c1};--color-c2:${s.colors.c2};--color-c3:${s.colors.c3};}`,
-  )
-  .join("");
-
-const themeFontsCss = config.systems
-  .map(
-    (s) =>
-      `[data-theme="${s.slug}"]{--font-mono:${fontStack(FONT_FAMILY[s.font])};}`,
-  )
-  .join("");
 ---
 
 <!doctype html>
@@ -48,8 +25,18 @@ const themeFontsCss = config.systems
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content={Astro.generator}>
+    <meta name="theme-color" content="#08090b">
+    <meta name="color-scheme" content="dark">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <!--
+      Per-theme CSS (~10 KB, cached): visibility rules for distro logos
+      and the --color-*/--font-mono variables for each theme. Generated
+      by `tools/generate-theme-css.mjs` from `src/config.json`.
+    -->
+    <link rel="stylesheet" href="/theme.css">
     <title>{title}</title>
     <meta name="description" content={description}>
     <!--
@@ -58,16 +45,17 @@ const themeFontsCss = config.systems
       via <Fragment slot="seo">.
     -->
     <slot name="seo" />
-    <!-- aplica el tema guardado antes del primer paint para evitar el flash -->
+    <!--
+      Anti-FOUC: applies the stored theme before first paint. The
+      external theme.css is render-blocking, so when it loads the
+      matching [data-theme="..."] rules will style the page correctly.
+    -->
     <script is:inline define:vars={{ themes, storageKey: STORAGE_KEY }}>
       const stored = localStorage.getItem(storageKey);
       if (stored && themes.includes(stored)) {
         document.documentElement.dataset.theme = stored;
       }
     </script>
-    <style is:global set:html={distroVisibilityCss}></style>
-    <style is:global set:html={themeColorsCss}></style>
-    <style is:global set:html={themeFontsCss}></style>
   </head>
   <body
     class="min-h-screen size-full bg-bg p-6 font-mono text-sm sm:text-base leading-normal text-fg antialiased selection:bg-accent selection:text-bg"
