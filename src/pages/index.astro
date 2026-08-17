@@ -44,10 +44,6 @@ const totalTags = new Set(bookList.flatMap((b) => b.index?.data.tags ?? []))
 // Fecha en formato ISO corto (YYYY-MM-DD), alineado con el frontmatter.
 const fmtDate = (d: Date) => d.toISOString().slice(0, 10);
 
-// Línea de caja estilo cabecera de README. Se trunca con overflow-hidden
-// para que no rompa el layout en pantallas estrechas.
-const HRULE = "─".repeat(60);
-
 // ASCII art: stack de libros. Solo visible en sm+ (≥640px) y oculto
 // en móvil para no saturar pantallas estrechas.
 const BOOK_STACK = `╔════╗
@@ -71,50 +67,30 @@ const BOOK_STACK = `╔════╗
       <span class="ml-2 truncate sm:ml-3">README.md</span>
     </div>
 
-    <!-- Cuerpo: art a la izquierda, contenido a la derecha -->
+    <!-- Cuerpo: art a la izquierda, explicación a la derecha -->
     <div
-      class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6 md:gap-8 md:p-8"
+      class="flex flex-col gap-5 p-5 sm:flex-row sm:items-start sm:gap-6 sm:p-6 md:gap-8 md:p-8"
     >
       <pre
         class="hidden shrink-0 select-none text-dim text-xs leading-none sm:block"
         aria-hidden="true"
       >{BOOK_STACK}</pre>
 
-      <div class="min-w-0 flex-1">
-        <h1
-          class="mb-2 font-medium text-accent text-2xl leading-none sm:text-3xl"
-        >
-          README
-        </h1>
-        <p class="mb-3 italic text-dim text-sm sm:mb-4 sm:text-base">
-          wikis de libros que he leído
+      <div class="min-w-0 flex-1 text-sm leading-relaxed sm:text-base">
+        <p class="mb-3">
+          Esta web es mi colección personal de notas sobre libros técnicos que
+          he leído. Cada libro vive como una wiki navegable: el capítulo
+          <code>00-…</code>
+          hace de índice y los siguientes son los capítulos numerados.
         </p>
-        <div
-          class="mb-3 select-none overflow-hidden whitespace-nowrap text-dim text-2xs sm:mb-4"
-        >
-          {HRULE}
-        </div>
-        <div class="mb-3 flex flex-wrap gap-2 text-xs sm:mb-4">
-          <span class="border border-dim px-2 py-0.5 text-dim">
-            {bookList.length}
-            {bookList.length === 1 ? " libro" : " libros"}
-          </span>
-          <span class="border border-dim px-2 py-0.5 text-dim">
-            {chapters.length}
-            {chapters.length === 1 ? " capítulo" : " capítulos"}
-          </span>
-          {totalTags > 0 && (
-            <span class="border border-dim px-2 py-0.5 text-dim">
-              {totalTags}
-              {totalTags === 1 ? " tag" : " tags"}
-            </span>
-          )}
-        </div>
-        <div
-          class="select-none overflow-hidden whitespace-nowrap text-dim text-2xs"
-        >
-          {HRULE}
-        </div>
+        <p class="text-dim">
+          El contenido lo escribo yo a partir de lo que voy aprendiendo, no
+          reproduzco los libros. Si algo te interesa, lo mejor es
+          <a href="/about" class="text-accent hover:underline"
+            >consultar el aviso legal</a
+          >
+          y comprar el libro original.
+        </p>
       </div>
     </div>
   </header>
