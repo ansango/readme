@@ -1,12 +1,12 @@
 # AGENTS.md
 
-Contexto técnico para agentes AI que trabajen en `ansango/linux-para-hackers`.
+Contexto técnico para agentes AI que trabajen en `ansango/readme`.
 
 ## Qué es
 
 Sitio web estático (Astro) que renderiza una **biblioteca de wikis técnicas** basadas en libros. Cada libro vive en `src/content/<book-slug>/` con sus capítulos numerados; el capítulo `00-…` de cada libro es el índice de esa wiki y se renderiza en su home. Tema visual "fastfetch style" con `<DistroLogo />` rotativo y paleta de colores configurable por distro.
 
-- Repo: <https://github.com/ansango/linux-para-hackers> (privado)
+- Repo: <https://github.com/ansango/readme> (privado)
 - Origen: clonado desde `ansango/astro-distro` (tema base) y adaptado a content collections.
 
 ## Stack
@@ -170,7 +170,7 @@ Los `.md` usan YAML estricto (js-yaml). Reglas:
 
 Cloudflare Pages conectado a `main`. Build automático en cada push. Output directory: `dist`.
 
-Dashboard: <https://dash.cloudflare.com/> → Pages → `linux-para-hackers`.
+Dashboard: <https://dash.cloudflare.com/> → Pages → proyecto (el nombre en Cloudflare puede no coincidir con el repo). Tras renombrar el repo, reconectar el build desde el dashboard apuntando a `ansango/readme`.
 
 ## Git
 

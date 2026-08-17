@@ -1,43 +1,64 @@
-# Astro Starter Kit: Minimal
+# README
+
+> Wikis de libros que he leído.
+
+Sitio web estático (Astro) donde documento lo que aprendo leyendo libros técnicos. Cada libro vive como una wiki propia en `src/content/<book-slug>/`, y la portada (`/`) lista todas las wikis disponibles.
+
+> **Aviso legal**: el contenido de cada wiki es de mi autoría, no una reproducción de los libros. Ver [`/about`](https://github.com/ansango/readme/blob/main/src/pages/about.md) para el disclaimer completo.
+
+## Stack
+
+- **Astro 7** (static output) + **Tailwind 4** via `@tailwindcss/vite`
+- Markdown con plugins custom: callouts de Obsidian, wikilinks `[[slug]]`, strip del primer heading
+- Linter: Biome
+- Deploy: Cloudflare Pages
+
+## Comandos
 
 ```sh
-bun create astro@latest -- --template minimal
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # ./dist
+npm run check    # biome check --write
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+> ⚠️ **Termux**: `dev` y `build` fallan (binding nativo no publicado para `android-arm64`). Trabajar en Linux/macOS/Windows o vía CI.
 
-## 🚀 Project Structure
+## Estructura
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```
+src/
+├── content/<book-slug>/
+│   ├── 00-<slug-del-indice>.md   # índice del libro (frontmatter + TOC)
+│   └── NN-<capitulo>.md           # capítulos numerados
+├── pages/
+│   ├── index.astro                # /  → estantería
+│   ├── about.md                   # /about  → disclaimer
+│   └── [book]/{index,[chapter]}.astro
+└── lib/
+    ├── book-slug.ts                # bookSlugFromId / chapterIdFromId
+    └── remark-*.ts                 # plugins custom de markdown
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Añadir un libro
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. Crear `src/content/<book-slug>/00-<indice>.md` con el frontmatter:
 
-Any static assets, like images, can be placed in the `public/` directory.
+   ```yaml
+   ---
+   title: "Título del libro"
+   bookAuthor: "Nombre del autor"
+   bookSubtitle: "Subtítulo (opcional)"
+   description: "Descripción corta"
+   date: 2026-08-17
+   mod: 2026-08-17
+   draft: false
+   tags: [tag1, tag2]
+   ---
+   ```
 
-## 🧞 Commands
+2. Añadir los capítulos `01-…`, `02-…` en la misma carpeta.
+3. La home `/` listará el libro automáticamente al hacer push.
+4. Atribuir la obra original en `/about` (lista de "Libros que han inspirado esta wiki").
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Más detalles técnicos para agentes AI: ver [`AGENTS.md`](./AGENTS.md).
