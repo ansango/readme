@@ -1,0 +1,60 @@
+---
+import { getCollection, render } from "astro:content";
+import type { Chapter, ChapterData } from "../../content.config";
+import Layout from "../../layouts/default.astro";
+import { bookSlugFromId, chapterIdFromId } from "../../lib/book-slug";
+
+export async function getStaticPaths() {
+  const chapters = (await getCollection(
+    "chapters",
+    ({ data }: { data: ChapterData }) => !data.draft,
+  )) as Chapter[];
+
+  // Por cada libro nos quedamos con su capítulo "00-..." (índice).
+  const books = new Map<string, Chapter>();
+  for (const c of chapters) {
+    const book = bookSlugFromId(c.id);
+    const id = chapterIdFromId(c.id);
+    if (!book || !id.startsWith("00-")) continue;
+    if (!books.has(book)) books.set(book, c);
+  }
+
+  return Array.from(books.entries()).map(([book, indexChapter]) => ({
+    params: { book },
+    props: { book, indexChapter },
+  }));
+}
+
+interface Props {
+  book: string;
+  indexChapter: Chapter;
+}
+
+const { book, indexChapter } = Astro.props;
+const { Content } = await render(indexChapter);
+---
+
+<Layout
+  title={indexChapter.data.title}
+  description={indexChapter.data.description}
+>
+  <article class="prose">
+    <header class="mb-8 border-b border-dim pb-6">
+      <a href="/" class="text-sm text-accent hover:underline">← Libros</a>
+      <h1
+        id={book}
+        class="mt-4 font-mono font-medium text-foreground md:text-7xl"
+      >
+        {indexChapter.data.title}
+      </h1>
+      {indexChapter.data.bookAuthor && (
+        <p class="mt-2 text-sm text-dim">por {indexChapter.data.bookAuthor}</p>
+      )}
+      {indexChapter.data.bookSubtitle && (
+        <p class="mt-1 text-sm text-dim">{indexChapter.data.bookSubtitle}</p>
+      )}
+    </header>
+
+    <Content />
+  </article>
+</Layout>

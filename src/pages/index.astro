@@ -1,90 +1,80 @@
 ---
 import { getCollection } from "astro:content";
-import ChapterList from "../components/chapter-list.astro";
 import DistroLogo from "../components/logos/distro-logo.astro";
 import type { Chapter, ChapterData } from "../content.config";
 import Layout from "../layouts/default.astro";
-import { BUILD_INFO } from "../lib/build-info";
+import { bookSlugFromId, chapterIdFromId } from "../lib/book-slug";
 
-const chapters = (
-  (await getCollection(
-    "chapters",
-    ({ data }: { data: ChapterData }) => !data.draft,
-  )) as Chapter[]
-).sort((a, b) => a.id.localeCompare(b.id));
+const chapters = (await getCollection(
+  "chapters",
+  ({ data }: { data: ChapterData }) => !data.draft,
+)) as Chapter[];
 
-const total = chapters.length;
-const totalTags = new Set(chapters.flatMap((c) => c.data.tags)).size;
-const dateRange = chapters.reduce(
-  (acc, c) => ({
-    min: c.data.date < acc.min ? c.data.date : acc.min,
-    max: c.data.mod > acc.max ? c.data.mod : acc.max,
-  }),
-  { min: chapters[0].data.date, max: chapters[0].data.mod },
-);
+interface BookEntry {
+  slug: string;
+  index: Chapter | undefined;
+  total: number;
+}
 
-const formatDate = (d: Date) =>
-  d.toLocaleDateString("es-ES", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
+// Agrupa capítulos por libro. El "00-..." es el índice del libro.
+const books = new Map<string, BookEntry>();
+for (const c of chapters) {
+  const slug = bookSlugFromId(c.id);
+  const id = chapterIdFromId(c.id);
+  if (!slug || !id) continue;
+  const entry = books.get(slug) ?? {
+    slug,
+    index: undefined,
+    total: 0,
+  };
+  entry.total += 1;
+  if (id.startsWith("00-") && !entry.index) entry.index = c;
+  books.set(slug, entry);
+}
 
-const formatRange = (a: Date, b: Date) => {
-  if (a.getTime() === b.getTime()) return formatDate(a);
-  return `${formatDate(a)} → ${formatDate(b)}`;
-};
-
-const astroVersion = BUILD_INFO.astro;
-const tailwindVersion = BUILD_INFO.tailwindcss;
-
-const info: { k: string; v: string; dim?: boolean }[] = [
-  { k: "Book", v: "Linux Basics for Hackers" },
-  { k: "Author", v: "OccupyTheWeb" },
-  {
-    k: "Chapters",
-    v: `${total} (${chapters[0].id.slice(0, 2)}–${chapters.at(-1)?.id.slice(0, 2)})`,
-  },
-  { k: "Tags", v: `${totalTags}` },
-  { k: "Started", v: formatDate(dateRange.min) },
-  { k: "Updated", v: formatDate(dateRange.max) },
-  { k: "Range", v: formatRange(dateRange.min, dateRange.max), dim: true },
-  { k: "Format", v: "Markdown · Obsidian" },
-  { k: "Engine", v: astroVersion.replace(/^\^/, "") },
-  { k: "Render", v: tailwindVersion.replace(/^\^/, "") },
-];
+const bookList = Array.from(books.entries())
+  // exige un capítulo 00- para que el libro sea navegable
+  .filter(([, v]) => v.index !== undefined)
+  .map(([k, v]) => ({ slug: k, ...v }))
+  .sort((a, b) => a.slug.localeCompare(b.slug));
 ---
 
 <Layout
-  title="Linux Basics for Hackers · Wiki"
-  description={`Wiki de ${total} capítulos sobre Linux, sysadmin y hacking.`}
+  title="Wiki"
+  description="Biblioteca de wikis técnicas basadas en libros"
 >
   <div class="mb-10 flex flex-col items-start gap-6 md:flex-row md:gap-12">
     <DistroLogo />
     <div>
-      <div class="mb-1.5 font-medium text-accent">
-        <h1 class="inline border-b border-dim pb-0.5">
-          linux-basics<span class="text-dim">@</span>hackers
-        </h1>
-      </div>
-
-      {info.map(({ k, v, dim }) => (
-					<div class="mb-[0.05rem] flex items-center gap-2">
-						<span class="inline-block min-w-[90px] font-medium text-accent">
-							{k}
-						</span>
-						<span class:list={[dim && "text-dim"]}>{v}</span>
-					</div>
-				))}
+      <h1
+        class="mb-1.5 inline border-b border-dim pb-0.5 font-medium text-accent"
+      >
+        wiki<span class="text-dim">@</span>shelf
+      </h1>
+      <p class="text-dim">
+        {bookList.length}
+        {bookList.length === 1 ? " libro" : " libros"}
+        · {chapters.length} capítulos
+      </p>
     </div>
   </div>
 
-  <section class="my-10">
-    <h2
-      class="mb-4 border-b border-dim pb-1 font-mono text-sm font-medium text-accent"
-    >
-      chapters
-    </h2>
-    <ChapterList />
-  </section>
+  <ul class="border-y border-dim divide-y divide-dim">
+    {bookList.map(({ slug, index, total }) => (
+      <li class="py-4">
+        <a href={`/${slug}/`} class="block hover:underline">
+          <div class="flex items-baseline justify-between gap-4">
+            <span class="font-medium text-accent">{index?.data.title}</span>
+            <span class="text-xs text-dim">{total} caps.</span>
+          </div>
+          {index?.data.bookAuthor && (
+            <div class="text-sm text-dim">por {index.data.bookAuthor}</div>
+          )}
+          {index?.data.description && (
+            <p class="mt-1 text-sm">{index.data.description}</p>
+          )}
+        </a>
+      </li>
+    ))}
+  </ul>
 </Layout>

@@ -1,5 +1,7 @@
 ---
 title: Linux Basics for Hackers
+bookAuthor: OccupyTheWeb
+bookSubtitle: "Fundamentos de Linux y hacking, sobre Debian"
 description: "Índice de la wiki de Linux: fundamentos, administración, scripting, seguridad y Python, basada en la estructura del libro Linux Basics for Hackers"
 date: 2026-07-11
 mod: 2026-07-11
@@ -9,7 +11,7 @@ tags: [linux, sysadmin]
 
 # Linux Basics for Hackers
 
-> [!abstract] Resumen
+> [!abstract] Linux para hackers
 > Esta wiki toma como guía el índice del libro *Linux Basics for Hackers* (OccupyTheWeb, No Starch Press) — uno de los más completos para aprender Linux desde cero — pero adaptado a **aprender Linux en general sobre una distribución basada en Debian** (Debian, Ubuntu, Mint...), sin el enfoque de Kali Linux / hacking ético del libro original. Cubre desde los fundamentos del sistema hasta scripting en bash y Python, pasando por redes, permisos, servicios y seguridad. Donde el libro original toca temas de seguridad ofensiva (redes inalámbricas, anonimato, Python "para hackers"), aquí se mantienen porque son contenido de sistemas legítimo y útil — pero siempre enmarcados en un uso ético y sobre tus propios equipos.
 
 ## Primeros pasos

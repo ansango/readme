@@ -9,10 +9,14 @@ const chapterSchema = z.object({
 	mod: z.coerce.date(),
 	draft: z.boolean().default(false),
 	tags: z.array(z.string()).default([]),
+	// Optional book-level metadata. Only set on the "00-…" chapter of
+	// each book. Optional so existing chapters 01–19 still validate.
+	bookAuthor: z.string().optional(),
+	bookSubtitle: z.string().optional(),
 });
 
 const chapters = defineCollection({
-	loader: glob({ pattern: "**/*.md", base: "./src/content" }),
+	loader: glob({ pattern: "*/**/*.md", base: "./src/content" }),
 	schema: chapterSchema,
 });
 
@@ -25,4 +29,10 @@ export type ChapterData = z.infer<typeof chapterSchema>;
 export interface Chapter {
 	id: string;
 	data: ChapterData;
+	body?: string;
+	collection: "chapters";
+	// biome-ignore lint/suspicious/noExplicitAny: RenderedContent se genera con `astro sync`; mantener any evita depender de tipos virtuales
+	rendered?: any;
+	filePath?: string;
+	digest?: string | number;
 }

@@ -1,15 +1,22 @@
 /**
  * remark plugin: convierte `[[wikilink]]` y `[[wikilink|alias]]` en
- * enlaces a /capitulos/{slug}/. Si el slug no existe, genera un span
- * con clase .wikilink-broken para que el CSS lo marque visualmente.
+ * enlaces a /{book-slug}/{chapter-slug}/. Si el slug no existe, genera
+ * un span con clase .wikilink-broken para que el CSS lo marque
+ * visualmente.
  *
  * El slug se deriva del texto entre corchetes; no se valida contra
  * las collections de Astro en build-time (remarkPlugins corre sin
  * contexto de Astro). El 404 se delega al router.
+ *
+ * El book-slug se obtiene de `file.path`, que Astro 7 rellena con
+ * renderOpts.fileURL (URL file:// absoluta del .md origen). Si la
+ * ruta no parece de un libro (ej. un README suelto), el plugin
+ * produce wikilinks sin prefijo de libro.
  */
 
 import type { Link, PhrasingContent, Root } from "mdast";
 import type { Plugin } from "unified";
+import type { VFile } from "vfile";
 
 const WIKILINK = /\[\[([^\]\n|]+?)(?:\|([^\]\n]+?))?\]\]/g;
 
@@ -17,23 +24,39 @@ function slugify(input: string): string {
 	return input
 		.toLowerCase()
 		.normalize("NFD")
-		.replace(/[\u0300-\u036f]/g, "")
+		.replace(/[̀-ͯ]/g, "")
 		.replace(/[^a-z0-9]+/g, "-")
 		.replace(/^-+|-+$/g, "");
 }
 
+/** Derive the book slug from a file:// URL pointing into src/content. */
+function bookSlugFromPath(path: string | undefined): string {
+	if (!path) return "";
+	let p = path;
+	if (p.startsWith("file://")) p = decodeURIComponent(p.slice(7));
+	const marker = "/src/content/";
+	const i = p.lastIndexOf(marker);
+	if (i === -1) return "";
+	const rest = p.slice(i + marker.length);
+	const slash = rest.indexOf("/");
+	return slash === -1 ? "" : rest.slice(0, slash);
+}
+
 export const remarkWikilink: Plugin<[], Root> = () => {
-	return (tree) => {
-		visitText(tree);
+	return (tree, file) => {
+		const bookSlug = bookSlugFromPath((file as VFile | undefined)?.path);
+		const prefix = bookSlug ? `/${bookSlug}/` : "/";
+		visitText(tree, prefix);
 	};
 };
 
-function visitText(tree: Root): void {
-	walk(tree);
+function visitText(tree: Root, prefix: string): void {
+	walk(tree, prefix);
 }
 
 function walk(
 	node: Root | PhrasingContent | { children?: Array<unknown> },
+	prefix: string,
 ): void {
 	if (!("children" in node) || !Array.isArray(node.children)) return;
 
@@ -57,7 +80,7 @@ function walk(
 					const slug = slugify(seg.target);
 					const linkNode: Link = {
 						type: "link",
-						url: `/capitulos/${slug}/`,
+						url: `${prefix}${slug}/`,
 						title: null,
 						children: [{ type: "text", value: seg.label || seg.target }],
 						data: {
@@ -74,7 +97,7 @@ function walk(
 		) {
 			newChildren.push(child);
 		} else {
-			walk(child as { children?: Array<unknown> });
+			walk(child as { children?: Array<unknown> }, prefix);
 			newChildren.push(child);
 		}
 	}

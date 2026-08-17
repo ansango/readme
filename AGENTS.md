@@ -4,7 +4,7 @@ Contexto técnico para agentes AI que trabajen en `ansango/linux-para-hackers`.
 
 ## Qué es
 
-Sitio web estático (Astro) que renderiza la wiki del libro **Linux Basics for Hackers** (OccupyTheWeb) como 20 capítulos navegables. Tema visual "fastfetch style" con `<DistroLogo />` rotativo y paleta de colores configurable por distro.
+Sitio web estático (Astro) que renderiza una **biblioteca de wikis técnicas** basadas en libros. Cada libro vive en `src/content/<book-slug>/` con sus capítulos numerados; el capítulo `00-…` de cada libro es el índice de esa wiki y se renderiza en su home. Tema visual "fastfetch style" con `<DistroLogo />` rotativo y paleta de colores configurable por distro.
 
 - Repo: <https://github.com/ansango/linux-para-hackers> (privado)
 - Origen: clonado desde `ansango/astro-distro` (tema base) y adaptado a content collections.
@@ -27,28 +27,30 @@ Las versiones están hardcodeadas en `src/lib/build-info.ts` (no se puede import
 ```
 src/
 ├── components/
-│   ├── chapter-list.astro          # lista de capítulos, reusada
 │   ├── distro-toggle.astro         # switcher de temas (footer)
 │   ├── logos/                      # ASCII logos de distros
 │   ├── section-title.astro         # (legacy del tema)
 │   └── tui/                        # (legacy del tema, no usado)
 ├── config.json                     # 26 sistemas: [slug, font, colors{...}]
-├── content/                        # 20 .md (capítulos 00–19)
-├── content.config.ts               # defineCollection con glob loader
+├── content/
+│   └── linux-para-hackers/         # libro "Linux Basics for Hackers" (20 .md)
+├── content.config.ts               # defineCollection + tipos Chapter/ChapterData
 ├── layouts/
 │   └── default.astro               # layout base, usa config.json
 ├── lib/
+│   ├── book-slug.ts                # bookSlugFromId / chapterIdFromId
 │   ├── build-info.ts               # versiones hardcodeadas
 │   ├── fastfetch.ts                # descarga ASCII logos
 │   ├── fonts.ts, themes.ts         # tipos y constantes
 │   ├── remark-callouts.ts          # containerDirective → .callout HTML
 │   ├── remark-obsidian-callouts.ts # > [!type] Title → containerDirective
-│   └── remark-wikilink.ts          # [[link|alias]] → /capitulos/{slug}/
-├── pages/
-│   ├── index.astro                 # home: DistroLogo + info + lista capítulos
-│   └── capitulos/
-│       ├── index.astro             # /capitulos/ (lista completa)
-│       └── [...slug].astro         # /capitulos/{id}/ (capítulo individual)
+│   ├── remark-strip-first-heading.ts # quita el primer heading del AST
+│   └── remark-wikilink.ts          # [[link|alias]] → /{book}/{chapter}/
+└── pages/
+    ├── index.astro                 # / lista de libros
+    └── [book]/
+        ├── index.astro             # /{book}/ (renderiza el cap. 00-)
+        └── [chapter].astro         # /{book}/{chapter}/ (capítulos 01+)
 └── styles/global.css
 ```
 
@@ -70,6 +72,7 @@ remarkPlugins: [
   remarkDirective,           // :::name[Title]  (oficial)
   remarkObsidianCallouts,    // > [!type] Title (Obsidian)
   remarkCallouts,            // containerDirective → HTML .callout
+  remarkStripFirstHeading,   // quita el primer <h1> del AST
   remarkWikilink,            // [[link|alias]] → link
 ]
 ```
@@ -81,22 +84,36 @@ Tipos de callout soportados (alineados con Obsidian): `note, abstract, info, tip
 ### Content collections (Content Layer API)
 
 - Definidas en `src/content.config.ts` (NO `src/content/config.ts` — ruta legacy).
-- Cada entrada tiene `.id` (NO `.slug`).
+- Cada entrada tiene `.id` (NO `.slug`). Con el glob loader `*/**/*.md` el id tiene forma `<book-slug>/<chapter-id>` (p.ej. `linux-para-hackers/01-introduccion-a-linux-y-distribuciones-debian`).
 - Renderizar con `await render(entry)` (NO `entry.render()`).
-- IDs vienen del nombre del archivo: `01-introduccion-...md` → `id: "01-introduccion-..."`.
 
 ```ts
 import { getCollection, render, type CollectionEntry } from "astro:content";
+import { bookSlugFromId, chapterIdFromId } from "../lib/book-slug";
 
 const chapters = await getCollection("chapters", ({ data }) => !data.draft);
 const { Content } = await render(chapter);
+const book = bookSlugFromId(chapter.id);       // "linux-para-hackers"
+const chap = chapterIdFromId(chapter.id);      // "01-introduccion-..."
 ```
 
 ### Routing
 
-- `/` → home con DistroLogo + tabla de info del libro + lista de capítulos
-- `/capitulos/` → índice de capítulos
-- `/capitulos/{id}/` → capítulo individual (`id` sin `.md`)
+- `/` → estantería de libros: itera los grupos por `<book-slug>` y muestra el título, autor y nº de capítulos de cada uno. No renderiza contenido de capítulos.
+- `/{book-slug}/` → home del libro: renderiza el capítulo `00-…` (el índice de esa wiki).
+- `/{book-slug}/{chapter-id}/` → capítulo individual (los `01-…` en adelante). El `00-…` no se genera aquí porque ya vive en la home del libro.
+- `/capitulos/*` → redirect 301 a `/linux-para-hackers/:splat`. Definido en `public/_redirects` (Cloudflare Pages lo aplica en el edge en producción) **y** duplicado en `astro.config.ts` → `redirects` (para que el dev server lo respete). Mantenido por SEO/backlinks.
+
+El capítulo que actúa como índice debe empezar por `00-` y vive en `src/content/<book-slug>/00-…md`. La lista de capítulos de un libro vive en ese markdown (no se duplica en código).
+
+### Metadata del libro
+
+Vive en el frontmatter del capítulo `00-…` de cada libro. Campos opcionales del schema:
+
+- `bookAuthor: z.string().optional()` — autor del libro.
+- `bookSubtitle: z.string().optional()` — subtítulo.
+
+Los capítulos `01-…` en adelante solo declaran los campos estándar (`title`, `description`, `date`, `mod`, `draft`, `tags`).
 
 ### Frontmatter YAML
 
@@ -109,28 +126,33 @@ Los `.md` usan YAML estricto (js-yaml). Reglas:
 ### Wikilinks
 
 - Formato: `[[slug|alias]]` o `[[slug]]`.
-- Resuelve a `/capitulos/{slug}/`. Sin validación contra collections; links rotos generan 404 al navegar.
+- Resuelve a `/{book-slug}/{chapter-slug}/`. El book-slug se obtiene del archivo que se está procesando en build (`file.path` es una URL `file://` rellenada por Astro 7). Sin validación contra collections; links rotos generan 404 al navegar.
+- Si el archivo no vive bajo `src/content/<book>/`, el plugin degrada a `/<slug>/` (sin prefijo de libro).
 
 ### Estilos
 
-- Sin `@tailwindcss/typography` instalado. El CSS de capítulos vive en `<style>` scoped dentro de `[...slug].astro` (clase `.chapter-body`).
+- Sin `@tailwindcss/typography` instalado. El CSS de capítulos vive en `<style>` scoped dentro de `[chapter].astro` (clase `.chapter-body`).
 - Clases CSS custom: `.callout`, `.callout-title`, `.callout-content`, `.wikilink`, `.wikilink-broken`.
 
-## Añadir un capítulo
+## Añadir un libro
 
-1. Crear `src/content/NN-slug-del-capitulo.md` con frontmatter:
+1. Crear `src/content/<book-slug>/00-<slug-del-indice>.md` con frontmatter:
    ```yaml
    ---
-   title: "Título del capítulo"
-   description: "Descripción corta"
+   title: "Título del libro"
+   bookAuthor: "Nombre del autor"
+   bookSubtitle: "Subtítulo (opcional)"
+   description: "Descripción corta del libro"
    date: 2026-07-11
    mod: 2026-07-11
    draft: false
    tags: [linux, sysadmin]
    ---
    ```
-2. (Opcional) Marcar `draft: true` para ocultarlo del build.
-3. Commit y push. Cloudflare redeploy automáticamente.
+2. Añadir capítulos `01-…`, `02-…`, etc. en la misma carpeta.
+3. (Opcional) Marcar `draft: true` en cualquier capítulo para ocultarlo del build.
+4. La home `/` listará el libro automáticamente.
+5. Commit y push. Cloudflare redeploy automáticamente.
 
 ## Cosas que recordar (gotchas)
 
@@ -139,8 +161,10 @@ Los `.md` usan YAML estricto (js-yaml). Reglas:
 3. **mdast une líneas de blockquote** en un único `text` con `\n` embebido. Los plugins que trabajen con blockquotes deben buscar `\n` para separar líneas.
 4. **Deprecation warning** actual: `markdown.remarkPlugins` → Astro recomienda `unifiedPlugins` desde `@astrojs/markdown-remark`. No bloquea pero conviene migrar.
 5. **Cloudflare Pages usa Node 22.16.0**; `undici@8.10.0` pide `>=22.19.0` (warning EBADENGINE, no bloquea).
-6. **El `slug` no existe** en Content Layer API con `glob()`. Usar `.id` siempre.
+6. **El `slug` no existe** en Content Layer API con `glob()`. Usar `.id` siempre. Con el loader `*/**/*.md`, el id incluye el `<book-slug>/`.
 7. **El `DistroLogo` rota con el tema activo** (definido en `src/config.json`). El logo del libro en el index rota también con el theme switcher.
+8. **`file.path` en remark plugins** es una URL `file://` absoluta. El parser de book-slug usa `/src/content/` como marcador estable.
+9. **Cambios en `astro.config.ts` requieren reiniciar el dev server**. Astro solo hace HMR de contenido y plugins de Vite; la config de nivel superior (p.ej. `redirects`, `site`, `output`) no se recarga en caliente.
 
 ## Despliegue
 

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* ─────────────────────────────────────────────────────────────
    Tokens base (= tema `arch`).
@@ -69,4 +70,176 @@ h2 {
 
 h3 {
 	@apply text-sm;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Prose: tipografía por defecto para el contenido de capítulos
+   (renderizado en `/` y en `/capitulos/{id}/`). Hereda los tokens
+   del tema activo vía `var(--color-*)` para que cambie con la distro.
+   ───────────────────────────────────────────────────────────── */
+.prose {
+	--tw-prose-body: var(--color-fg);
+	--tw-prose-headings: var(--color-fg);
+	--tw-prose-lead: var(--color-dim);
+	--tw-prose-links: var(--color-accent);
+	--tw-prose-bold: var(--color-fg);
+	--tw-prose-counters: var(--color-dim);
+	--tw-prose-bullets: var(--color-border);
+	--tw-prose-hr: var(--color-border);
+	--tw-prose-quotes: var(--color-fg);
+	--tw-prose-quote-borders: var(--color-accent);
+	--tw-prose-captions: var(--color-dim);
+	--tw-prose-code: var(--color-fg);
+	--tw-prose-pre-code: var(--color-fg);
+	--tw-prose-pre-bg: var(--color-panel);
+	--tw-prose-th-borders: var(--color-border);
+	--tw-prose-td-borders: var(--color-border);
+
+	font-family: var(--font-mono);
+	font-size: var(--text-sm);
+	line-height: 1.7;
+	max-width: none;
+}
+
+.prose h1 {
+	margin-top: 2rem;
+	font-family: var(--font-mono);
+	font-size: 1.6rem;
+	font-weight: 500;
+}
+
+.prose h2 {
+	margin-top: 2rem;
+	font-family: var(--font-mono);
+	font-size: 1.35rem;
+	font-weight: 500;
+	border-bottom: 1px solid var(--color-border);
+	padding-bottom: 0.25rem;
+}
+
+.prose h3 {
+	margin-top: 1.5rem;
+	font-family: var(--font-mono);
+	font-size: 1.15rem;
+	font-weight: 500;
+	color: var(--color-accent);
+}
+
+.prose h4,
+.prose h5,
+.prose h6 {
+	margin-top: 1.25rem;
+	font-weight: 500;
+}
+
+.prose a {
+	color: var(--color-accent);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.prose
+	:where(ul, ol):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	padding-left: 1.5rem;
+}
+
+.prose :where(li):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	margin: 0.25rem 0;
+}
+
+.prose
+	:where(code):not(
+		:where([class~="not-prose"], [class~="not-prose"] *)
+	)::before,
+.prose
+	:where(code):not(
+		:where([class~="not-prose"], [class~="not-prose"] *)
+	)::after {
+	content: "";
+}
+
+.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	font-family: var(--font-mono);
+	border-radius: 3px;
+}
+
+.prose :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	font-family: var(--font-mono);
+	background-color: color-mix(
+		in oklab,
+		var(--color-dim) 25%,
+		transparent
+	) !important;
+	border: 1px solid var(--color-border);
+	border-radius: 4px;
+	padding: 1rem;
+	overflow-x: auto;
+	margin: 1rem 0;
+}
+
+.prose
+	:where(blockquote):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	border-left: 3px solid var(--color-accent);
+	padding: 0.25rem 0 0.25rem 1rem;
+	color: var(--color-dim);
+	font-style: normal;
+	font-weight: 400;
+}
+
+.prose :where(hr):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	border-top: 1px solid var(--color-border);
+	margin: 2rem 0;
+}
+
+.prose :where(table):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	width: 100%;
+	font-size: 0.9em;
+}
+
+.prose
+	:where(th, td):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	border: 1px solid var(--color-border);
+	padding: 0.4rem 0.6rem;
+	text-align: left;
+}
+
+.prose :where(th):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+	background: var(--color-panel);
+	font-weight: 500;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Custom components del pipeline markdown: callouts (Obsidian) y
+   wikilinks. Viven fuera de prose para poder reutilizarse desde
+   `.prose` o en otros contextos sin perder la tematización.
+   ───────────────────────────────────────────────────────────── */
+.callout {
+	border-left: 3px solid var(--color-accent);
+	background: var(--color-panel);
+	padding: 0.5rem 1rem;
+	margin: 1rem 0;
+	border-radius: 0 4px 4px 0;
+}
+
+.callout-title {
+	font-weight: 500;
+	color: var(--color-accent);
+	margin-bottom: 0.25rem;
+}
+
+.callout-content > :first-child {
+	margin-top: 0;
+}
+
+.callout-content > :last-child {
+	margin-bottom: 0;
+}
+
+.wikilink {
+	color: var(--color-accent);
+}
+
+.wikilink-broken {
+	color: var(--color-dim);
+	text-decoration: line-through;
 }
