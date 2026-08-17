@@ -3,7 +3,7 @@ title: Post-training y muestreo
 description: "Cómo se ajusta un foundation model tras el preentrenamiento: supervised finetuning, preference finetuning y estrategias de muestreo (test-time compute, structured outputs, naturaleza probabilística)"
 date: 2026-08-17
 mod: 2026-08-17
-draft: false
+published: true
 tags: [ai, llm, foundation-models, fine-tuning, sampling, sft, rlhf]
 ---
 

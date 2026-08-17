@@ -3,7 +3,7 @@ title: Sistema de logs
 description: "Cómo funciona el demonio rsyslog, su archivo de configuración y reglas de logging, la rotación de logs con logrotate, y por qué entender este mecanismo es clave para auditar y defender un sistema"
 date: 2026-07-11
 mod: 2026-07-11
-draft: false
+published: true
 tags: [linux, sysadmin, forense]
 ---
 

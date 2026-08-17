@@ -3,7 +3,7 @@ title: Introducción a Linux y distribuciones Debian
 description: "Por qué usar Linux, qué son las distribuciones basadas en Debian y cómo montar una máquina virtual para practicar"
 date: 2026-07-11
 mod: 2026-07-11
-draft: false
+published: true
 tags: [linux, sysadmin, debian]
 ---
 
