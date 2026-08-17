@@ -1,9 +1,9 @@
 ---
-title: "Servicios: Apache, SSH y MySQL"
+title: Servicios: Apache, SSH y MySQL
 description: "Arrancar, parar y usar los servicios más comunes en Linux: servidor web Apache, acceso remoto por SSH y base de datos MySQL/MariaDB"
 date: 2026-07-11
 mod: 2026-07-11
-draft: false
+published: true
 tags: [linux, sysadmin, servicios]
 ---
 

@@ -3,7 +3,7 @@ title: Redes inalámbricas y Bluetooth
 description: "Comandos para inspeccionar y conectar redes Wi-Fi, auditar tu propia red con aircrack-ng y reconocer dispositivos Bluetooth cercanos"
 date: 2026-07-11
 mod: 2026-07-11
-draft: false
+published: true
 tags: [linux, sysadmin, redes]
 ---
 

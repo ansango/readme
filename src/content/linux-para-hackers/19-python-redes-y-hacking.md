@@ -3,7 +3,7 @@ title: "Python: redes y scripting para hacking"
 description: "Sockets TCP en Python (cliente y servidor), diccionarios, bucles y control de flujo, y un cracker de contraseñas educativo con manejo de excepciones"
 date: 2026-07-11
 mod: 2026-07-11
-draft: false
+published: true
 tags: [linux, sysadmin, python, redes]
 ---
 

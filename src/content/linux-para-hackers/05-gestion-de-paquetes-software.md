@@ -3,7 +3,7 @@ title: Gestión de paquetes de software
 description: "Instalar, actualizar y eliminar software en distribuciones basadas en Debian con apt, añadir repositorios en sources.list e instalar herramientas directamente desde git"
 date: 2026-07-11
 mod: 2026-07-11
-draft: false
+published: true
 tags: [linux, sysadmin, package-manager]
 ---
 
