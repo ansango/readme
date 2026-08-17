@@ -1,40 +1,90 @@
 ---
 import { render } from "astro:content";
+import Seo from "../../components/seo.astro";
 import type { Chapter } from "../../content.config";
 import Layout from "../../layouts/default.astro";
 import { bookSlugFromId, chapterIdFromId } from "../../lib/book-slug";
+import { Books } from "../../lib/books";
 import { Chapters } from "../../lib/chapters";
 import { DateFormatter } from "../../lib/date-formatter";
 import { formatReadingTime, readingTime } from "../../lib/reading-time";
 
 export async function getStaticPaths() {
-  const chapters = await Chapters.all();
+  const all = await Chapters.all();
+  const grouped = Books.groupByBook(all);
+  const result: Array<{
+    params: { book: string; chapter: string };
+    props: { chapter: Chapter; indexChapter: Chapter };
+  }> = [];
 
-  // El "00-..." actúa como índice del libro y vive en /{book}/, no
-  // aquí. El resto de capítulos sí tienen su propia URL.
-  return Chapters.getNumbered(chapters).map((c) => ({
-    params: {
-      book: bookSlugFromId(c.id),
-      chapter: chapterIdFromId(c.id),
-    },
-    props: { chapter: c },
-  }));
+  for (const [book, list] of grouped) {
+    const indexChapter = Books.findIndex(book, list);
+    if (!indexChapter) continue;
+    for (const chapter of Chapters.getNumbered(list)) {
+      result.push({
+        params: {
+          book,
+          chapter: chapterIdFromId(chapter.id),
+        },
+        props: { chapter, indexChapter },
+      });
+    }
+  }
+
+  return result;
 }
 
 interface Props {
   chapter: Chapter;
+  indexChapter: Chapter;
 }
 
-const { chapter } = Astro.props;
+const { chapter, indexChapter } = Astro.props;
 const { Content, headings } = await render(chapter);
 // Filtramos a h2 y h3 (la h1 ya la elimina remarkStripFirstHeading).
 // Astro genera los IDs de anchor con github-slugger, así que `slug`
 // coincide 1:1 con el `id` que pone en el HTML.
 const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 const reading = readingTime(chapter.body ?? "");
+
+const bookSlug = bookSlugFromId(chapter.id);
 ---
 
 <Layout title={chapter.data.title} description={chapter.data.description}>
+  <Fragment slot="seo">
+    <Seo
+      title={chapter.data.title}
+      description={chapter.data.description}
+      schemaType="Article"
+      schemaData={{
+        datePublished: chapter.data.date,
+        dateModified: chapter.data.mod,
+        author: { name: "ansango", url: "https://ansango.com" },
+        inLanguage: "es",
+        isPartOf: {
+          name: indexChapter.data.title,
+          url: new URL(`/${bookSlug}/`, Astro.site).toString(),
+        },
+        itemListElement: [
+          {
+            name: "README",
+            url: new URL("/", Astro.site).toString(),
+            position: 1,
+          },
+          {
+            name: indexChapter.data.title,
+            url: new URL(`/${bookSlug}/`, Astro.site).toString(),
+            position: 2,
+          },
+          {
+            name: chapter.data.title,
+            url: new URL(Astro.url.pathname, Astro.site).toString(),
+            position: 3,
+          },
+        ],
+      }}
+    />
+  </Fragment>
   <article class="prose">
     <header class="mb-8 border-b border-dim pb-6 not-prose">
       <a

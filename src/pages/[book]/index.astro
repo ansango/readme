@@ -1,5 +1,6 @@
 ---
 import { render } from "astro:content";
+import Seo from "../../components/seo.astro";
 import type { Chapter } from "../../content.config";
 import Layout from "../../layouts/default.astro";
 import { Books } from "../../lib/books";
@@ -36,7 +37,7 @@ const { book, indexChapter, allChapters } = Astro.props;
 const { Content } = await render(indexChapter);
 
 // Solo los capítulos numerados (01-…) cuentan para el tiempo total;
-// el 00- es el índice que estás viendo y ya está fuera de la lectura.
+// el 00- es el índice que ya estás viendo y está fuera de la lectura.
 const numberedChapters = Chapters.getNumbered(allChapters);
 const totalMinutes = Chapters.totalReadingTime(numberedChapters);
 ---
@@ -45,6 +46,31 @@ const totalMinutes = Chapters.totalReadingTime(numberedChapters);
   title={indexChapter.data.title}
   description={indexChapter.data.description}
 >
+  <Fragment slot="seo">
+    <Seo
+      title={indexChapter.data.title}
+      description={indexChapter.data.description}
+      schemaType="Book"
+      schemaData={{
+        datePublished: indexChapter.data.date,
+        dateModified: indexChapter.data.mod,
+        author: { name: "ansango", url: "https://ansango.com" },
+        inLanguage: "es",
+        itemListElement: [
+          {
+            name: "README",
+            url: new URL("/", Astro.site).toString(),
+            position: 1,
+          },
+          {
+            name: indexChapter.data.title,
+            url: new URL(`/${book}/`, Astro.site).toString(),
+            position: 2,
+          },
+        ],
+      }}
+    />
+  </Fragment>
   <article class="prose">
     <header class="mb-8 border-b border-dim pb-6 not-prose">
       <a href="/" class="text-sm text-accent hover:underline">← Libros</a>

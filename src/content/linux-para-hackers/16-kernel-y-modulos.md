@@ -3,7 +3,7 @@ title: Kernel y módulos
 description: "Qué es un módulo del kernel, cómo comprobar la versión del kernel, ajustar parámetros con sysctl e inspeccionar, cargar y quitar módulos"
 date: 2026-07-11
 mod: 2026-07-11
-published: true
+draft: false
 tags: [linux, sysadmin, kernel]
 ---
 

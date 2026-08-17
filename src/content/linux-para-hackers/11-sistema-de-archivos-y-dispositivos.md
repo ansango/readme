@@ -3,7 +3,7 @@ title: Sistema de archivos y dispositivos
 description: "Cómo representa Linux los discos y particiones en /dev, la diferencia entre dispositivos de bloque y carácter, y cómo listar, montar, desmontar y comprobar errores de almacenamiento"
 date: 2026-07-11
 mod: 2026-07-11
-published: true
+draft: false
 tags: [linux, sysadmin, almacenamiento]
 ---
 

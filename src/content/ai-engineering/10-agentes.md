@@ -3,7 +3,7 @@ title: Agentes
 description: "Más allá de RAG: cuando el modelo toma acciones. Visión general de agentes, herramientas, planning, modos de fallo y memoria"
 date: 2026-08-17
 mod: 2026-08-17
-published: true
+draft: false
 tags: [ai, llm, agents, function-calling, memory]
 ---
 

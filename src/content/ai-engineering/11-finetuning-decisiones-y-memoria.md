@@ -3,7 +3,7 @@ title: "Finetuning: decisiones y memoria"
 description: "Cuándo fine-tunear un modelo y cuándo no, comparación con RAG, los cuellos de botella de memoria y la matemática que necesitas entender"
 date: 2026-08-17
 mod: 2026-08-17
-published: true
+draft: false
 tags: [ai, llm, fine-tuning, gpu, memory, quantization]
 ---
 

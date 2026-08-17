@@ -3,7 +3,7 @@ title: "Prompt engineering: fundamentos"
 description: "Cómo construir prompts efectivos: in-context learning, system prompt vs user prompt, gestión de contexto y las 7 buenas prácticas que separan un prompt mediocre de uno excelente"
 date: 2026-08-17
 mod: 2026-08-17
-published: true
+draft: false
 tags: [ai, llm, prompt-engineering, in-context-learning]
 ---
 

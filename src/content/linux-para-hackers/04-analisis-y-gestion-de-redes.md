@@ -3,7 +3,7 @@ title: Análisis y gestión de redes
 description: "Referencia rápida para inspeccionar interfaces de red, cambiar IP, máscara y MAC, gestionar DHCP, resolver DNS con dig y mapear nombres en /etc/hosts"
 date: 2026-07-11
 mod: 2026-07-11
-published: true
+draft: false
 tags: [linux, sysadmin, redes]
 ---
 

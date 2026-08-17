@@ -3,7 +3,7 @@ title: Evaluación de sistemas de IA
 description: "Cómo evaluar un sistema de IA completo: criterios por capacidad, selección de modelo, navegación de benchmarks públicos y diseño del pipeline de evaluación"
 date: 2026-08-17
 mod: 2026-08-17
-published: true
+draft: false
 tags: [ai, llm, evaluation, benchmarks, model-selection]
 ---
 

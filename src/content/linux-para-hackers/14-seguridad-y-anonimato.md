@@ -3,7 +3,7 @@ title: Seguridad y anonimato
 description: "Cómo te identifica internet y qué herramientas (Tor, proxies, VPN, email cifrado) existen para navegar con más privacidad"
 date: 2026-07-11
 mod: 2026-07-11
-published: true
+draft: false
 tags: [linux, sysadmin, seguridad, anonimato]
 ---
 

@@ -3,7 +3,7 @@ title: Compresión y archivado
 description: "Cómo empaquetar archivos con tar, comprimirlos con gzip, bzip2 y compress, y hacer copias bit a bit de dispositivos con dd"
 date: 2026-07-11
 mod: 2026-07-11
-published: true
+draft: false
 tags: [linux, sysadmin, cheatsheet]
 ---
 

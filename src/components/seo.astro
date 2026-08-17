@@ -1,0 +1,130 @@
+---
+/**
+ * Centralised SEO meta tags.
+ *
+ * Emits: canonical, Open Graph, Twitter Card, RSS autodiscovery, JSON-LD
+ * (`<script type="application/ld+json">`). Each page passes its own
+ * schemaType and optional contextual data; the Layout exposes this via
+ * `<slot name="seo" />` so the head stays slim and contextual.
+ *
+ * Reference: https://schema.org/docs/schemas.html
+ */
+
+interface SchemaAuthor {
+  name: string;
+  url: string;
+}
+
+interface SchemaBreadcrumbItem {
+  name: string;
+  url: string;
+  position: number;
+}
+
+interface SchemaData {
+  datePublished?: Date;
+  dateModified?: Date;
+  author?: SchemaAuthor;
+  inLanguage?: string;
+  isPartOf?: { name: string; url: string };
+  itemListElement?: SchemaBreadcrumbItem[];
+}
+
+interface Props {
+  title: string;
+  description: string;
+  schemaType: "WebSite" | "WebPage" | "Book" | "Article";
+  canonical?: string;
+  image?: string;
+  schemaData?: SchemaData;
+}
+
+const {
+  title,
+  description,
+  schemaType,
+  canonical,
+  image = "/og-default.png",
+  schemaData,
+} = Astro.props;
+
+const url = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+const ogImage = new URL(image, Astro.site).toString();
+
+// JSON-LD: base + type-specific fields
+const ldJson: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": schemaType,
+  name: title,
+  description,
+  url,
+  inLanguage: schemaData?.inLanguage ?? "es",
+};
+
+if (schemaType === "Article") {
+  ldJson.headline = title;
+  ldJson.datePublished = schemaData?.datePublished?.toISOString();
+  ldJson.dateModified = schemaData?.dateModified?.toISOString();
+  ldJson.author = schemaData?.author;
+  if (schemaData?.isPartOf) {
+    ldJson.isPartOf = {
+      "@type": "Book",
+      name: schemaData.isPartOf.name,
+      url: schemaData.isPartOf.url,
+    };
+  }
+}
+
+if (schemaType === "Book") {
+  ldJson.author = schemaData?.author;
+  ldJson.datePublished = schemaData?.datePublished?.toISOString();
+  ldJson.dateModified = schemaData?.dateModified?.toISOString();
+}
+
+const breadcrumb =
+  schemaData?.itemListElement && schemaData.itemListElement.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: schemaData.itemListElement.map((item) => ({
+          "@type": "ListItem",
+          position: item.position,
+          name: item.name,
+          item: item.url,
+        })),
+      }
+    : null;
+---
+
+<!-- Canonical -->
+<link rel="canonical" href={url}>
+
+<!-- Open Graph -->
+<meta
+  property="og:type"
+  content={schemaType === "Article" ? "article" : "website"}
+>
+<meta property="og:site_name" content="README">
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={url}>
+<meta property="og:image" content={ogImage}>
+<meta property="og:locale" content="es_ES">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content={title}>
+<meta name="twitter:description" content={description}>
+<meta name="twitter:image" content={ogImage}>
+
+<!-- RSS autodiscovery -->
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="README — Capítulos"
+  href="/rss.xml"
+>
+
+<!-- JSON-LD -->
+<script type="application/ld+json" set:html={JSON.stringify(ldJson)} />
+{breadcrumb && <script type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />}

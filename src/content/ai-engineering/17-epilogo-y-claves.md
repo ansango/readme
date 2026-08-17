@@ -3,7 +3,7 @@ title: Epílogo y claves
 description: "Cierre del libro AI Engineering de Chip Huyen: las ideas recurrentes, las claves para el AI engineer en 2024-2025, y lecturas recomendadas para profundizar"
 date: 2026-08-17
 mod: 2026-08-17
-published: true
+draft: false
 tags: [ai, ai-engineering, summary, further-reading]
 ---
 

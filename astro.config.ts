@@ -1,6 +1,7 @@
 // @ts-check
 
 import { unified } from "@astrojs/markdown-remark";
+import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import remarkDirective from "remark-directive";
@@ -17,6 +18,9 @@ import { remarkWikilink } from "./src/plugins/remark/wikilink";
 // entries (chapters), we use the new API
 // `markdown.processor = unified({...})` from @astrojs/markdown-remark.
 export default defineConfig({
+	site: "https://readme.ansango.com",
+	trailingSlash: "ignore",
+	integrations: [sitemap()],
 	vite: {
 		plugins: [tailwindcss()],
 	},

@@ -3,7 +3,7 @@ title: Variables de entorno
 description: "Ver y modificar variables de entorno con env, printenv y export, la diferencia entre cambios de sesión y permanentes, cómo funciona PATH y cómo personalizar el prompt con PS1"
 date: 2026-07-11
 mod: 2026-07-11
-published: true
+draft: false
 tags: [linux, sysadmin, bash]
 ---
 

@@ -3,7 +3,7 @@ title: Fundamentos y optimización de inferencia
 description: "Cómo poner un modelo en producción: panorama de inferencia, métricas de rendimiento, AI accelerators, model optimization y service optimization"
 date: 2026-08-17
 mod: 2026-08-17
-published: true
+draft: false
 tags: [ai, llm, inference, optimization, gpu, latency, cost]
 ---
 

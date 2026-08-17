@@ -3,7 +3,7 @@ title: AI Engineering
 description: "Índice de la wiki de AI Engineering: construir aplicaciones con foundation models, basada en la estructura del libro de Chip Huyen (O'Reilly, 2024)"
 date: 2026-08-17
 mod: 2026-08-17
-published: true
+draft: false
 tags: [ai, llm, foundation-models, ai-engineering]
 ---
 

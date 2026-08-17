@@ -1,5 +1,6 @@
 ---
 import { render } from "astro:content";
+import Seo from "../components/seo.astro";
 import type { Page } from "../content.config";
 import Layout from "../layouts/page.astro";
 import { Pages } from "../lib/pages";
@@ -25,5 +26,17 @@ const { Content } = await render(page);
   title={page.data.title}
   description={page.data.description}
 >
+  <Fragment slot="seo">
+    <Seo
+      title={page.data.title}
+      description={page.data.description}
+      schemaType="WebPage"
+      schemaData={{
+        inLanguage: "es",
+        datePublished: page.data.date,
+        dateModified: page.data.mod,
+      }}
+    />
+  </Fragment>
   <Content />
 </Layout>

@@ -1,6 +1,7 @@
 ---
 import BookList from "../components/book-list.astro";
 import Hero from "../components/hero.astro";
+import Seo from "../components/seo.astro";
 import Layout from "../layouts/default.astro";
 import { Books } from "../lib/books";
 import { Chapters } from "../lib/chapters";
@@ -10,6 +11,13 @@ const bookList = Books.listFromChapters(chapters);
 ---
 
 <Layout title="README" description="Wikis de libros que he leído">
+  <Fragment slot="seo">
+    <Seo
+      title="README — Wikis de libros técnicos"
+      description="Wikis de libros técnicos que voy leyendo y documentando con mis propias notas"
+      schemaType="WebSite"
+    />
+  </Fragment>
   <Hero />
   <BookList bookList={bookList} />
 </Layout>

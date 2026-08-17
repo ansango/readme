@@ -47,10 +47,17 @@ const themeFontsCss = config.systems
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content={description}>
     <meta name="generator" content={Astro.generator}>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate icon" href="/favicon.ico">
     <title>{title}</title>
+    <meta name="description" content={description}>
+    <!--
+      SEO slot: canonical, Open Graph, Twitter Card, RSS autodiscovery
+      and JSON-LD. Each page passes its own <Seo schemaType="..." />
+      via <Fragment slot="seo">.
+    -->
+    <slot name="seo" />
     <!-- aplica el tema guardado antes del primer paint para evitar el flash -->
     <script is:inline define:vars={{ themes, storageKey: STORAGE_KEY }}>
       const stored = localStorage.getItem(storageKey);

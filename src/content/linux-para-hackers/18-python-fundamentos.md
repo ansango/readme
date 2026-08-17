@@ -3,7 +3,7 @@ title: "Python: fundamentos"
 description: "Bases de Python para scripting en Linux: instalar módulos con pip, variables, comentarios, funciones, listas y una introducción a la programación orientada a objetos"
 date: 2026-07-11
 mod: 2026-07-11
-published: true
+draft: false
 tags: [linux, sysadmin, python]
 ---
 

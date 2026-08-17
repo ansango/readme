@@ -3,7 +3,7 @@ title: Manipulación de texto
 description: "Referencia rápida para mostrar, filtrar y modificar el contenido de archivos de texto en Linux: head, tail, nl, grep, sed, more y less"
 date: 2026-07-11
 mod: 2026-07-11
-published: true
+draft: false
 tags: [linux, sysadmin, cheatsheet]
 ---
 

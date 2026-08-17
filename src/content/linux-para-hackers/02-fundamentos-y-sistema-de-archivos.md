@@ -3,7 +3,7 @@ title: Fundamentos y sistema de archivos
 description: "Referencia rápida de la terminal, la jerarquía de directorios de Linux y los comandos básicos para navegar, buscar y manipular archivos"
 date: 2026-07-11
 mod: 2026-07-11
-published: true
+draft: false
 tags: [linux, sysadmin, cheatsheet]
 ---
 
