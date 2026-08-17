@@ -71,19 +71,10 @@ const themeFontsCss = config.systems
 
     <!-- ── footer ────────────────────────────────────────── -->
     <footer class="mx-auto max-w-3xl mt-10 text-dim">
-      <div class="flex flex-wrap justify-between gap-2 text-[0.85rem]">
-        <div class="flex flex-wrap items-center gap-2 text-[0.85rem]">
-          <span class="text-accent">●</span>
-          <span>session closed</span>
-          <span class="text-border">·</span>
-          <span>0 errors</span>
-          <span class="text-border">·</span>
-          <span>0 warnings</span>
-          <span class="text-border">·</span>
-          <span>uptime 5y</span>
-          <span class="text-border">·</span>
-        </div>
-        <span class="text-border">·</span>
+      <div
+        class="flex flex-wrap items-center justify-between gap-2 text-[0.85rem]"
+      >
+        <a href="/about" class="hover:text-fg">about</a>
         <DistroToggle />
       </div>
     </footer>
