@@ -78,10 +78,3 @@ Sigue el camino de aprendizaje en este orden:
 - [[06-docker-compose|Docker Compose]] (aplicaciones multicontenedor)
 - [[07-composerize|Composerize]] (convertir `docker run` a `docker-compose.yml`)
 
-### Self-hosted
-Ejemplos de aplicaciones que puedes desplegar con Docker Compose:
-- [[dozzle]]
-- [[flaresolverr]]
-- [[gonic]]
-- [[jellyfin]]
-- [[portainer]]
