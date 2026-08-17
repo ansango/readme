@@ -21,8 +21,6 @@ En otras palabras, **aquí no se está sirviendo ningún libro**. Lo que encuent
 
 Esta wiki se basa en obras de terceros. Los derechos de cada libro pertenecen a sus autores y editoriales.
 
-- **Linux Basics for Hackers** — OccupyTheWeb (No Starch Press)
-
 > [!tip] Apoya a los autores
 > Si un capítulo te resulta útil, lo más valioso que puedes hacer es **comprar el libro original**. Es la mejor forma de apoyar a quien lo escribió y acceder al contenido completo, revisado por la editorial, con el contexto y los ejemplos que solo el autor puede aportar.
 
