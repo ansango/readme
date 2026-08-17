@@ -67,14 +67,22 @@ npm run check         # biome check --write
 
 ## Plugins Markdown (orden en `astro.config.ts`)
 
+Se configuran vía `markdown.processor = unified({...})` desde `@astrojs/markdown-remark` (la opción legacy `markdown.remarkPlugins` solo aplica a `.md` sueltos en `src/pages/` y no a las entradas de las content collections).
+
 ```ts
-remarkPlugins: [
-  remarkDirective,           // :::name[Title]  (oficial)
-  remarkObsidianCallouts,    // > [!type] Title (Obsidian)
-  remarkCallouts,            // containerDirective → HTML .callout
-  remarkStripFirstHeading,   // quita el primer <h1> del AST
-  remarkWikilink,            // [[link|alias]] → link
-]
+import { unified } from "@astrojs/markdown-remark";
+
+markdown: {
+  processor: unified({
+    remarkPlugins: [
+      remarkDirective,           // :::name[Title]  (oficial)
+      remarkObsidianCallouts,    // > [!type] Title (Obsidian)
+      remarkCallouts,            // containerDirective → HTML .callout
+      remarkStripFirstHeading,   // quita el primer <h1> del AST
+      remarkWikilink,            // [[link|alias]] → link
+    ],
+  }),
+},
 ```
 
 Tipos de callout soportados (alineados con Obsidian): `note, abstract, info, tip, success, question, warning, failure, danger, bug, example, quote`.
@@ -159,7 +167,7 @@ Los `.md` usan YAML estricto (js-yaml). Reglas:
 1. **Termux no puede correr `astro build`** (binding nativo no publicado). Usar CI u otra máquina.
 2. **No se puede `import "../package.json"` desde `src/`**. Vite no resuelve fuera de `src/`. Usar `src/lib/build-info.ts`.
 3. **mdast une líneas de blockquote** en un único `text` con `\n` embebido. Los plugins que trabajen con blockquotes deben buscar `\n` para separar líneas.
-4. **Deprecation warning** actual: `markdown.remarkPlugins` → Astro recomienda `unifiedPlugins` desde `@astrojs/markdown-remark`. No bloquea pero conviene migrar.
+4. **`markdown.processor = unified({...})`** es la API actual para plugins de remark en Astro 7. Configurar los plugins aquí (no en `markdown.remarkPlugins`) hace que se ejecuten también sobre las entradas de las content collections.
 5. **Cloudflare Pages usa Node 22.16.0**; `undici@8.10.0` pide `>=22.19.0` (warning EBADENGINE, no bloquea).
 6. **El `slug` no existe** en Content Layer API con `glob()`. Usar `.id` siempre. Con el loader `*/**/*.md`, el id incluye el `<book-slug>/`.
 7. **El `DistroLogo` rota con el tema activo** (definido en `src/config.json`). El logo del libro en el index rota también con el theme switcher.
