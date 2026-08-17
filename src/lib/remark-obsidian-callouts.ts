@@ -36,7 +36,8 @@ import type {
 } from "mdast";
 import { visit, SKIP } from "unist-util-visit";
 
-const OBSIDIAN_CALLOUT = /^\s*\[!([a-zA-Z][a-zA-Z0-9-_]*)\](?:\s+(.+?))?\s*$/;
+const OBSIDIAN_CALLOUT =
+	/^\s*\[!([a-zA-Z][a-zA-Z0-9-_]*)\](?:\s+([^\n]+?))?(?=\n|$)/;
 const VALID_NAME = /^[a-zA-Z][a-zA-Z0-9-_]*$/;
 
 export const remarkObsidianCallouts: Plugin<[], Root> = () => {
@@ -53,7 +54,7 @@ export const remarkObsidianCallouts: Plugin<[], Root> = () => {
 			if (firstChild.type !== "text") return;
 
 			const match = firstChild.value.match(OBSIDIAN_CALLOUT);
-			if (!match) return;
+			if (!match || match[0].length === 0) return;
 
 			const [, rawName, rawTitle] = match;
 			if (!VALID_NAME.test(rawName)) return;
@@ -61,7 +62,13 @@ export const remarkObsidianCallouts: Plugin<[], Root> = () => {
 			const title = rawTitle?.trim();
 
 			// Eliminar la primera línea [!type] title\n del primer text.
-			const newlineIdx = firstChild.value.indexOf("\n");
+			// mdast concatena todas las líneas del blockquote en un único
+			// text separadas por '\n', así que buscamos el primer newline
+			// después del match para separar el título del contenido.
+			const newlineIdx = firstChild.value.indexOf(
+				"\n",
+				match[0].length,
+			);
 			const restOfFirstText =
 				newlineIdx === -1 ? "" : firstChild.value.slice(newlineIdx + 1);
 
