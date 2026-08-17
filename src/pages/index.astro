@@ -16,7 +16,8 @@ interface BookEntry {
   total: number;
 }
 
-// Agrupa capítulos por libro. El "00-..." es el índice del libro.
+// Agrupa capítulos por libro. El "00-..." es el índice del libro y
+// aporta los metadatos a nivel de libro (autor, subtítulo, tags).
 const books = new Map<string, BookEntry>();
 for (const c of chapters) {
   const slug = bookSlugFromId(c.id);
@@ -37,13 +38,19 @@ const bookList = Array.from(books.entries())
   .filter(([, v]) => v.index !== undefined)
   .map(([k, v]) => ({ slug: k, ...v }))
   .sort((a, b) => a.slug.localeCompare(b.slug));
+
+const totalTags = new Set(bookList.flatMap((b) => b.index?.data.tags ?? []))
+  .size;
+
+// Fecha en formato ISO corto (YYYY-MM-DD), alineado con el frontmatter.
+const fmtDate = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
 <Layout
   title="Wiki"
   description="Biblioteca de wikis técnicas basadas en libros"
 >
-  <div class="mb-10 flex flex-col items-start gap-6 md:flex-row md:gap-12">
+  <header class="mb-10 flex flex-col items-start gap-6 md:flex-row md:gap-12">
     <DistroLogo />
     <div>
       <h1
@@ -54,27 +61,78 @@ const bookList = Array.from(books.entries())
       <p class="text-dim">
         {bookList.length}
         {bookList.length === 1 ? " libro" : " libros"}
-        · {chapters.length} capítulos
+        ·
+        {" "}{chapters.length}
+        {chapters.length === 1 ? "capítulo" : "capítulos"}
+        {totalTags > 0 && (
+					<>
+						{" · "}{totalTags} {totalTags === 1 ? "tag" : "tags"}
+					</>
+				)}
       </p>
     </div>
-  </div>
+  </header>
 
-  <ul class="border-y border-dim divide-y divide-dim">
-    {bookList.map(({ slug, index, total }) => (
-      <li class="py-4">
-        <a href={`/${slug}/`} class="block hover:underline">
-          <div class="flex items-baseline justify-between gap-4">
-            <span class="font-medium text-accent">{index?.data.title}</span>
-            <span class="text-xs text-dim">{total} caps.</span>
-          </div>
-          {index?.data.bookAuthor && (
-            <div class="text-sm text-dim">por {index.data.bookAuthor}</div>
-          )}
-          {index?.data.description && (
-            <p class="mt-1 text-sm">{index.data.description}</p>
-          )}
-        </a>
-      </li>
-    ))}
-  </ul>
+  {bookList.length === 0 ? (
+			<p class="text-dim">
+				Aún no hay libros. Crea <code>src/content/&lt;book-slug&gt;/00-…md</code> para empezar.
+			</p>
+		) : (
+			<ul class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+				{bookList.map(({ slug, index, total }) => {
+					const data = index?.data;
+					if (!data) return null;
+					return (
+						<li>
+							<a
+								href={`/${slug}/`}
+								class="group flex h-full flex-col border border-border border-t-2 border-t-accent bg-transparent p-5 transition-colors hover:border-accent"
+							>
+								<div class="mb-3 flex items-start justify-between gap-3">
+									<h2 class="font-medium text-accent leading-tight">
+										{data.title}
+									</h2>
+									<span class="shrink-0 font-mono text-2xs text-dim">
+										{total} {total === 1 ? "cap." : "caps."}
+									</span>
+								</div>
+
+								{data.bookSubtitle && (
+									<p class="mb-2 text-sm text-dim italic">
+										{data.bookSubtitle}
+									</p>
+								)}
+
+								{data.bookAuthor && (
+									<p class="mb-3 text-xs text-dim">
+										por <span class="text-fg">{data.bookAuthor}</span>
+									</p>
+								)}
+
+								<p class="mb-4 line-clamp-3 text-sm leading-relaxed text-fg">
+									{data.description}
+								</p>
+
+								{data.tags.length > 0 && (
+									<div class="mb-4 flex flex-wrap gap-1.5">
+										{data.tags.map((t) => (
+											<span class="border border-dim px-1.5 py-0.5 font-mono text-2xs text-dim">
+												{t}
+											</span>
+										))}
+									</div>
+								)}
+
+								<div class="mt-auto flex items-center justify-between border-t border-dim pt-3 font-mono text-2xs text-dim">
+									<span>{fmtDate(data.mod)}</span>
+									<span class="opacity-0 transition-opacity group-hover:opacity-100">
+										ver →
+									</span>
+								</div>
+							</a>
+						</li>
+					);
+				})}
+			</ul>
+		)}
 </Layout>
