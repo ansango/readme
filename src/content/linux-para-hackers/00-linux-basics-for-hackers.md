@@ -1,8 +1,6 @@
 ---
-title: Linux Basics for Hackers
-bookAuthor: OccupyTheWeb
-bookSubtitle: "Fundamentos de Linux y hacking, sobre Debian"
-description: "Índice de la wiki de Linux: fundamentos, administración, scripting, seguridad y Python, basada en la estructura del libro Linux Basics for Hackers"
+title: Linux para hackers
+description: "Fundamentos, administración, scripting, seguridad y Python, basada en la estructura del libro Linux Basics for Hackers"
 date: 2026-07-11
 mod: 2026-07-11
 draft: false

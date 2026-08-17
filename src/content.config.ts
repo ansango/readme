@@ -9,10 +9,6 @@ const chapterSchema = z.object({
 	mod: z.coerce.date(),
 	draft: z.boolean().default(false),
 	tags: z.array(z.string()).default([]),
-	// Optional book-level metadata. Only set on the "00-…" chapter of
-	// each book. Optional so existing chapters 01–19 still validate.
-	bookAuthor: z.string().optional(),
-	bookSubtitle: z.string().optional(),
 });
 
 const chapters = defineCollection({

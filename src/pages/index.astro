@@ -105,18 +105,6 @@ const fmtDate = (d: Date) => d.toISOString().slice(0, 10);
 									</span>
 								</div>
 
-								{data.bookSubtitle && (
-									<p class="mb-2 text-sm text-dim italic">
-										{data.bookSubtitle}
-									</p>
-								)}
-
-								{data.bookAuthor && (
-									<p class="mb-3 text-xs text-dim">
-										por <span class="text-fg">{data.bookAuthor}</span>
-									</p>
-								)}
-
 								<p class="mb-4 line-clamp-3 text-sm leading-relaxed text-fg">
 									{data.description}
 								</p>

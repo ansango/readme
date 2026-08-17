@@ -1,8 +1,0 @@
----
-// Redirect legacy /capitulos/ → / (la home ya lista los libros).
-//
-// Cloudflare (public/_redirects) emite 301 en el edge antes de servir
-// esta página. En build/dev Astro genera un HTML con meta refresh.
-return Astro.redirect("/", 301);
----
-
