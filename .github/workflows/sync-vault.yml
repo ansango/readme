@@ -2,9 +2,9 @@ name: sync-vault
 
 # "on:" is a YAML 1.1 boolean — quote it to stay explicit.
 "on":
-  # Weekly safety net — republish changes committed directly to the vault.
+  # Every 6 hours — pick up vault changes with a small delay.
   schedule:
-    - cron: "0 6 * * 6"
+    - cron: "0 */6 * * *"
   # Manual trigger for testing or out-of-band syncs.
   workflow_dispatch:
 
@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - name: checkout readme
         uses: actions/checkout@v4
@@ -51,16 +52,24 @@ jobs:
             --vault "${{ env.VAULT_DIR }}" \
             --out src/content
 
-      - name: commit if changed
-        run: |
-          VAULT_SHA=$(git -C "${{ env.VAULT_DIR }}" rev-parse --short HEAD)
-          echo "Synced from vault @ ${VAULT_SHA}" > .sync-stamp
-          git config user.email "hola@ansango.com"
-          git config user.name "vault-sync"
-          git add src/content .sync-stamp
-          if git diff --cached --quiet; then
-            echo "no changes — nothing to commit"
-            exit 0
-          fi
-          git commit -m "chore(sync): vault @ ${VAULT_SHA}"
-          git push
+      - name: capture vault sha
+        if: always()
+        run: echo "VAULT_SHA=$(git -C "${{ env.VAULT_DIR }}" rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: create pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.README_TOKEN }}
+          branch: chore/sync-vault
+          delete-branch: true
+          commit-message: "chore(sync): vault @ ${{ env.VAULT_SHA }}"
+          title: "Sync from vault"
+          add-paths: |
+            src/content
+            .sync-stamp
+          body: |
+            Auto-generated sync from [`${{ env.VAULT_REPO }}`](https://github.com/${{ env.VAULT_REPO }}).
+
+            - Vault SHA: `${{ env.VAULT_SHA }}`
+            - Manifest: `${{ env.VAULT_MANIFEST }}`
+            - Trigger: `${{ github.event_name }}`
