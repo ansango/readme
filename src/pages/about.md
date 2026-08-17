@@ -1,5 +1,5 @@
 ---
-layout: ../layouts/default.astro
+layout: ../layouts/about.astro
 title: About
 description: Aviso legal, atribución y nota de copyright de esta wiki
 ---
