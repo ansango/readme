@@ -1,9 +1,13 @@
 ---
-import { type CollectionEntry, getCollection, render } from "astro:content";
+import { getCollection, render } from "astro:content";
+import type { Chapter, ChapterData } from "../../content.config";
 import Layout from "../../layouts/default.astro";
 
 export async function getStaticPaths() {
-  const chapters = await getCollection("chapters", ({ data }) => !data.draft);
+  const chapters = (await getCollection(
+    "chapters",
+    ({ data }: { data: ChapterData }) => !data.draft,
+  )) as Chapter[];
   return chapters.map((chapter) => ({
     params: { slug: chapter.id },
     props: { chapter },
@@ -11,7 +15,7 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  chapter: CollectionEntry<"chapters">;
+  chapter: Chapter;
 }
 
 const { chapter } = Astro.props;

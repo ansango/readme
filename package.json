@@ -10,6 +10,8 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
+		"sync": "astro sync",
+		"postinstall": "astro sync",
 		"check": "biome check --write"
 	},
 	"dependencies": {

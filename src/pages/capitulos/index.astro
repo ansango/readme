@@ -1,9 +1,13 @@
 ---
 import { getCollection } from "astro:content";
 import ChapterList from "../../components/chapter-list.astro";
+import type { Chapter, ChapterData } from "../../content.config";
 import Layout from "../../layouts/default.astro";
 
-const chapters = await getCollection("chapters", ({ data }) => !data.draft);
+const chapters = (await getCollection(
+  "chapters",
+  ({ data }: { data: ChapterData }) => !data.draft,
+)) as Chapter[];
 const total = chapters.length;
 ---
 
