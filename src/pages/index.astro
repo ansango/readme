@@ -39,7 +39,7 @@ const info: { k: string; v: string; dim?: boolean }[] = [
   { k: "Author", v: "OccupyTheWeb" },
   {
     k: "Chapters",
-    v: `${total} (${chapters[0].id.slice(0, 2)}–${chapters.at(-1)!.id.slice(0, 2)})`,
+    v: `${total} (${chapters[0].id.slice(0, 2)}–${chapters.at(-1)?.id.slice(0, 2)})`,
   },
   { k: "Tags", v: `${totalTags}` },
   { k: "Started", v: formatDate(dateRange.min) },

@@ -26,12 +26,10 @@
  */
 
 import type {
-	Blockquote,
 	ContainerDirective,
 	Paragraph,
 	PhrasingContent,
 	Root,
-	Text,
 } from "mdast";
 import type { Plugin } from "unified";
 import { SKIP, visit } from "unist-util-visit";

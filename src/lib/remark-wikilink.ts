@@ -8,7 +8,7 @@
  * contexto de Astro). El 404 se delega al router.
  */
 
-import type { Link, PhrasingContent, Root, Text } from "mdast";
+import type { Link, PhrasingContent, Root } from "mdast";
 import type { Plugin } from "unified";
 
 const WIKILINK = /\[\[([^\]\n|]+?)(?:\|([^\]\n]+?))?\]\]/g;
@@ -90,8 +90,8 @@ function splitWikilinks(input: string): Segment[] {
 	const out: Segment[] = [];
 	let last = 0;
 	const re = new RegExp(WIKILINK.source, "g");
-	let m: RegExpExecArray | null;
-	while ((m = re.exec(input)) !== null) {
+	let m: RegExpExecArray | null = re.exec(input);
+	while (m !== null) {
 		if (m.index > last) {
 			out.push({ type: "text", value: input.slice(last, m.index) });
 		}
@@ -101,6 +101,7 @@ function splitWikilinks(input: string): Segment[] {
 			label: m[2]?.trim() || null,
 		});
 		last = m.index + m[0].length;
+		m = re.exec(input);
 	}
 	if (last < input.length) {
 		out.push({ type: "text", value: input.slice(last) });

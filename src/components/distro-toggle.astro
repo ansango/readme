@@ -14,7 +14,7 @@ import { DEFAULT_THEME, themes } from "../lib/themes";
     <span data-current-theme>{DEFAULT_THEME}</span>
     <span class="text-border">▾</span>
   </button>
-  <ul
+  <div
     id="theme-menu"
     hidden
     role="listbox"
@@ -33,7 +33,7 @@ import { DEFAULT_THEME, themes } from "../lib/themes";
 				</button>
 			</li>
 		))}
-  </ul>
+  </div>
 </div>
 
 <script>
@@ -43,7 +43,7 @@ import { DEFAULT_THEME, themes } from "../lib/themes";
   const trigger = document.getElementById(
     "theme-trigger",
   ) as HTMLButtonElement | null;
-  const menu = document.getElementById("theme-menu") as HTMLUListElement | null;
+  const menu = document.getElementById("theme-menu") as HTMLDivElement | null;
   const label = document.querySelector<HTMLElement>("[data-current-theme]");
   const options = document.querySelectorAll<HTMLButtonElement>(
     "[data-theme-option]",

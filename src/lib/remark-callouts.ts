@@ -57,7 +57,8 @@ export const remarkCallouts: Plugin<[], Root> = () => {
 					node.name &&
 					TYPES.has(node.name)
 				) {
-					const data = (node.data ??= {});
+					node.data ??= {};
+					const data = node.data;
 					data.hName = "div";
 					data.hProperties = {
 						className: ["callout", `callout-${node.name}`],
