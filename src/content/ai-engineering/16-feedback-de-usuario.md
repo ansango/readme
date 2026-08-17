@@ -3,7 +3,7 @@ title: Feedback de usuario
 description: "El último componente del sistema: cómo extraer feedback de los usuarios, diseñar el loop de feedback y conocer sus limitaciones"
 date: 2026-08-17
 mod: 2026-08-17
-draft: false
+published: true
 tags: [ai, ai-engineering, feedback, evaluation, ux]
 ---
 

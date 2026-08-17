@@ -3,7 +3,7 @@ title: Bash scripting
 description: "Crash course de bash para automatizar tareas: tu primer script, variables, entrada de usuario, bucles/condicionales y los comandos built-in del shell"
 date: 2026-07-11
 mod: 2026-07-11
-draft: false
+published: true
 tags: [linux, sysadmin, bash]
 ---
 

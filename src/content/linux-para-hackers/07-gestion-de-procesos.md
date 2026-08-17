@@ -3,7 +3,7 @@ title: Gestión de procesos
 description: "Ver, filtrar y priorizar procesos con ps, top, nice y renice, terminarlos con kill, moverlos a segundo/primer plano con & y bg/fg, y planificar su ejecución con at"
 date: 2026-07-11
 mod: 2026-07-11
-draft: false
+published: true
 tags: [linux, sysadmin, procesos]
 ---
 

@@ -3,7 +3,7 @@ title: Técnicas de finetuning
 description: "El arsenal de PEFT, LoRA, QLoRA, adapters, model merging y multi-task finetuning. Cuándo usar cada uno y tácticas prácticas"
 date: 2026-08-17
 mod: 2026-08-17
-draft: false
+published: true
 tags: [ai, llm, fine-tuning, lora, peft, model-merging]
 ---
 

@@ -3,7 +3,7 @@ title: Linux Basics for Hackers
 description: "Índice de la wiki de Linux: fundamentos, administración, scripting, seguridad y Python, basada en la estructura del libro Linux Basics for Hackers"
 date: 2026-07-11
 mod: 2026-07-11
-draft: false
+published: true
 tags: [linux, sysadmin]
 ---
 

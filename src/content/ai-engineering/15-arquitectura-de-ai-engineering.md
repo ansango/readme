@@ -3,7 +3,7 @@ title: Arquitectura de AI engineering
 description: "Cómo diseñar el sistema: los 5 pasos para construir una arquitectura robusta (context, guardrails, router, caches, agents), monitoring, observabilidad y orquestación"
 date: 2026-08-17
 mod: 2026-08-17
-draft: false
+published: true
 tags: [ai, ai-engineering, architecture, monitoring, observability, orchestration]
 ---
 
