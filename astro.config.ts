@@ -4,10 +4,10 @@ import { unified } from "@astrojs/markdown-remark";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import remarkDirective from "remark-directive";
-import { remarkCallouts } from "./src/lib/remark-callouts";
-import { remarkObsidianCallouts } from "./src/lib/remark-obsidian-callouts";
-import { remarkStripFirstHeading } from "./src/lib/remark-strip-first-heading";
-import { remarkWikilink } from "./src/lib/remark-wikilink";
+import { remarkCallouts } from "./src/plugins/remark/callouts";
+import { remarkObsidianCallouts } from "./src/plugins/remark/obsidian-callouts";
+import { remarkStripFirstHeading } from "./src/plugins/remark/strip-first-heading";
+import { remarkWikilink } from "./src/plugins/remark/wikilink";
 
 // https://astro.build/config
 //

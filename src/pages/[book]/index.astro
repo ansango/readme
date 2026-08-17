@@ -1,36 +1,21 @@
 ---
-import { getCollection, render } from "astro:content";
-import type { Chapter, ChapterData } from "../../content.config";
+import { render } from "astro:content";
+import type { Chapter } from "../../content.config";
 import Layout from "../../layouts/default.astro";
-import { bookSlugFromId, chapterIdFromId } from "../../lib/book-slug";
-import { formatReadingTime, readingTime } from "../../lib/reading-time";
+import { Books } from "../../lib/books";
+import { Chapters } from "../../lib/chapters";
+import { formatReadingTime } from "../../lib/reading-time";
 
 export async function getStaticPaths() {
-  const chapters = (await getCollection(
-    "chapters",
-    ({ data }: { data: ChapterData }) => !data.draft,
-  )) as Chapter[];
-
-  // Por cada libro nos quedamos con su capítulo "00-..." (índice) y
-  // todos sus capítulos para calcular el tiempo de lectura total.
-  const bookChapters = new Map<string, Chapter[]>();
-  for (const c of chapters) {
-    const book = bookSlugFromId(c.id);
-    if (!book) continue;
-    if (!bookChapters.has(book)) bookChapters.set(book, []);
-    bookChapters.get(book)?.push(c);
-  }
-
+  const all = await Chapters.all();
+  const grouped = Books.groupByBook(all);
   const result: Array<{
     params: { book: string };
     props: { book: string; indexChapter: Chapter; allChapters: Chapter[] };
   }> = [];
 
-  for (const [book, list] of bookChapters) {
-    const indexChapter = list.find((c) => {
-      const id = chapterIdFromId(c.id);
-      return id && id.startsWith("00-");
-    });
+  for (const [book, list] of grouped) {
+    const indexChapter = Books.findIndex(book, list);
     if (!indexChapter) continue;
     result.push({
       params: { book },
@@ -52,14 +37,8 @@ const { Content } = await render(indexChapter);
 
 // Solo los capítulos numerados (01-…) cuentan para el tiempo total;
 // el 00- es el índice que estás viendo y ya está fuera de la lectura.
-const numberedChapters = allChapters.filter((c) => {
-  const id = chapterIdFromId(c.id);
-  return id && !id.startsWith("00-");
-});
-const totalMinutes = numberedChapters.reduce((acc, c) => {
-  const { minutes } = readingTime(c.body ?? "");
-  return acc + minutes;
-}, 0);
+const numberedChapters = Chapters.getNumbered(allChapters);
+const totalMinutes = Chapters.totalReadingTime(numberedChapters);
 ---
 
 <Layout

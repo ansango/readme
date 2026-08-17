@@ -1,48 +1,14 @@
 ---
-import { getCollection } from "astro:content";
-import type { Chapter, ChapterData } from "../content.config";
 import Layout from "../layouts/default.astro";
-import { bookSlugFromId, chapterIdFromId } from "../lib/book-slug";
+import { Books } from "../lib/books";
+import { Chapters } from "../lib/chapters";
+import { DateFormatter } from "../lib/date-formatter";
 
-const chapters = (await getCollection(
-  "chapters",
-  ({ data }: { data: ChapterData }) => !data.draft,
-)) as Chapter[];
-
-interface BookEntry {
-  slug: string;
-  index: Chapter | undefined;
-  total: number;
-}
-
-// Agrupa capítulos por libro. El "00-..." es el índice del libro y
-// aporta los metadatos a nivel de libro (autor, subtítulo, tags).
-const books = new Map<string, BookEntry>();
-for (const c of chapters) {
-  const slug = bookSlugFromId(c.id);
-  const id = chapterIdFromId(c.id);
-  if (!slug || !id) continue;
-  const entry = books.get(slug) ?? {
-    slug,
-    index: undefined,
-    total: 0,
-  };
-  entry.total += 1;
-  if (id.startsWith("00-") && !entry.index) entry.index = c;
-  books.set(slug, entry);
-}
-
-const bookList = Array.from(books.entries())
-  // exige un capítulo 00- para que el libro sea navegable
-  .filter(([, v]) => v.index !== undefined)
-  .map(([k, v]) => ({ slug: k, ...v }))
-  .sort((a, b) => a.slug.localeCompare(b.slug));
+const chapters = await Chapters.all();
+const bookList = Books.listFromChapters(chapters);
 
 const totalTags = new Set(bookList.flatMap((b) => b.index?.data.tags ?? []))
   .size;
-
-// Fecha en formato ISO corto (YYYY-MM-DD), alineado con el frontmatter.
-const fmtDate = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
 <Layout title="README" description="Wikis de libros que he leído">
@@ -120,7 +86,7 @@ const fmtDate = (d: Date) => d.toISOString().slice(0, 10);
 								)}
 
 								<div class="mt-auto flex items-center justify-between border-t border-dim pt-3 font-mono text-2xs text-dim">
-									<span>{fmtDate(data.mod)}</span>
+									<span>{DateFormatter.iso(data.mod)}</span>
 									<span class="opacity-0 transition-opacity group-hover:opacity-100">
 										ver →
 									</span>

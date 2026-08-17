@@ -38,14 +38,20 @@ src/
 ├── layouts/
 │   └── default.astro               # layout base, usa config.json
 ├── lib/
+│   ├── books.ts                    # class Books: groupByBook, findIndex, listFromChapters
+│   ├── chapters.ts                 # class Chapters: all(), getNumbered, totalReadingTime
+│   ├── date-formatter.ts           # class DateFormatter: iso, spanishLong
 │   ├── book-slug.ts                # bookSlugFromId / chapterIdFromId
 │   ├── build-info.ts               # versiones hardcodeadas
 │   ├── fastfetch.ts                # descarga ASCII logos
 │   ├── fonts.ts, themes.ts         # tipos y constantes
-│   ├── remark-callouts.ts          # containerDirective → .callout HTML
-│   ├── remark-obsidian-callouts.ts # > [!type] Title → containerDirective
-│   ├── remark-strip-first-heading.ts # quita el primer heading del AST
-│   └── remark-wikilink.ts          # [[link|alias]] → /{book}/{chapter}/
+│   └── reading-time.ts             # readingTime / formatReadingTime
+├── plugins/
+│   └── remark/
+│       ├── callouts.ts             # containerDirective → .callout HTML
+│       ├── obsidian-callouts.ts    # > [!type] Title → containerDirective
+│       ├── strip-first-heading.ts  # quita el primer heading del AST
+│       └── wikilink.ts             # [[link|alias]] → /{book}/{chapter}/
 └── pages/
     ├── index.astro                 # / lista de libros
     └── [book]/
