@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import type { Chapter, ChapterData } from "../../content.config";
 import Layout from "../../layouts/default.astro";
 import { bookSlugFromId, chapterIdFromId } from "../../lib/book-slug";
+import { formatReadingTime, readingTime } from "../../lib/reading-time";
 
 export async function getStaticPaths() {
   const chapters = (await getCollection(
@@ -36,6 +37,7 @@ const { Content, headings } = await render(chapter);
 // Astro genera los IDs de anchor con github-slugger, así que `slug`
 // coincide 1:1 con el `id` que pone en el HTML.
 const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const reading = readingTime(chapter.body ?? "");
 
 const formatDate = (d: Date) =>
   d.toLocaleDateString("es-ES", {
@@ -77,6 +79,7 @@ const formatDate = (d: Date) =>
 						actualizado {formatDate(chapter.data.mod)}
 					</time>
 				)}
+        <span>{formatReadingTime(reading.minutes)} de lectura</span>
         {chapter.data.tags.length > 0 && (
 					<span class="flex flex-wrap gap-1">
 						{chapter.data.tags.map((tag) => (
