@@ -5,29 +5,29 @@ import Layout from "../../layouts/default.astro";
 import { bookSlugFromId, chapterIdFromId } from "../../lib/book-slug";
 
 export async function getStaticPaths() {
-  const chapters = (await getCollection(
-    "chapters",
-    ({ data }: { data: ChapterData }) => !data.draft,
-  )) as Chapter[];
+	const chapters = (await getCollection(
+		"chapters",
+		({ data }: { data: ChapterData }) => !data.draft,
+	)) as Chapter[];
 
-  // El "00-..." actúa como índice del libro y vive en /{book}/, no
-  // aquí. El resto de capítulos sí tienen su propia URL.
-  return chapters
-    .filter((c) => {
-      const id = chapterIdFromId(c.id);
-      return id && !id.startsWith("00-");
-    })
-    .map((c) => ({
-      params: {
-        book: bookSlugFromId(c.id),
-        chapter: chapterIdFromId(c.id),
-      },
-      props: { chapter: c },
-    }));
+	// El "00-..." actúa como índice del libro y vive en /{book}/, no
+	// aquí. El resto de capítulos sí tienen su propia URL.
+	return chapters
+		.filter((c) => {
+			const id = chapterIdFromId(c.id);
+			return id && !id.startsWith("00-");
+		})
+		.map((c) => ({
+			params: {
+				book: bookSlugFromId(c.id),
+				chapter: chapterIdFromId(c.id),
+			},
+			props: { chapter: c },
+		}));
 }
 
 interface Props {
-  chapter: Chapter;
+	chapter: Chapter;
 }
 
 const { chapter } = Astro.props;
@@ -38,90 +38,104 @@ const { Content, headings } = await render(chapter);
 const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 
 const formatDate = (d: Date) =>
-  d.toLocaleDateString("es-ES", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
+	d.toLocaleDateString("es-ES", {
+		day: "2-digit",
+		month: "short",
+		year: "numeric",
+	});
 ---
 
 <Layout title={chapter.data.title} description={chapter.data.description}>
-  <div class="mx-auto max-w-6xl px-4 py-10 lg:flex lg:items-start lg:gap-10">
-    <article class="prose min-w-0 flex-1">
-      <header class="mb-8 border-b border-dim pb-6 not-prose">
-        <a
-          href={`/${bookSlugFromId(chapter.id)}/`}
-          class="text-sm text-accent hover:underline"
-          aria-label="Volver al inicio del libro"
-        >
-          ← Volver al libro
-        </a>
-        <h1
-          id={chapterIdFromId(chapter.id)}
-          class="mt-4 font-mono font-medium text-foreground md:text-7xl"
-        >
-          {chapter.data.title}
-        </h1>
-        {chapter.data.description && (
-					<p class="mt-2 text-sm text-dim md:text-base">
-						{chapter.data.description}
-					</p>
-				)}
-        <div
-          class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-dim"
-        >
-          <time datetime={chapter.data.date.toISOString()}>
-            {formatDate(chapter.data.date)}
-          </time>
-          {chapter.data.date.getTime() !== chapter.data.mod.getTime() && (
-						<time datetime={chapter.data.mod.toISOString()}>
-							actualizado {formatDate(chapter.data.mod)}
-						</time>
-					)}
-          {chapter.data.tags.length > 0 && (
-						<span class="flex flex-wrap gap-1">
-							{chapter.data.tags.map((tag) => (
-								<span class="rounded border border-dim px-1.5 py-0.5">
-									{tag}
-								</span>
-							))}
-						</span>
-					)}
-        </div>
-      </header>
-
-      <Content />
-
-      <footer class="mt-12 border-t border-dim pt-6 text-xs text-dim not-prose">
-        <a
-          href={`/${bookSlugFromId(chapter.id)}/`}
-          class="text-accent hover:underline"
-        >
-          ← Volver al libro
-        </a>
-      </footer>
-    </article>
-
-    {toc.length > 0 && (
-				<aside class="mt-10 font-mono text-xs lg:mt-0 lg:w-64 lg:shrink-0">
-					<nav class="border border-dim p-4 lg:sticky lg:top-6">
-						<h2 class="mb-2 font-medium text-accent text-sm">
-							En este capítulo
-						</h2>
-						<ul class="space-y-1 text-dim">
-							{toc.map((item) => (
-								<li class={item.depth === 3 ? "ml-3" : ""}>
-									<a
-										href={`#${item.slug}`}
-										class="block truncate hover:text-fg"
-									>
-										{item.text}
-									</a>
-								</li>
-							))}
-						</ul>
-					</nav>
-				</aside>
+	<article class="prose mx-auto max-w-3xl px-4 py-10">
+		<header class="mb-8 border-b border-dim pb-6 not-prose">
+			<a
+				href={`/${bookSlugFromId(chapter.id)}/`}
+				class="text-sm text-accent hover:underline"
+				aria-label="Volver al inicio del libro"
+			>
+				← Volver al libro
+			</a>
+			<h1
+				id={chapterIdFromId(chapter.id)}
+				class="mt-4 font-mono font-medium text-foreground md:text-7xl"
+			>
+				{chapter.data.title}
+			</h1>
+			{chapter.data.description && (
+				<p class="mt-2 text-sm text-dim md:text-base">
+					{chapter.data.description}
+				</p>
 			)}
-  </div>
+			<div
+				class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-dim"
+			>
+				<time datetime={chapter.data.date.toISOString()}>
+					{formatDate(chapter.data.date)}
+				</time>
+				{chapter.data.date.getTime() !== chapter.data.mod.getTime() && (
+					<time datetime={chapter.data.mod.toISOString()}>
+						actualizado {formatDate(chapter.data.mod)}
+					</time>
+				)}
+				{chapter.data.tags.length > 0 && (
+					<span class="flex flex-wrap gap-1">
+						{chapter.data.tags.map((tag) => (
+							<span class="rounded border border-dim px-1.5 py-0.5">
+								{tag}
+							</span>
+						))}
+					</span>
+				)}
+			</div>
+		</header>
+
+		{
+			toc.length > 0 && (
+				<nav
+					class="not-prose mb-8 border border-dim p-4 font-mono text-sm sm:p-5"
+					aria-label="Tabla de contenidos"
+				>
+					<h2 class="mb-3 flex items-center gap-2 font-medium text-accent text-xs uppercase tracking-wider">
+						<span class="text-dim">▾</span>
+						En este capítulo
+						<span class="text-dim normal-case tracking-normal">
+							({toc.length})
+						</span>
+					</h2>
+					<ul class="space-y-1.5">
+						{toc.map((item) => (
+							<li
+								class={
+									item.depth === 3
+										? "ml-4 border-l border-dim pl-3"
+										: ""
+								}
+							>
+								<a
+									href={`#${item.slug}`}
+									class="block truncate text-dim hover:text-accent hover:underline"
+								>
+									<span class="text-border">
+										{item.depth === 3 ? "·" : "▸"}
+									</span>{" "}
+									{item.text}
+								</a>
+							</li>
+						))}
+					</ul>
+				</nav>
+			)
+		}
+
+		<Content />
+
+		<footer class="mt-12 border-t border-dim pt-6 text-xs text-dim not-prose">
+			<a
+				href={`/${bookSlugFromId(chapter.id)}/`}
+				class="text-accent hover:underline"
+			>
+				← Volver al libro
+			</a>
+		</footer>
+	</article>
 </Layout>
