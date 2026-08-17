@@ -66,17 +66,23 @@ const themeFontsCss = config.systems
     class="min-h-screen bg-bg p-6 font-mono text-sm sm:text-base leading-normal text-fg antialiased selection:bg-accent selection:text-bg md:py-12"
   >
     <!-- ── header ───────────────────────────────────────── -->
-    <header
-      class="mx-auto mb-6 max-w-3xl border-b border-dim pb-3 sm:mb-8 font-mono"
-    >
+    <header class="mx-auto mb-6 max-w-3xl pb-3 sm:mb-8 font-mono">
       <div
         class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm"
       >
-        <a href="/" class="hover:text-fg">
-          <span class="font-medium text-accent">README</span>
-          <span class="text-dim"> · </span>
-          <span class="italic text-dim">wikis de libros que he leído</span>
-        </a>
+        <div>
+          <a href="/" class="hover:text-fg">
+            <span class="font-medium text-accent">README</span>
+            <span class="text-dim"> · </span>
+          </a>
+          <span class="italic text-dim">by </span>
+          <a
+            href="https://ansango.com"
+            target="_blank"
+            class="italic text-dim hover:text-fg"
+            >ansango</a
+          >
+        </div>
         <nav class="flex items-center gap-2 text-xs text-dim">
           <a href="/" class="hover:text-fg">home</a>
           <span class="text-border">·</span>

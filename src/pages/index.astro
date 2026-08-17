@@ -44,15 +44,6 @@ const totalTags = new Set(bookList.flatMap((b) => b.index?.data.tags ?? []))
 // Fecha en formato ISO corto (YYYY-MM-DD), alineado con el frontmatter.
 const fmtDate = (d: Date) => d.toISOString().slice(0, 10);
 
-// ASCII art: stack de libros. Solo visible en sm+ (≥640px) y oculto
-// en móvil para no saturar pantallas estrechas.
-const BOOK_STACK = `╔════╗
-║▓▓▓▓║
-╠════╣
-║▓▓▓▓║
-╠════╣
-║▓▓▓▓║
-╚════╝`;
 ---
 
 <Layout title="README" description="Wikis de libros que he leído">
@@ -71,25 +62,15 @@ const BOOK_STACK = `╔════╗
     <div
       class="flex flex-col gap-5 p-5 sm:flex-row sm:items-start sm:gap-6 sm:p-6 md:gap-8 md:p-8"
     >
-      <pre
-        class="hidden shrink-0 select-none text-dim text-xs leading-none sm:block"
-        aria-hidden="true"
-      >{BOOK_STACK}</pre>
-
-      <div class="min-w-0 flex-1 text-sm leading-relaxed sm:text-base">
-        <p class="mb-3">
-          Esta web es mi colección personal de notas sobre libros técnicos que
-          he leído. Cada libro vive como una wiki navegable: el capítulo
-          <code>00-…</code>
-          hace de índice y los siguientes son los capítulos numerados.
+      <div class="min-w-0 flex-1 text-sm leading-relaxed sm:text-base space-y-4">
+        <p>
+          Esta web es mi colección de apuntes sobre libros de tecnología. Cada libro vive como una wiki navegable: el capítulo <code>00-…</code> hace de índice y los siguientes son los capítulos numerados.
         </p>
-        <p class="text-dim">
-          El contenido lo escribo yo a partir de lo que voy aprendiendo, no
-          reproduzco los libros. Si algo te interesa, lo mejor es
-          <a href="/about" class="text-accent hover:underline"
+        <p class="text-dim text-sm">
+          El contenido es escrito por mi a partir de lo que voy aprendiendo, no
+          reproduzco los libros. Si algo te interesa, lo mejor es <a href="/about" class="text-accent hover:underline"
             >consultar el aviso legal</a
-          >
-          y comprar el libro original.
+          > y comprar el libro original.
         </p>
       </div>
     </div>
