@@ -18,16 +18,16 @@ const chapters = defineCollection({
 
 export const collections = { chapters };
 
-// Tipo inferido del schema, exportado para que las páginas puedan
-// tipar `getCollection` sin depender de `.astro/types.d.ts` (que es
-// gitignored y solo se genera con `astro sync`).
+// Inferred type from the schema, exported so pages can type
+// `getCollection` without depending on `.astro/types.d.ts` (which is
+// gitignored and only generated with `astro sync`).
 export type ChapterData = z.infer<typeof chapterSchema>;
 export interface Chapter {
 	id: string;
 	data: ChapterData;
 	body?: string;
 	collection: "chapters";
-	// biome-ignore lint/suspicious/noExplicitAny: RenderedContent se genera con `astro sync`; mantener any evita depender de tipos virtuales
+	// biome-ignore lint/suspicious/noExplicitAny: RenderedContent is generated with `astro sync`; keeping `any` avoids depending on virtual types
 	rendered?: any;
 	filePath?: string;
 	digest?: string | number;

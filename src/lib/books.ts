@@ -1,26 +1,26 @@
 /**
- * Agregación de capítulos a nivel de libro.
+ * Chapter aggregation at the book level.
  *
- * Cada libro en `src/content/<slug>/` está compuesto por un capítulo
- * índice (`00-…`) más N capítulos numerados (`01-…`, `02-…`, …). Esta
- * clase agrupa, busca el índice y produce la metadata que se muestra
- * en la estantería y la home de cada libro.
+ * Each book in `src/content/<slug>/` is made of an index chapter
+ * (`00-…`) plus N numbered chapters (`01-…`, `02-…`, …). This class
+ * groups them, locates the index, and produces the metadata shown on
+ * the bookshelf and each book's home.
  */
 import type { Chapter } from "../content.config";
 import { bookSlugFromId, chapterIdFromId } from "./book-slug";
 
 export interface Book {
 	slug: string;
-	/** Capítulo `00-…` del libro — aporta título/descripción/autor a nivel de libro. */
+	/** `00-…` chapter of the book — provides title/description/author at book level. */
 	index: Chapter;
-	/** Capítulos numerados (`01-…` en adelante). Excluye el índice. */
+	/** Numbered chapters (`01-…` onwards). Excludes the index. */
 	chapters: Chapter[];
-	/** `chapters.length` — azúcar sintáctico para la UI. */
+	/** `chapters.length` — syntactic sugar for the UI. */
 	total: number;
 }
 
 export class Books {
-	/** Capitulos de un libro, agrupados por `bookSlug`. */
+	/** Chapters of a book, grouped by `bookSlug`. */
 	static groupByBook(chapters: Chapter[]): Map<string, Chapter[]> {
 		const out = new Map<string, Chapter[]>();
 		for (const c of chapters) {
@@ -33,7 +33,7 @@ export class Books {
 		return out;
 	}
 
-	/** Devuelve el capítulo `00-…` de un libro o `undefined` si no existe. */
+	/** Returns the `00-…` chapter of a book, or `undefined` if missing. */
 	static findIndex(bookSlug: string, chapters: Chapter[]): Chapter | undefined {
 		return chapters.find((c) => {
 			if (bookSlugFromId(c.id) !== bookSlug) return false;
@@ -43,21 +43,21 @@ export class Books {
 	}
 
 	/**
-	 * Estantería: agrupa capítulos por libro y construye un `Book` por
-	 * cada uno que tenga capítulo índice. Orden alfabético por slug.
+	 * Bookshelf: groups chapters by book and builds a `Book` for each
+	 * one that has an index chapter. Alphabetical order by slug.
 	 */
 	static listFromChapters(chapters: Chapter[]): Book[] {
 		const grouped = Books.groupByBook(chapters);
 		const out: Book[] = [];
 		for (const [slug, list] of grouped) {
 			const index = list.find((c) => chapterIdFromId(c.id).startsWith("00-"));
-			if (!index) continue; // sin índice el libro no es navegable
+			if (!index) continue; // without an index the book is not navigable
 			out.push({ slug, index, chapters: list, total: list.length });
 		}
 		return out.sort((a, b) => a.slug.localeCompare(b.slug));
 	}
 
-	/** Resuelve un libro concreto a partir de su slug. */
+	/** Resolves a specific book from its slug. */
 	static findBySlug(bookSlug: string, chapters: Chapter[]): Book | undefined {
 		const list = chapters.filter((c) => bookSlugFromId(c.id) === bookSlug);
 		const index = Books.findIndex(bookSlug, list);

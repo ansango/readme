@@ -1,10 +1,11 @@
 /**
- * Las fuentes se sirven desde `@fontsource/*` (cada paquete trae sus `.woff2`
- * y su `@font-face`). Importar los archivos de peso aquí basta para que
- * Vite los agrupe en el CSS final — sin CDN externa, sin DNS a Google.
+ * Fonts are served from `@fontsource/*` (each package ships its `.woff2`
+ * and its `@font-face`). Importing the weight files here is enough for
+ * Vite to bundle them into the final CSS — no external CDN, no DNS to
+ * Google.
  *
- * Cuando en el futuro se quieran añadir/quitar pesos o familias basta con
- * tocar estos `import` y el mapa `FONT_FAMILY` de abajo.
+ * When adding/removing weights or families in the future, just touch
+ * these `import` statements and the `FONT_FAMILY` map below.
  */
 import "@fontsource/jetbrains-mono/400.css";
 import "@fontsource/jetbrains-mono/500.css";
@@ -32,15 +33,15 @@ import type { systems } from "./themes";
 type SystemFont = (typeof systems)[number]["font"];
 
 /**
- * Familia local (ya bundled por `@fontsource`) que usa cada `font`
- * declarado en `config.json → sistemas[]`. Para fonts que no tienen
- * equivalente cubierto por `@fontsource` (Hack no está disponible, y
- * para Iosevka/DejaVu/SF/Liberation/Cascadia no hay nada equivalente
- * libre) se elige el sustituto más razonable del mismo tipo.
+ * Local family (already bundled by `@fontsource`) used by each `font`
+ * declared in `config.json → systems[]`. For fonts that have no
+ * equivalent covered by `@fontsource` (Hack is not available, and
+ * Iosevka/DejaVu/SF/Liberation/Cascadia have no free equivalent) the
+ * closest reasonable substitute of the same type is chosen.
  *
- *  * `Fira Code` sustituye a Hack: ambas son mono de programación con
- *    buena diferenciación de glifos, Fira Code es el estándar de
- *    facto en la comunidad para reemplazar Hack.
+ *  * `Fira Code` substitutes Hack: both are programming monos with
+ *    good glyph differentiation, Fira Code is the de-facto standard
+ *    in the community to replace Hack.
  */
 export const FONT_FAMILY: Record<SystemFont, string> = {
 	"JetBrains Mono": "JetBrains Mono",
@@ -50,7 +51,7 @@ export const FONT_FAMILY: Record<SystemFont, string> = {
 	"Noto Sans": "Noto Sans",
 	"Noto Sans Mono": "Noto Sans Mono",
 	"Roboto Mono": "Roboto Mono",
-	// Sustitutos para fonts que NO están en @fontsource (mismo estilo):
+	// Substitutes for fonts NOT in @fontsource (same style):
 	"Iosevka Term": "JetBrains Mono",
 	"DejaVu Sans Mono": "JetBrains Mono",
 	"Liberation Mono": "JetBrains Mono",
@@ -61,8 +62,9 @@ export const FONT_FAMILY: Record<SystemFont, string> = {
 };
 
 /**
- * Cadena de `font-family` con fallbacks sensatos: si el `@font-face`
- * no se ha terminado de inyectar, el navegador cae al mono de sistema.
+ * `font-family` string with sensible fallbacks: if the `@font-face`
+ * hasn't finished being injected, the browser falls back to the
+ * system monospace font.
  */
 export function fontStack(family: string): string {
 	return `'${family}', ui-monospace, 'SF Mono', Menlo, Monaco, monospace`;

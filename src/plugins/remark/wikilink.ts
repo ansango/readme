@@ -1,17 +1,17 @@
 /**
- * remark plugin: convierte `[[wikilink]]` y `[[wikilink|alias]]` en
- * enlaces a /{book-slug}/{chapter-slug}/. Si el slug no existe, genera
- * un span con clase .wikilink-broken para que el CSS lo marque
- * visualmente.
+ * remark plugin: converts `[[wikilink]]` and `[[wikilink|alias]]`
+ * into links to /{book-slug}/{chapter-slug}/. If the slug does not
+ * exist, it emits a span with class .wikilink-broken so the CSS can
+ * flag it visually.
  *
- * El slug se deriva del texto entre corchetes; no se valida contra
- * las collections de Astro en build-time (remarkPlugins corre sin
- * contexto de Astro). El 404 se delega al router.
+ * The slug is derived from the text between brackets; it is NOT
+ * validated against Astro collections at build time (remarkPlugins
+ * run without Astro context). 404s are delegated to the router.
  *
- * El book-slug se obtiene de `file.path`, que Astro 7 rellena con
- * renderOpts.fileURL (URL file:// absoluta del .md origen). Si la
- * ruta no parece de un libro (ej. un README suelto), el plugin
- * produce wikilinks sin prefijo de libro.
+ * The book-slug is obtained from `file.path`, which Astro 7 fills
+ * with renderOpts.fileURL (absolute `file://` URL of the source .md).
+ * If the path does not look like a book (e.g. a loose README), the
+ * plugin produces wikilinks without the book prefix.
  */
 
 import type { Link, PhrasingContent, Root } from "mdast";

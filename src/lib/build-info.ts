@@ -1,8 +1,8 @@
 /**
- * Versiones de las dependencias principales. Se mantiene manualmente
- * (sincronizar con package.json cuando se actualicen). Existe porque
- * Vite no resuelve imports fuera del directorio src/ por defecto, así
- * que no podemos leer package.json directamente desde un .astro.
+ * Versions of the main dependencies. Kept manually in sync with
+ * package.json on update. Exists because Vite does not resolve imports
+ * outside the `src/` directory by default, so we cannot read
+ * package.json directly from an .astro file.
  */
 
 export const BUILD_INFO = {

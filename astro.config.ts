@@ -12,10 +12,10 @@ import { remarkWikilink } from "./src/plugins/remark/wikilink";
 
 // https://astro.build/config
 //
-// `markdown.remarkPlugins` (legacy) solo aplica a .md sueltos en
-// `src/pages/`. Para que los plugins también corran sobre las entradas
-// de las content collections (capítulos), usamos la nueva API
-// `markdown.processor = unified({...})` desde @astrojs/markdown-remark.
+// `markdown.remarkPlugins` (legacy) only applies to loose .md files in
+// `src/pages/`. For the plugins to also run on content-collection
+// entries (chapters), we use the new API
+// `markdown.processor = unified({...})` from @astrojs/markdown-remark.
 export default defineConfig({
 	vite: {
 		plugins: [tailwindcss()],

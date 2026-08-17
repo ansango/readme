@@ -1,28 +1,28 @@
 /**
- * remark plugin: convierte callouts de Obsidian en containerDirectives
- * para que remarkCallouts los pueda procesar.
+ * remark plugin: converts Obsidian callouts into containerDirectives
+ * so that remarkCallouts can process them.
  *
- * Sintaxis detectada (blockquote con marcador en la primera línea):
+ * Detected syntax (blockquote with a marker on the first line):
  *
- *   > [!abstract] Resumen
- *   > Contenido del callout.
+ *   > [!abstract] Summary
+ *   > Callout body.
  *
  *   > [!warning]
- *   > Sin título.
+ *   > No title.
  *
- * Salida (mdast):
+ * Output (mdast):
  *
  *   containerDirective
  *     name: "abstract"
  *     children:
- *       - paragraph { data: { directiveLabel: true }, children: [text "Resumen"] }
- *       - paragraph { children: [text "Contenido…"] }
+ *       - paragraph { data: { directiveLabel: true }, children: [text "Summary"] }
+ *       - paragraph { children: [text "Body…"] }
  *
- * Restricciones:
- * - El nombre debe coincidir con ^[a-zA-Z][a-zA-Z0-9-_]*$ (mismo rule
- *   que remark-directive). Si no, se deja el blockquote intacto.
- * - Solo actúa sobre blockquotes cuyo PRIMER hijo sea un paragraph
- *   cuyo PRIMER text empieza por [!type].
+ * Restrictions:
+ * - The name must match ^[a-zA-Z][a-zA-Z0-9-_]*$ (same rule as
+ *   remark-directive). Otherwise the blockquote is left untouched.
+ * - Only acts on blockquotes whose FIRST child is a paragraph whose
+ *   FIRST text starts with [!type].
  */
 
 import type {
@@ -59,10 +59,10 @@ export const remarkObsidianCallouts: Plugin<[], Root> = () => {
 			const name = rawName.toLowerCase();
 			const title = rawTitle?.trim();
 
-			// Eliminar la primera línea [!type] title\n del primer text.
-			// mdast concatena todas las líneas del blockquote en un único
-			// text separadas por '\n', así que buscamos el primer newline
-			// después del match para separar el título del contenido.
+			// Strip the first line [!type] title\n from the first text.
+			// mdast concatenates all blockquote lines into a single text
+			// separated by '\n', so we look for the first newline after
+			// the match to split title from body.
 			const newlineIdx = firstChild.value.indexOf("\n", match[0].length);
 			const restOfFirstText =
 				newlineIdx === -1 ? "" : firstChild.value.slice(newlineIdx + 1);
@@ -78,7 +78,7 @@ export const remarkObsidianCallouts: Plugin<[], Root> = () => {
 
 			const directiveChildren: Paragraph[] = [];
 
-			// Label paragraph (si hay título)
+			// Label paragraph (if there is a title)
 			if (title) {
 				const labelPara: Paragraph = {
 					type: "paragraph",
@@ -88,7 +88,7 @@ export const remarkObsidianCallouts: Plugin<[], Root> = () => {
 				directiveChildren.push(labelPara);
 			}
 
-			// Contenido restante del primer paragraph original
+			// Remaining content of the original first paragraph
 			if (newFirstParagraphChildren.length > 0) {
 				directiveChildren.push({
 					type: "paragraph",
@@ -96,7 +96,7 @@ export const remarkObsidianCallouts: Plugin<[], Root> = () => {
 				});
 			}
 
-			// Resto de paragraphs del blockquote original
+			// Remaining paragraphs of the original blockquote
 			for (let i = 1; i < node.children.length; i++) {
 				const c = node.children[i];
 				if (c.type === "paragraph") {

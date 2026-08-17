@@ -1,14 +1,13 @@
 /**
- * Calcula el tiempo de lectura aproximado de un texto markdown.
+ * Approximate reading time of a markdown text.
  *
- * Estrategia: limpiamos la sintaxis markdown (code blocks, imágenes,
- * links, caracteres de formato) y contamos las palabras restantes.
- * El resultado se divide por una velocidad de lectura media en
- * castellano (`WPM`).
+ * Strategy: strip markdown syntax (code blocks, images, links,
+ * formatting characters) and count the remaining words. The result
+ * is divided by an average reading speed in words per minute (WPM).
  *
- * El cálculo es deliberadamente aproximado — el conteo de "palabras"
- * tras quitar markdown da una cifra razonable sin necesidad de
- * renderizar HTML.
+ * The calculation is deliberately approximate — counting "words"
+ * after removing markdown gives a reasonable figure without having
+ * to render HTML.
  */
 
 const WPM = 220;
@@ -21,17 +20,17 @@ export interface ReadingTime {
 export function readingTime(text: string): ReadingTime {
 	if (!text) return { minutes: 1, words: 0 };
 	const plain = text
-		// code blocks (multilínea)
+		// code blocks (multiline)
 		.replace(/```[\s\S]*?```/g, "")
 		// inline code
 		.replace(/`[^`\n]*`/g, "")
-		// imágenes ![alt](src)
+		// images ![alt](src)
 		.replace(/!\[[^\]]*\]\([^)]*\)/g, "")
-		// links [text](url) → conservar text
+		// links [text](url) → keep text
 		.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-		// caracteres de formato markdown
+		// markdown formatting characters
 		.replace(/[#*_>~|]/g, "")
-		// HTML embebido suelto (lo elimina el render pero por si acaso)
+		// loose embedded HTML (the render strips it but just in case)
 		.replace(/<[^>]+>/g, "")
 		.replace(/\s+/g, " ")
 		.trim();

@@ -2,29 +2,29 @@
 @plugin "@tailwindcss/typography";
 
 /* ─────────────────────────────────────────────────────────────
-   Tokens base (= tema `arch`).
-   Los `[data-theme]` se generan en build time desde
-   `src/config.json` por `default.astro` y se inyectan en `<head>`.
-   Viven fuera de capa, así que ganan siempre a `@layer theme`.
+   Base tokens (= `arch` theme).
+   The `[data-theme]` blocks are generated at build time from
+   `src/config.json` by `default.astro` and injected into `<head>`.
+   They live outside any layer, so they always beat `@layer theme`.
 
-   `static` fuerza a Tailwind a emitir TODAS las variables aunque
-   no se usen todavía — necesario para que los temas puedan
-   sobrescribirlas sin haber usado antes la utilidad.
+   `static` forces Tailwind to emit ALL variables even when unused
+   yet — required so themes can override them without first having
+   used the utility.
    ───────────────────────────────────────────────────────────── */
 @theme static {
 	--font-mono: "JetBrains Mono", "Fira Code", "Courier New", monospace;
 
-	/* superficies */
+	/* surfaces */
 	--color-bg: #08090b;
 	--color-panel: #0e1014;
 	--color-border: #1a1d22;
 
-	/* texto */
+	/* text */
 	--color-fg: #d8d8d8;
 	--color-dim: #5e6470;
 	--color-accent: #1793d1;
 
-	/* colores del logo ascii (ansi 1-3) */
+	/* ASCII logo colors (ansi 1-3) */
 	--color-c1: #1793d1;
 	--color-c2: #7eb8d8;
 	--color-c3: #0d5a85;
@@ -34,9 +34,9 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Scrollbars tematizadas. Las variables se resuelven en cada
-   `[data-theme]` (definidas en `default.astro`), así que el
-   thumb se repinta automáticamente al cambiar de distro.
+   Themed scrollbars. Variables resolve inside each `[data-theme]`
+   (defined in `default.astro`), so the thumb repaints automatically
+   when switching distro.
    ───────────────────────────────────────────────────────────── */
 * {
 	scrollbar-width: thin;
@@ -73,9 +73,9 @@ h3 {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Prose: tipografía por defecto para el contenido de capítulos
-   (renderizado en `/` y en `/capitulos/{id}/`). Hereda los tokens
-   del tema activo vía `var(--color-*)` para que cambie con la distro.
+   Prose: default typography for chapter content (rendered at `/`
+   and at `/capitulos/{id}/`). Inherits active theme tokens via
+   `var(--color-*)` so it changes with the distro.
    ───────────────────────────────────────────────────────────── */
 .prose {
 	--tw-prose-body: var(--color-fg);
@@ -213,9 +213,9 @@ h3 {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Custom components del pipeline markdown: callouts (Obsidian) y
-   wikilinks. Viven fuera de prose para poder reutilizarse desde
-   `.prose` o en otros contextos sin perder la tematización.
+   Custom components from the markdown pipeline: callouts (Obsidian)
+   and wikilinks. They live outside `.prose` so they can be reused
+   inside `.prose` or in other contexts without losing the theme.
    ───────────────────────────────────────────────────────────── */
 .callout {
 	border-left: 3px solid var(--color-accent);
@@ -249,10 +249,10 @@ h3 {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   TOC: estilo global para <aside> dentro de .prose.
-   Aplica a la tabla de contenidos que se renderiza encima del
-   <Content /> en cada capítulo. Sin `text-decoration: underline` ni
-   colores de prose: el look terminal vive aquí, no en el .astro.
+   TOC: global style for <aside> inside .prose.
+   Applies to the table of contents rendered above <Content /> in
+   every chapter. No `text-decoration: underline` and no prose
+   colors: the terminal look lives here, not in the .astro file.
    ───────────────────────────────────────────────────────────── */
 .prose aside {
 	margin: 0 0 2rem 0;

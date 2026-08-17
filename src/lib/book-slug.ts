@@ -1,7 +1,7 @@
 /**
- * Helpers para extraer el book-slug y el chapter-id del id de un
- * capítulo del collection `chapters`. Con el glob loader con patrón
- * de un nivel de subcarpeta el id tiene forma `"<book-slug>/<chapter-id>"`.
+ * Helpers to extract the book-slug and chapter-id from the id of a
+ * chapter of the `chapters` collection. With the glob loader using a
+ * one-level subfolder pattern, the id has the form `"<book-slug>/<chapter-id>"`.
  */
 
 export function bookSlugFromId(id: string): string {

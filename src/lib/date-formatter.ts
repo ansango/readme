@@ -1,17 +1,17 @@
 /**
- * Formateo de fechas usado en las páginas (frontmatter `date`/`mod`).
+ * Date formatting used in pages (frontmatter `date`/`mod`).
  *
- * Centralizado para que el "es-ES corto" y el "ISO corto" vivan en
- * un único sitio — antes estaban inline en las páginas y se
- * duplicaban entre index y chapter.
+ * Centralized so the "short ISO" and "long human-readable" formats
+ * live in a single place — they used to be inlined in pages and
+ * duplicated between index and chapter.
  */
 export class DateFormatter {
-	/** YYYY-MM-DD alineado con el frontmatter (sección "metadata"). */
+	/** YYYY-MM-DD aligned with the frontmatter (section "metadata"). */
 	static iso(date: Date): string {
 		return date.toISOString().slice(0, 10);
 	}
 
-	/** "01 oct. 2026" — usado en la cabecera de capítulo. */
+	/** "01 oct. 2026" — used in the chapter header. */
 	static spanishLong(date: Date): string {
 		return date.toLocaleDateString("es-ES", {
 			day: "2-digit",

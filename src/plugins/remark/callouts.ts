@@ -1,21 +1,21 @@
 /**
- * remark plugin: convierte directivas de bloque `:::type[Title]` de
- * remark-directive en contenedores HTML con clase .callout y un
- * .callout-title opcional.
+ * remark plugin: converts block directives `:::type[Title]` from
+ * remark-directive into HTML containers with class .callout and an
+ * optional .callout-title.
  *
- * Sintaxis esperada (markdown):
+ * Expected syntax (markdown):
  *
  *   :::note
- *   Contenido del callout.
+ *   Callout body.
  *   :::
  *
- *   :::warning[¡Cuidado!]
- *   Contenido con título explícito.
+ *   :::warning[Watch out!]
+ *   Body with an explicit title.
  *   :::
  *
- * Los nodos `containerDirective` los emite remark-directive. Aquí los
- * re-marcamos con hName/hProperties para que el HTML resultante tenga
- * la forma <div class="callout callout-{name}">.
+ * `containerDirective` nodes are emitted by remark-directive. Here we
+ * re-tag them with hName/hProperties so the resulting HTML has the
+ * form <div class="callout callout-{name}">.
  */
 
 import type { Root } from "mdast";
@@ -64,9 +64,9 @@ export const remarkCallouts: Plugin<[], Root> = () => {
 						className: ["callout", `callout-${node.name}`],
 					};
 
-					// Si remark-directive marcó el primer hijo con directiveLabel,
-					// lo movemos a un wrapper .callout-title y dejamos el resto
-					// en .callout-content.
+					// If remark-directive marked the first child with
+					// directiveLabel, we move it into a wrapper .callout-title
+					// and leave the rest in .callout-content.
 					const children = node.children as Array<{
 						type?: string;
 						data?: { directiveLabel?: unknown };

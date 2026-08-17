@@ -1,19 +1,19 @@
 # README
 
-> Wikis de libros que he leído.
+> Wikis of books I have read.
 
-Sitio web estático (Astro) donde documento lo que aprendo leyendo libros técnicos. Cada libro vive como una wiki propia en `src/content/<book-slug>/`, y la portada (`/`) lista todas las wikis disponibles.
+Static website (Astro) where I document what I learn by reading technical books. Each book lives as its own wiki in `src/content/<book-slug>/`, and the landing page (`/`) lists every available wiki.
 
-> **Aviso legal**: el contenido de cada wiki es de mi autoría, no una reproducción de los libros. Ver [`/about`](https://github.com/ansango/readme/blob/main/src/pages/about.md) para el disclaimer completo.
+> **Disclaimer**: the content of each wiki is my own, not a reproduction of the books. See [`/about`](https://github.com/ansango/readme/blob/main/src/pages/about.md) for the full notice.
 
 ## Stack
 
 - **Astro 7** (static output) + **Tailwind 4** via `@tailwindcss/vite`
-- Markdown con plugins custom: callouts de Obsidian, wikilinks `[[slug]]`, strip del primer heading
+- Markdown with custom plugins: Obsidian callouts, `[[slug]]` wikilinks, first-heading strip
 - Linter: Biome
 - Deploy: Cloudflare Pages
 
-## Comandos
+## Commands
 
 ```sh
 npm install
@@ -22,34 +22,32 @@ npm run build    # ./dist
 npm run check    # biome check --write
 ```
 
-> ⚠️ **Termux**: `dev` y `build` fallan (binding nativo no publicado para `android-arm64`). Trabajar en Linux/macOS/Windows o vía CI.
+> ⚠️ **Termux**: `dev` and `build` fail (no native binding published for `android-arm64`). Develop on Linux/macOS/Windows or via CI.
 
-## Estructura
+## Structure
 
 ```
 src/
 ├── content/<book-slug>/
-│   ├── 00-<slug-del-indice>.md   # índice del libro (frontmatter + TOC)
-│   └── NN-<capitulo>.md           # capítulos numerados
+│   ├── 00-<index-slug>.md   # book index (frontmatter + TOC)
+│   └── NN-<chapter>.md       # numbered chapters
 ├── pages/
-│   ├── index.astro                # /  → estantería
-│   ├── about.md                   # /about  → disclaimer
+│   ├── index.astro            # /  → bookshelf
+│   ├── about.md               # /about  → disclaimer
 │   └── [book]/{index,[chapter]}.astro
 └── lib/
-    ├── book-slug.ts                # bookSlugFromId / chapterIdFromId
-    └── remark-*.ts                 # plugins custom de markdown
+    ├── book-slug.ts            # bookSlugFromId / chapterIdFromId
+    └── remark-*.ts             # custom markdown plugins
 ```
 
-## Añadir un libro
+## Adding a book
 
-1. Crear `src/content/<book-slug>/00-<indice>.md` con el frontmatter:
+1. Create `src/content/<book-slug>/00-<index>.md` with this frontmatter:
 
    ```yaml
    ---
-   title: "Título del libro"
-   bookAuthor: "Nombre del autor"
-   bookSubtitle: "Subtítulo (opcional)"
-   description: "Descripción corta"
+   title: "Book title"
+   description: "Short description"
    date: 2026-08-17
    mod: 2026-08-17
    draft: false
@@ -57,8 +55,8 @@ src/
    ---
    ```
 
-2. Añadir los capítulos `01-…`, `02-…` en la misma carpeta.
-3. La home `/` listará el libro automáticamente al hacer push.
-4. Atribuir la obra original en `/about` (lista de "Libros que han inspirado esta wiki").
+2. Add the chapters `01-…`, `02-…` in the same folder.
+3. The home `/` will list the book automatically on push.
+4. Credit the original work in `/about` (under "Books that inspired this wiki").
 
-Más detalles técnicos para agentes AI: ver [`AGENTS.md`](./AGENTS.md).
+More technical details for AI agents: see [`AGENTS.md`](./AGENTS.md).

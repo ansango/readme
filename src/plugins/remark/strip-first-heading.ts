@@ -1,12 +1,12 @@
 /**
- * remark plugin: elimina el primer nodo `heading` del AST.
+ * remark plugin: removes the first `heading` node from the AST.
  *
- * Por qué: cada capítulo tiene su título en el frontmatter (`title:`),
- * que se renderiza como `<h1>` desde la página que lo aloja
- * (`/{book}/{chapter}/` con su header, o `/{book}/` para el cap. 00).
- * El markdown empieza siempre por `# <mismo título>`, lo que produce
- * un `<h1>` duplicado. Este plugin lo quita del AST para que el HTML
- * final tenga un solo `<h1>` por capítulo.
+ * Why: each chapter has its title in the frontmatter (`title:`),
+ * which is rendered as `<h1>` by the page that hosts it
+ * (`/{book}/{chapter}/` with its header, or `/{book}/` for chapter
+ * 00). The markdown always starts with `# <same title>`, which would
+ * produce a duplicate `<h1>`. This plugin removes it from the AST so
+ * the final HTML has a single `<h1>` per chapter.
  */
 
 import type { Root } from "mdast";

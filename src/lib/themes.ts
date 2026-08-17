@@ -1,10 +1,10 @@
 /**
- * Única lista de distros del sitio: de aquí salen los logos que se piden a
- * fastfetch (components/logos), los slugs de `data-theme` (styles/themes.css)
- * y el contenido que varía por distro.
+ * Single source of truth for the distros of the site: from here come
+ * the logos requested from fastfetch (components/logos), the slugs for
+ * `data-theme` (styles/themes.css), and the per-distro content.
  *
- * La fuente de verdad es `src/config.json`; este módulo solo añade los tipos
- * que TypeScript necesita para mantener el tipado en el resto de la app.
+ * The actual source of truth is `src/config.json`; this module just
+ * adds the types TypeScript needs to keep typing across the app.
  */
 import config from "../config.json";
 
@@ -16,5 +16,5 @@ export const themes: Theme[] = systems.map((distro) => distro.slug).sort();
 
 export const DEFAULT_THEME: Theme = "debian";
 
-/** clave de localStorage — replicada literalmente en el script anti-FOUC del layout */
+/** localStorage key — replicated verbatim in the anti-FOUC script of the layout */
 export const STORAGE_KEY = "theme";
