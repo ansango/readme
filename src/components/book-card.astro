@@ -26,11 +26,12 @@
  * of each book. The visible chapter count for the UI is `total - 1`
  * (the 00- is the book home, not a numbered chapter).
  */
-import { DateFormatter } from "../lib/date-formatter";
+
 import type { Book } from "../lib/books";
+import { DateFormatter } from "../lib/date-formatter";
 
 interface Props {
-	book: Book;
+  book: Book;
 }
 
 const { book } = Astro.props;
@@ -47,7 +48,9 @@ const chaptersText = `${visibleChapters} ${visibleChapters === 1 ? "cap." : "cap
     class="bookshelf-card group relative flex h-full w-full flex-col border border-border border-t-2 border-t-accent bg-transparent p-5 transition-colors hover:border-accent"
   >
     <div class="mb-3 flex items-start justify-between gap-3">
-      <h2 class="min-h-[2lh] font-medium text-accent leading-tight line-clamp-2">
+      <h2
+        class="min-h-[2lh] font-medium text-accent leading-tight line-clamp-2"
+      >
         <a
           href={`/${book.slug}/`}
           class="card-stretched-link text-accent no-underline visited:text-accent hover:text-fg"
@@ -60,7 +63,9 @@ const chaptersText = `${visibleChapters} ${visibleChapters === 1 ? "cap." : "cap
       </span>
     </div>
 
-    <p class="bookshelf-card-desc mb-4 line-clamp-3 text-sm leading-relaxed text-fg">
+    <p
+      class="bookshelf-card-desc mb-4 line-clamp-3 text-sm leading-relaxed text-fg"
+    >
       {data.description}
     </p>
 
@@ -86,9 +91,14 @@ const chaptersText = `${visibleChapters} ${visibleChapters === 1 ? "cap." : "cap
       </div>
     )}
 
-    <div class="mt-auto flex items-center justify-between border-t border-dim pt-3 font-mono text-2xs text-dim">
+    <div
+      class="mt-auto flex items-center justify-between border-t border-dim pt-3 font-mono text-2xs text-dim"
+    >
       <span>{DateFormatter.iso(data.mod)}</span>
-      <span class="opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true">
+      <span
+        class="opacity-0 transition-opacity group-hover:opacity-100"
+        aria-hidden="true"
+      >
         ver →
       </span>
     </div>

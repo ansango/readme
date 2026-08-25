@@ -28,26 +28,27 @@
  *   - `border-border` / `border-dim` / `text-fg/dim/accent`
  *   - `/{slug}/` for book links
  */
+
+import type { Book } from "../lib/books";
 import BookCard from "./book-card.astro";
 import BookSearch from "./book-search.astro";
 import BookStats from "./book-stats.astro";
 import BookTagBar from "./book-tag-bar.astro";
 import LibraryControls from "./library-controls.astro";
-import type { Book } from "../lib/books";
 
 interface Props {
-	bookList: Book[];
+  bookList: Book[];
 }
 
 const { bookList } = Astro.props;
 
 const projection = bookList.map((b) => ({
-	slug: b.slug,
-	title: b.index.data.title,
-	description: b.index.data.description,
-	tags: b.index.data.tags,
-	mod: b.index.data.mod.toISOString(),
-	caps: Math.max(0, b.total - 1),
+  slug: b.slug,
+  title: b.index.data.title,
+  description: b.index.data.description,
+  tags: b.index.data.tags,
+  mod: b.index.data.mod.toISOString(),
+  caps: Math.max(0, b.total - 1),
 }));
 ---
 
@@ -73,7 +74,8 @@ const projection = bookList.map((b) => ({
     id="bookshelf-empty"
     class="hidden border border-border p-6 text-center font-mono text-sm text-dim"
   >
-    <span class="text-accent">∅</span> ningún libro coincide con tu búsqueda.
+    <span class="text-accent">∅</span>
+    ningún libro coincide con tu búsqueda.
     <button
       type="button"
       id="bookshelf-reset"
@@ -83,7 +85,11 @@ const projection = bookList.map((b) => ({
     </button>
   </p>
 
-  <script type="application/json" id="bookshelf-data" set:html={JSON.stringify(projection)}></script>
+  <script
+    type="application/json"
+    id="bookshelf-data"
+    set:html={JSON.stringify(projection)}
+  ></script>
 </section>
 
 <script>
@@ -106,20 +112,26 @@ const projection = bookList.map((b) => ({
   const root = document.querySelector<HTMLElement>("[data-bookshelf]");
   if (root) {
     const dataEl = document.getElementById("bookshelf-data");
-    const grid = document.getElementById("bookshelf-grid") as HTMLElement | null;
+    const grid = document.getElementById(
+      "bookshelf-grid",
+    ) as HTMLElement | null;
     const sub = document.getElementById("bookshelf-sub");
     const empty = document.getElementById("bookshelf-empty");
     const tagBar = document.getElementById("bookshelf-tag-bar");
     const searchInput = document.getElementById(
       "bookshelf-search-input",
     ) as HTMLInputElement | null;
-    const sortButtons = root.querySelectorAll<HTMLButtonElement>(".bookshelf-sort-btn");
+    const sortButtons = root.querySelectorAll<HTMLButtonElement>(
+      ".bookshelf-sort-btn",
+    );
     const statBooks = document.getElementById("bookshelf-stat-books");
     const statChapters = document.getElementById("bookshelf-stat-chapters");
     const statTags = document.getElementById("bookshelf-stat-tags");
     const statLastmod = document.getElementById("bookshelf-stat-lastmod");
 
-    const books: BookRow[] = dataEl ? JSON.parse(dataEl.textContent ?? "[]") : [];
+    const books: BookRow[] = dataEl
+      ? JSON.parse(dataEl.textContent ?? "[]")
+      : [];
     const allTags = new Set<string>();
     for (const b of books) for (const t of b.tags) allTags.add(t);
 
@@ -129,9 +141,17 @@ const projection = bookList.map((b) => ({
       sort: "recent" as "recent" | "title" | "chapters",
     };
 
-    function escape(s: string): string {
-      return s.replace(/[&<>"']/g, (c) =>
-        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string,
+    function escapeHtml(s: string): string {
+      return s.replace(
+        /[&<>"']/g,
+        (c) =>
+          ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;",
+          })[c] as string,
       );
     }
 
@@ -153,8 +173,10 @@ const projection = bookList.map((b) => ({
 
     function sortBooks(list: BookRow[]): BookRow[] {
       const out = [...list];
-      if (state.sort === "recent") out.sort((a, b) => b.mod.localeCompare(a.mod));
-      else if (state.sort === "title") out.sort((a, b) => a.title.localeCompare(b.title));
+      if (state.sort === "recent")
+        out.sort((a, b) => b.mod.localeCompare(a.mod));
+      else if (state.sort === "title")
+        out.sort((a, b) => a.title.localeCompare(b.title));
       else if (state.sort === "chapters") out.sort((a, b) => b.caps - a.caps);
       return out;
     }
@@ -168,9 +190,12 @@ const projection = bookList.map((b) => ({
     function rebuildTagBar(filtered: BookRow[]) {
       if (!tagBar) return;
       const counts = new Map<string, number>();
-      for (const b of filtered) for (const t of b.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
+      for (const b of filtered)
+        for (const t of b.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
       const total = filtered.length;
-      const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+      const sorted = [...counts.entries()].sort(
+        (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
+      );
       const chips: string[] = [];
       const allActive = state.activeTags.size === 0;
       chips.push(
@@ -179,7 +204,7 @@ const projection = bookList.map((b) => ({
       for (const [tag, count] of sorted) {
         const isActive = state.activeTags.has(tag);
         chips.push(
-          `<button type="button" class="bookshelf-tag-btn relative z-10 border border-dim px-1.5 py-0.5 font-mono text-2xs ${isActive ? "border-accent bg-accent/10 text-accent" : "text-dim hover:border-accent hover:text-accent"}" data-tag="${escape(tag)}">#${escape(tag)} <span class="opacity-60">${count}</span></button>`,
+          `<button type="button" class="bookshelf-tag-btn relative z-10 border border-dim px-1.5 py-0.5 font-mono text-2xs ${isActive ? "border-accent bg-accent/10 text-accent" : "text-dim hover:border-accent hover:text-accent"}" data-tag="${escapeHtml(tag)}">#${escapeHtml(tag)} <span class="opacity-60">${count}</span></button>`,
         );
       }
       tagBar.innerHTML = chips.join("");
@@ -209,7 +234,8 @@ const projection = bookList.map((b) => ({
         // same set.
       }
 
-      if (sub) sub.textContent = `mostrando ${sorted.length} de ${books.length} libros`;
+      if (sub)
+        sub.textContent = `mostrando ${sorted.length} de ${books.length} libros`;
       if (empty) empty.classList.toggle("hidden", sorted.length > 0);
       if (grid) grid.classList.toggle("hidden", sorted.length === 0);
 
@@ -220,7 +246,9 @@ const projection = bookList.map((b) => ({
       // Reflect the active state on the *server-rendered* tag
       // buttons inside the cards. The bar's chips are rebuilt
       // from scratch; the in-card ones live in the SSR markup.
-      for (const btn of root.querySelectorAll<HTMLButtonElement>(".bookshelf-tag-btn")) {
+      for (const btn of root.querySelectorAll<HTMLButtonElement>(
+        ".bookshelf-tag-btn",
+      )) {
         const t = btn.dataset.tag ?? "";
         const isActive =
           t === "__all__"
@@ -241,7 +269,10 @@ const projection = bookList.map((b) => ({
     }
     if (statTags) statTags.textContent = String(allTags.size);
     if (statLastmod && books.length > 0) {
-      const latest = books.reduce((acc, b) => (b.mod > acc ? b.mod : acc), books[0].mod);
+      const latest = books.reduce(
+        (acc, b) => (b.mod > acc ? b.mod : acc),
+        books[0].mod,
+      );
       const d = new Date(latest);
       statLastmod.textContent = d.toLocaleDateString("es-ES", {
         day: "2-digit",
@@ -264,13 +295,18 @@ const projection = bookList.map((b) => ({
         searchInput.blur();
       }
     });
-    searchInput?.closest("form")?.addEventListener("submit", (e) => e.preventDefault());
+    searchInput
+      ?.closest("search")
+      ?.addEventListener("submit", (e) => e.preventDefault());
 
     document.addEventListener("keydown", (e) => {
       if (e.key !== "/" || e.metaKey || e.ctrlKey || e.altKey) return;
       const t = e.target as HTMLElement | null;
       const inField =
-        t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable);
+        t &&
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.isContentEditable);
       if (inField) return;
       e.preventDefault();
       searchInput?.focus();
