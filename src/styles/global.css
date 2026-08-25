@@ -2,6 +2,21 @@
 @plugin "@tailwindcss/typography";
 
 /* ─────────────────────────────────────────────────────────────
+   `color-scheme` per theme: light Glance palettes force light UA
+   form controls, the rest stay dark. This complements the
+   `color-scheme: light dark` meta tag in `default.astro` — the
+   CSS rule wins over the meta when both are present.
+   ───────────────────────────────────────────────────────────── */
+:root {
+	color-scheme: dark;
+}
+:root[data-theme="latte"],
+:root[data-theme="peachy"],
+:root[data-theme="zebra"] {
+	color-scheme: light;
+}
+
+/* ─────────────────────────────────────────────────────────────
    Base tokens (= `arch` theme).
    The `[data-theme]` blocks are generated at build time from
    `src/config.json` by `default.astro` and injected into `<head>`.

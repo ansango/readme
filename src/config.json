@@ -389,6 +389,150 @@
 				"c2": "#e8c454",
 				"c3": "#7f5d00"
 			}
+		},
+		{
+			"slug": "latte",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#f2f4f7",
+				"panel": "#eceff3",
+				"border": "#d3d9e4",
+				"fg": "#45474a",
+				"dim": "#78797d",
+				"accent": "#1f66f4",
+				"c1": "#1f66f4",
+				"c2": "#6692ea",
+				"c3": "#043eb4"
+			}
+		},
+		{
+			"slug": "peachy",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#dcc3ad",
+				"panel": "#d9bea6",
+				"border": "#cda989",
+				"fg": "#4b4744",
+				"dim": "#7e7a77",
+				"accent": "#00663c",
+				"c1": "#00663c",
+				"c2": "#0c975d",
+				"c3": "#000a06"
+			}
+		},
+		{
+			"slug": "zebra",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#f2f2f2",
+				"panel": "#ededed",
+				"border": "#d9d9d9",
+				"fg": "#474747",
+				"dim": "#7a7a7a",
+				"accent": "#1a1a1a",
+				"c1": "#1a1a1a",
+				"c2": "#383838",
+				"c3": "#000000"
+			}
+		},
+		{
+			"slug": "mocha",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#1e1e2e",
+				"panel": "#222234",
+				"border": "#2e2e47",
+				"fg": "#e4e4e7",
+				"dim": "#b5b5ba",
+				"accent": "#accafc",
+				"c1": "#accafc",
+				"c2": "#e8f0fc",
+				"c3": "#4f92fc"
+			}
+		},
+		{
+			"slug": "dracula",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#2e303e",
+				"panel": "#323443",
+				"border": "#3f4255",
+				"fg": "#e4e5e7",
+				"dim": "#b6b6b9",
+				"accent": "#c29af9",
+				"c1": "#c29af9",
+				"c2": "#e5d7f9",
+				"c3": "#8c3ef9"
+			}
+		},
+		{
+			"slug": "gruvbox",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#272421",
+				"panel": "#2c2926",
+				"border": "#3d3834",
+				"fg": "#e6e6e5",
+				"dim": "#b8b8b7",
+				"accent": "#ebdbb2",
+				"c1": "#ebdbb2",
+				"c2": "#f5f1e5",
+				"c3": "#ddbb64"
+			}
+		},
+		{
+			"slug": "kanagawa",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#1f1f28",
+				"panel": "#23232e",
+				"border": "#31313f",
+				"fg": "#e5e5e6",
+				"dim": "#b6b6b9",
+				"accent": "#c8c092",
+				"c1": "#c8c092",
+				"c2": "#d5d2c3",
+				"c3": "#b0a14f"
+			}
+		},
+		{
+			"slug": "tucan",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#0f0f0f",
+				"panel": "#151514",
+				"border": "#242423",
+				"fg": "#e6e6e6",
+				"dim": "#b8b8b7",
+				"accent": "#fc7f2c",
+				"c1": "#fc7f2c",
+				"c2": "#f1a674",
+				"c3": "#cc5200"
+			}
+		},
+		{
+			"slug": "neon-pink",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#1c1221",
+				"panel": "#221528",
+				"border": "#32203c",
+				"fg": "#e6e3e8",
+				"dim": "#b9b3bc",
+				"accent": "#ff6bcb",
+				"c1": "#ff6bcb",
+				"c2": "#f8afdf",
+				"c3": "#ff0fab"
+			}
 		}
 	]
 }
