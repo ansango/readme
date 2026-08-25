@@ -1,0 +1,49 @@
+---
+/**
+ * Library header: title, sub-label (X of Y libros) and the
+ * segmented sort control. The labels and the active-segment state
+ * are owned by the client script in `book-list.astro`.
+ */
+---
+
+<header class="bookshelf-controls mb-4 flex flex-wrap items-end justify-between gap-3 border-b border-dim pb-3">
+  <div>
+    <h2 class="font-mono text-sm font-medium tracking-wider text-accent">~ todos los libros</h2>
+    <p id="bookshelf-sub" class="mt-1 font-mono text-2xs text-dim">
+      mostrando 0 de 0 libros
+    </p>
+  </div>
+  <div
+    class="bookshelf-sort flex border border-dim font-mono text-2xs"
+    role="tablist"
+    aria-label="orden"
+  >
+    <button
+      type="button"
+      class="bookshelf-sort-btn is-active border-r border-dim px-2.5 py-1 text-fg hover:text-accent"
+      data-sort="recent"
+      role="tab"
+      aria-selected="true"
+    >
+      recientes
+    </button>
+    <button
+      type="button"
+      class="bookshelf-sort-btn border-r border-dim px-2.5 py-1 text-dim hover:text-accent"
+      data-sort="title"
+      role="tab"
+      aria-selected="false"
+    >
+      a–z
+    </button>
+    <button
+      type="button"
+      class="bookshelf-sort-btn px-2.5 py-1 text-dim hover:text-accent"
+      data-sort="chapters"
+      role="tab"
+      aria-selected="false"
+    >
+      caps.
+    </button>
+  </div>
+</header>

@@ -1,0 +1,47 @@
+---
+/**
+ * Live-search input for the bookshelf. Emits an `input` event that
+ * `book-list.astro` listens to; pure CSS for the icon and the `/`
+ * keyboard hint, no client-side state here.
+ *
+ * Visual style mirrors the rest of the site: `border border-dim`,
+ * `font-mono`, `text-fg/dim`, `focus:border-accent` — same as the
+ * hero and footer.
+ */
+---
+
+<form
+  class="bookshelf-search relative flex items-center border border-dim focus-within:border-accent"
+  role="search"
+>
+  <svg
+    class="ml-3 size-4 shrink-0 text-dim"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="11" cy="11" r="7"></circle>
+    <path d="m21 21-4.3-4.3"></path>
+  </svg>
+  <input
+    id="bookshelf-search-input"
+    type="search"
+    name="q"
+    placeholder="buscar libro, autor o tag…"
+    autocomplete="off"
+    spellcheck="false"
+    aria-label="buscar en la biblioteca"
+    class="w-full bg-transparent px-3 py-2 font-mono text-sm text-fg placeholder:text-dim focus:outline-none"
+  />
+  <kbd
+    class="mr-2 hidden border border-dim px-1.5 py-0.5 font-mono text-2xs text-dim sm:inline-block"
+    aria-hidden="true"
+  >
+    /
+  </kbd>
+</form>
