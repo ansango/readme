@@ -29,7 +29,31 @@ export function kindOf(slug: Theme): ThemeKind {
 
 export const themes: Theme[] = systems.map((s) => s.slug).sort();
 
-export const DEFAULT_THEME: Theme = "debian";
+/**
+ * Themes split by `kind`. Each list is alphabetical (because `themes`
+ * is sorted and `kindOf` is a constant-time lookup).
+ */
+export const distros: Theme[] = themes.filter((s) => kindOf(s) === "distro");
+export const glance: Theme[] = themes.filter((s) => kindOf(s) === "glance");
 
-/** localStorage key — replicated verbatim in the anti-FOUC script of the layout */
+/**
+ * Default theme per kind — what each picker shows when the user has
+ * never picked a theme of that kind. `debian` keeps the previous
+ * behavior (the homepage default was `debian`). `catppuccin-latte` is
+ * the canonical light Glance palette and a sensible entry point.
+ */
+export const DEFAULT_THEME: Theme = "debian";
+export const DEFAULT_GLANCER: Theme = "catppuccin-latte";
+
+/**
+ * localStorage keys — replicated verbatim in the anti-FOUC script
+ * of the layout.
+ *   - `STORAGE_KEY`        → the theme currently applied (= data-theme)
+ *   - `STORAGE_KEY_DISTRO` → last distro the user picked (so the
+ *                            distro picker shows the same thing after
+ *                            they switch to a Glance theme and back)
+ *   - `STORAGE_KEY_GLANCER` → last Glance palette the user picked
+ */
 export const STORAGE_KEY = "theme";
+export const STORAGE_KEY_DISTRO = "theme:distro";
+export const STORAGE_KEY_GLANCER = "theme:glance";

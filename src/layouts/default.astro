@@ -1,6 +1,6 @@
 ---
-import DistroToggle from "../components/distro-toggle.astro";
-import { DEFAULT_THEME, STORAGE_KEY, themes } from "../lib/themes";
+import ThemePicker from "../components/theme-picker.astro";
+import { DEFAULT_THEME, distros, glance, STORAGE_KEY } from "../lib/themes";
 import "../styles/global.css";
 
 interface Props {
@@ -54,9 +54,13 @@ const {
       external theme.css is render-blocking, so when it loads the
       matching [data-theme="..."] rules will style the page correctly.
     -->
-    <script is:inline define:vars={{ themes, storageKey: STORAGE_KEY }}>
+    <script
+      is:inline
+      define:vars={{ distros, glance, storageKey: STORAGE_KEY }}
+    >
+      const valid = new Set([...distros, ...glance]);
       const stored = localStorage.getItem(storageKey);
-      if (stored && themes.includes(stored)) {
+      if (stored && valid.has(stored)) {
         document.documentElement.dataset.theme = stored;
       }
     </script>
@@ -97,7 +101,7 @@ const {
     <!-- ── footer ────────────────────────────────────────── -->
     <footer class="mx-auto max-w-3xl mt-10 text-dim">
       <div class="flex flex-wrap items-center justify-end gap-2 text-[0.85rem]">
-        <DistroToggle />
+        <ThemePicker />
       </div>
     </footer>
   </body>

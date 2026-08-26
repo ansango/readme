@@ -58,6 +58,16 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Theme picker: visual state for the trigger whose kind matches
+   the currently applied theme. Border + text in accent so the
+   user can see at a glance which group "owns" the active theme.
+   ───────────────────────────────────────────────────────────── */
+.theme-trigger.is-active {
+	border-color: var(--color-accent);
+	color: var(--color-accent);
+}
+
+/* ─────────────────────────────────────────────────────────────
    Base tokens (= `arch` theme).
    The `[data-theme]` blocks are generated at build time from
    `src/config.json` by `default.astro` and injected into `<head>`.
