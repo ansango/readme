@@ -52,7 +52,7 @@ const projection = bookList.map((b) => ({
 }));
 ---
 
-<section class="bookshelf space-y-4" data-bookshelf>
+<section class="bookshelf bookshelf-section space-y-4" data-bookshelf>
   <BookSearch />
   <BookTagBar />
   <BookStats />
@@ -63,7 +63,10 @@ const projection = bookList.map((b) => ({
       Todavía no hay libros. Crea <code>src/content/&lt;book-slug&gt;/00-…md</code> para empezar.
     </p>
   ) : (
-    <ul id="bookshelf-grid" class="grid items-stretch gap-4 sm:grid-cols-1 md:grid-cols-2">
+    <ul
+      id="bookshelf-grid"
+      class="grid items-stretch gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
+    >
       {bookList.map((book) => (
         <BookCard book={book} />
       ))}

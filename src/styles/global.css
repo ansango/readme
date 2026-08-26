@@ -42,6 +42,22 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Bookshelf section: "breakout" pattern. The page layout caps the
+   main column at `max-w-3xl` (768px) for the header / hero / book
+   prose / footer, but the bookshelf itself wants more horizontal
+   room so the card grid can show 3-4 columns on desktop. The
+   section is positioned wider than its parent and centered with
+   a negative margin, capped at 80rem (1280px). On viewports
+   narrower than the cap, it falls back to the parent's width
+   naturally (margin becomes 0).
+   ───────────────────────────────────────────────────────────── */
+.bookshelf-section {
+	position: relative;
+	width: min(80rem, calc(100vw - 3rem));
+	margin-left: calc((min(80rem, calc(100vw - 3rem)) - 100%) / -2);
+}
+
+/* ─────────────────────────────────────────────────────────────
    Base tokens (= `arch` theme).
    The `[data-theme]` blocks are generated at build time from
    `src/config.json` by `default.astro` and injected into `<head>`.
