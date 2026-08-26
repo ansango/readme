@@ -17,6 +17,21 @@
 [data-theme="cachyos"] [data-distro="cachyos"] {
 	display: revert;
 }
+[data-theme="camouflage"] [data-distro="camouflage"] {
+	display: revert;
+}
+[data-theme="catppuccin-frappe"] [data-distro="catppuccin-frappe"] {
+	display: revert;
+}
+[data-theme="catppuccin-latte"] [data-distro="catppuccin-latte"] {
+	display: revert;
+}
+[data-theme="catppuccin-macchiato"] [data-distro="catppuccin-macchiato"] {
+	display: revert;
+}
+[data-theme="catppuccin-mocha"] [data-distro="catppuccin-mocha"] {
+	display: revert;
+}
 [data-theme="centos"] [data-distro="centos"] {
 	display: revert;
 }
@@ -47,9 +62,6 @@
 [data-theme="kanagawa"] [data-distro="kanagawa"] {
 	display: revert;
 }
-[data-theme="latte"] [data-distro="latte"] {
-	display: revert;
-}
 [data-theme="linuxmint"] [data-distro="linuxmint"] {
 	display: revert;
 }
@@ -57,9 +69,6 @@
 	display: revert;
 }
 [data-theme="manjaro"] [data-distro="manjaro"] {
-	display: revert;
-}
-[data-theme="mocha"] [data-distro="mocha"] {
 	display: revert;
 }
 [data-theme="neon-pink"] [data-distro="neon-pink"] {
@@ -86,7 +95,13 @@
 [data-theme="raspbian"] [data-distro="raspbian"] {
 	display: revert;
 }
+[data-theme="shades-of-purple"] [data-distro="shades-of-purple"] {
+	display: revert;
+}
 [data-theme="slackware"] [data-distro="slackware"] {
+	display: revert;
+}
+[data-theme="teal-city"] [data-distro="teal-city"] {
 	display: revert;
 }
 [data-theme="truenas_scale"] [data-distro="truenas_scale"] {
@@ -393,7 +408,7 @@
 	--color-c2: #e8c454;
 	--color-c3: #7f5d00;
 }
-[data-theme="latte"] {
+[data-theme="catppuccin-latte"] {
 	--color-bg: #f2f4f7;
 	--color-panel: #eceff3;
 	--color-border: #d3d9e4;
@@ -426,7 +441,40 @@
 	--color-c2: #383838;
 	--color-c3: #000000;
 }
-[data-theme="mocha"] {
+[data-theme="teal-city"] {
+	--color-bg: #21242c;
+	--color-panel: #252831;
+	--color-border: #323743;
+	--color-fg: #e5e5e6;
+	--color-dim: #b6b7b9;
+	--color-accent: #7cd0b0;
+	--color-c1: #7cd0b0;
+	--color-c2: #b2d7c9;
+	--color-c3: #3ab686;
+}
+[data-theme="catppuccin-frappe"] {
+	--color-bg: #303446;
+	--color-panel: #34384c;
+	--color-border: #40465e;
+	--color-fg: #e4e5e7;
+	--color-dim: #b5b6ba;
+	--color-accent: #8ca9ee;
+	--color-c1: #8ca9ee;
+	--color-c2: #c6d3f0;
+	--color-c3: #366be7;
+}
+[data-theme="catppuccin-macchiato"] {
+	--color-bg: #232638;
+	--color-panel: #272a3f;
+	--color-border: #333752;
+	--color-fg: #e4e4e7;
+	--color-dim: #b5b6ba;
+	--color-accent: #8aaef4;
+	--color-c1: #8aaef4;
+	--color-c2: #c7d6f4;
+	--color-c3: #3171f2;
+}
+[data-theme="catppuccin-mocha"] {
 	--color-bg: #1e1e2e;
 	--color-panel: #222234;
 	--color-border: #2e2e47;
@@ -437,16 +485,16 @@
 	--color-c2: #e8f0fc;
 	--color-c3: #4f92fc;
 }
-[data-theme="dracula"] {
-	--color-bg: #2e303e;
-	--color-panel: #323443;
-	--color-border: #3f4255;
-	--color-fg: #e4e5e7;
-	--color-dim: #b6b6b9;
-	--color-accent: #c29af9;
-	--color-c1: #c29af9;
-	--color-c2: #e5d7f9;
-	--color-c3: #8c3ef9;
+[data-theme="camouflage"] {
+	--color-bg: #283c3e;
+	--color-panel: #2c4244;
+	--color-border: #385356;
+	--color-fg: #e4e6e7;
+	--color-dim: #b6b9b9;
+	--color-accent: #cad3c5;
+	--color-c1: #cad3c5;
+	--color-c2: #ebebeb;
+	--color-c3: #9ab08d;
 }
 [data-theme="gruvbox"] {
 	--color-bg: #272421;
@@ -474,12 +522,34 @@
 	--color-bg: #0f0f0f;
 	--color-panel: #151514;
 	--color-border: #242423;
-	--color-fg: #e6e6e6;
+	--color-fg: #e6e6e5;
 	--color-dim: #b8b8b7;
 	--color-accent: #fc7f2c;
 	--color-c1: #fc7f2c;
 	--color-c2: #f1a674;
 	--color-c3: #cc5200;
+}
+[data-theme="dracula"] {
+	--color-bg: #2e303e;
+	--color-panel: #323443;
+	--color-border: #3f4255;
+	--color-fg: #e4e5e7;
+	--color-dim: #b6b6b9;
+	--color-accent: #c29af9;
+	--color-c1: #c29af9;
+	--color-c2: #e5d7f9;
+	--color-c3: #8c3ef9;
+}
+[data-theme="shades-of-purple"] {
+	--color-bg: #2d2b55;
+	--color-panel: #302e5c;
+	--color-border: #3b3870;
+	--color-fg: #e3e3e8;
+	--color-dim: #b4b4bc;
+	--color-accent: #fad000;
+	--color-c1: #fad000;
+	--color-c2: #f0d447;
+	--color-c3: #9e8400;
 }
 [data-theme="neon-pink"] {
 	--color-bg: #1c1221;
@@ -589,7 +659,7 @@
 	--font-mono:
 		"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
 }
-[data-theme="latte"] {
+[data-theme="catppuccin-latte"] {
 	--font-mono: "Inter", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
 }
 [data-theme="peachy"] {
@@ -598,10 +668,19 @@
 [data-theme="zebra"] {
 	--font-mono: "Inter", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
 }
-[data-theme="mocha"] {
+[data-theme="teal-city"] {
 	--font-mono: "Inter", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
 }
-[data-theme="dracula"] {
+[data-theme="catppuccin-frappe"] {
+	--font-mono: "Inter", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+}
+[data-theme="catppuccin-macchiato"] {
+	--font-mono: "Inter", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+}
+[data-theme="catppuccin-mocha"] {
+	--font-mono: "Inter", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+}
+[data-theme="camouflage"] {
 	--font-mono: "Inter", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
 }
 [data-theme="gruvbox"] {
@@ -611,6 +690,12 @@
 	--font-mono: "Inter", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
 }
 [data-theme="tucan"] {
+	--font-mono: "Inter", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+}
+[data-theme="dracula"] {
+	--font-mono: "Inter", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+}
+[data-theme="shades-of-purple"] {
 	--font-mono: "Inter", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
 }
 [data-theme="neon-pink"] {

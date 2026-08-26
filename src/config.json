@@ -391,7 +391,7 @@
 			}
 		},
 		{
-			"slug": "latte",
+			"slug": "catppuccin-latte",
 			"kind": "glance",
 			"font": "Inter",
 			"colors": {
@@ -439,7 +439,55 @@
 			}
 		},
 		{
-			"slug": "mocha",
+			"slug": "teal-city",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#21242c",
+				"panel": "#252831",
+				"border": "#323743",
+				"fg": "#e5e5e6",
+				"dim": "#b6b7b9",
+				"accent": "#7cd0b0",
+				"c1": "#7cd0b0",
+				"c2": "#b2d7c9",
+				"c3": "#3ab686"
+			}
+		},
+		{
+			"slug": "catppuccin-frappe",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#303446",
+				"panel": "#34384c",
+				"border": "#40465e",
+				"fg": "#e4e5e7",
+				"dim": "#b5b6ba",
+				"accent": "#8ca9ee",
+				"c1": "#8ca9ee",
+				"c2": "#c6d3f0",
+				"c3": "#366be7"
+			}
+		},
+		{
+			"slug": "catppuccin-macchiato",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#232638",
+				"panel": "#272a3f",
+				"border": "#333752",
+				"fg": "#e4e4e7",
+				"dim": "#b5b6ba",
+				"accent": "#8aaef4",
+				"c1": "#8aaef4",
+				"c2": "#c7d6f4",
+				"c3": "#3171f2"
+			}
+		},
+		{
+			"slug": "catppuccin-mocha",
 			"kind": "glance",
 			"font": "Inter",
 			"colors": {
@@ -455,19 +503,19 @@
 			}
 		},
 		{
-			"slug": "dracula",
+			"slug": "camouflage",
 			"kind": "glance",
 			"font": "Inter",
 			"colors": {
-				"bg": "#2e303e",
-				"panel": "#323443",
-				"border": "#3f4255",
-				"fg": "#e4e5e7",
-				"dim": "#b6b6b9",
-				"accent": "#c29af9",
-				"c1": "#c29af9",
-				"c2": "#e5d7f9",
-				"c3": "#8c3ef9"
+				"bg": "#283c3e",
+				"panel": "#2c4244",
+				"border": "#385356",
+				"fg": "#e4e6e7",
+				"dim": "#b6b9b9",
+				"accent": "#cad3c5",
+				"c1": "#cad3c5",
+				"c2": "#ebebeb",
+				"c3": "#9ab08d"
 			}
 		},
 		{
@@ -510,12 +558,44 @@
 				"bg": "#0f0f0f",
 				"panel": "#151514",
 				"border": "#242423",
-				"fg": "#e6e6e6",
+				"fg": "#e6e6e5",
 				"dim": "#b8b8b7",
 				"accent": "#fc7f2c",
 				"c1": "#fc7f2c",
 				"c2": "#f1a674",
 				"c3": "#cc5200"
+			}
+		},
+		{
+			"slug": "dracula",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#2e303e",
+				"panel": "#323443",
+				"border": "#3f4255",
+				"fg": "#e4e5e7",
+				"dim": "#b6b6b9",
+				"accent": "#c29af9",
+				"c1": "#c29af9",
+				"c2": "#e5d7f9",
+				"c3": "#8c3ef9"
+			}
+		},
+		{
+			"slug": "shades-of-purple",
+			"kind": "glance",
+			"font": "Inter",
+			"colors": {
+				"bg": "#2d2b55",
+				"panel": "#302e5c",
+				"border": "#3b3870",
+				"fg": "#e3e3e8",
+				"dim": "#b4b4bc",
+				"accent": "#fad000",
+				"c1": "#fad000",
+				"c2": "#f0d447",
+				"c3": "#9e8400"
 			}
 		},
 		{
