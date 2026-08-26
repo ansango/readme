@@ -10,7 +10,7 @@
 :root {
 	color-scheme: dark;
 }
-:root[data-theme="latte"],
+:root[data-theme="catppuccin-latte"],
 :root[data-theme="peachy"],
 :root[data-theme="zebra"] {
 	color-scheme: light;

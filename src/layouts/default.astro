@@ -1,12 +1,12 @@
 ---
 import ThemePicker from "../components/theme-picker.astro";
-import { DEFAULT_THEME, distros, glance, STORAGE_KEY } from "../lib/themes";
+import { DEFAULT_THEME, STORAGE_KEY, themes } from "../lib/themes";
 import "../styles/global.css";
 
 interface Props {
   title: string;
   description?: string;
-  /** slug de un sistema en `src/config.json` */
+  /** slug de un tema en `src/config.json` */
   theme?: string;
   lang?: string;
 }
@@ -54,13 +54,9 @@ const {
       external theme.css is render-blocking, so when it loads the
       matching [data-theme="..."] rules will style the page correctly.
     -->
-    <script
-      is:inline
-      define:vars={{ distros, glance, storageKey: STORAGE_KEY }}
-    >
-      const valid = new Set([...distros, ...glance]);
+    <script is:inline define:vars={{ themes, storageKey: STORAGE_KEY }}>
       const stored = localStorage.getItem(storageKey);
-      if (stored && valid.has(stored)) {
+      if (stored && themes.includes(stored)) {
         document.documentElement.dataset.theme = stored;
       }
     </script>
