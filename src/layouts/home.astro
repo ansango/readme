@@ -9,8 +9,8 @@
  * Used by `src/pages/index.astro` only. Every other page uses
  * `default.astro`.
  */
-import ThemePicker from "../components/theme-picker.astro";
-import TitleBlock from "../components/title-block.astro";
+import SheetFooter from "../components/sheet-footer.astro";
+import SheetHeader from "../components/sheet-header.astro";
 import { DEFAULT_THEME, STORAGE_KEY, themes } from "../lib/themes";
 import "../styles/global.css";
 
@@ -28,13 +28,6 @@ const {
   theme = DEFAULT_THEME,
   lang = "es",
 } = Astro.props;
-
-const pathname = Astro.url.pathname;
-const isHome = pathname === "/" || pathname === "";
-const isAbout = pathname.startsWith("/about");
-
-/** SHEET for the home page is always "01 / 03". */
-const sheet = "01 / 03";
 ---
 
 <!doctype html>
@@ -83,27 +76,9 @@ const sheet = "01 / 03";
     class="min-h-screen font-mono text-sm sm:text-base leading-normal text-fg antialiased selection:bg-accent selection:text-bg"
   >
     <main class="sheet">
-      <!-- ── header ───────────────────────────────────────── -->
-      <header class="sheet-header">
-        <div class="sheet-brand">README <em>by ansango</em></div>
-        <nav class="sheet-nav" aria-label="principal">
-          <a href="/" class:list={[{ active: isHome }]}>home</a>
-          <a href="/about" class:list={[{ active: isAbout }]}>about</a>
-        </nav>
-      </header>
-
-      <!-- ── body (full sheet width, no extra max-w) ──────── -->
+      <SheetHeader />
       <slot />
-
-      <!-- ── footer ────────────────────────────────────────── -->
-      <footer class="sheet-footer">
-        <TitleBlock sheet={sheet} />
-        <div
-          class="flex flex-wrap items-center justify-end gap-2 text-[0.85rem]"
-        >
-          <ThemePicker />
-        </div>
-      </footer>
+      <SheetFooter />
     </main>
   </body>
 </html>

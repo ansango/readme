@@ -1,7 +1,6 @@
 ---
 /**
- * Title block — the "blueprint" footer label that sits to the
- * left of the theme picker in the sheet footer. Four cells in a
+ * Title block — the "blueprint" footer label. Four cells in a
  * row, separated by thin borders:
  *
  *   DWG NO. | README-001     (static)
@@ -9,12 +8,12 @@
  *   SCALE   | 1:1            (static)
  *   SHEET   | 01 / 03        (caller-supplied, from URL depth)
  *
- * Used by `src/layouts/default.astro` and `src/layouts/home.astro`.
- * Both layouts compute the SHEET value from `Astro.url.pathname`:
- *
- *   /                     → "01 / 03"  (home)
- *   /<book-slug>/         → "02 / 03"  (book index)
- *   /<book-slug>/<cap>/   → "03 / 03"  (chapter)
+ * All visual styling lives in this file as Tailwind utilities
+ * (no global CSS). The dashed border and the responsive cell
+ * width are the only "design tokens" that vary with the theme
+ * (--border-strong, --text-1, --text-3, --accent-3, --surface),
+ * and those are exposed as Tailwind color tokens in
+ * `src/styles/global.css → @theme static`.
  */
 interface Props {
   sheet: string;
@@ -31,23 +30,31 @@ const day = String(buildDate.getDate()).padStart(2, "0");
 const month = String(buildDate.getMonth() + 1).padStart(2, "0");
 const year = buildDate.getFullYear();
 const rev = `A · ${day}.${month}.${year}`;
+
+const cells = [
+  { label: "DWG NO.", value: "README-001" },
+  { label: "REV.", value: rev, isRev: true },
+  { label: "SCALE", value: "1:1" },
+  { label: "SHEET", value: sheet },
+];
 ---
 
-<div class="title-block">
-  <div class="cell">
-    <span class="cell-label">DWG NO.</span>
-    <span class="cell-value">README-001</span>
-  </div>
-  <div class="cell">
-    <span class="cell-label">REV.</span>
-    <span class="cell-value rev">{rev}</span>
-  </div>
-  <div class="cell">
-    <span class="cell-label">SCALE</span>
-    <span class="cell-value">1:1</span>
-  </div>
-  <div class="cell">
-    <span class="cell-label">SHEET</span>
-    <span class="cell-value">{sheet}</span>
-  </div>
+<div
+  class="flex w-full overflow-hidden rounded-sm border border-dashed border-border-strong sm:w-auto"
+>
+  {cells.map(({ label, value, isRev }) => (
+      <div class="flex min-w-0 flex-1 flex-col gap-1 border-r border-border bg-surface px-2.5 py-2 last:border-r-0 sm:min-w-[120px] sm:flex-initial sm:gap-1 sm:px-[18px] sm:py-2.5">
+        <span class="text-[9px] tracking-[0.22em] uppercase text-text-3">
+          {label}
+        </span>
+        <span
+          class:list={[
+            "text-[12px] font-semibold tracking-[0.04em] text-text-1",
+            isRev && "text-accent-3",
+          ]}
+        >
+          {value}
+        </span>
+      </div>
+    ))}
 </div>

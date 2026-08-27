@@ -1,15 +1,13 @@
 ---
 /**
- * Default layout — used by every non-home page (book, chapter, about).
- *
- * Wraps everything in a `.sheet` container with the blueprint
- * double border, and renders the new sheet header (brand + nav)
- * and footer (title block + theme picker). The theme picker stays
- * in the footer (per the design decision) and is rendered by
- * `<ThemePicker />`.
+ * Default layout — used by every non-home page (book, chapter,
+ * about). Wraps everything in a `.sheet` container with the
+ * blueprint double border, and renders the sheet header
+ * (brand + nav) and the sheet footer (title block + theme
+ * picker) as encapsulated components.
  */
-import ThemePicker from "../components/theme-picker.astro";
-import TitleBlock from "../components/title-block.astro";
+import SheetFooter from "../components/sheet-footer.astro";
+import SheetHeader from "../components/sheet-header.astro";
 import { DEFAULT_THEME, STORAGE_KEY, themes } from "../lib/themes";
 import "../styles/global.css";
 
@@ -27,21 +25,6 @@ const {
   theme = DEFAULT_THEME,
   lang = "es",
 } = Astro.props;
-
-const pathname = Astro.url.pathname;
-const isHome = pathname === "/" || pathname === "";
-const isAbout = pathname.startsWith("/about");
-
-/**
- * SHEET value for the title block, derived from the URL depth:
- *   /<book-slug>/         → "02 / 03"  (book index)
- *   /<book-slug>/<cap>/   → "03 / 03"  (chapter)
- *   anything deeper       → "03 / 03"  (fallback)
- * The home layout (home.astro) passes "01 / 03" itself.
- */
-const segments = pathname.split("/").filter(Boolean).length;
-const sheet =
-  segments <= 0 ? "01 / 03" : segments === 1 ? "02 / 03" : "03 / 03";
 ---
 
 <!doctype html>
@@ -90,27 +73,9 @@ const sheet =
     class="min-h-screen font-mono text-sm sm:text-base leading-normal text-fg antialiased selection:bg-accent selection:text-bg"
   >
     <main class="sheet">
-      <!-- ── header ───────────────────────────────────────── -->
-      <header class="sheet-header">
-        <div class="sheet-brand">README <em>by ansango</em></div>
-        <nav class="sheet-nav" aria-label="principal">
-          <a href="/" class:list={[{ active: isHome }]}>home</a>
-          <a href="/about" class:list={[{ active: isAbout }]}>about</a>
-        </nav>
-      </header>
-
-      <!-- ── body ──────────────────────────────────────────── -->
+      <SheetHeader />
       <slot />
-
-      <!-- ── footer ────────────────────────────────────────── -->
-      <footer class="sheet-footer">
-        <TitleBlock sheet={sheet} />
-        <div
-          class="flex flex-wrap items-center justify-end gap-2 text-[0.85rem]"
-        >
-          <ThemePicker />
-        </div>
-      </footer>
+      <SheetFooter />
     </main>
   </body>
 </html>
