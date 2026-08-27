@@ -44,7 +44,8 @@ export class Books {
 
 	/**
 	 * Bookshelf: groups chapters by book and builds a `Book` for each
-	 * one that has an index chapter. Alphabetical order by slug.
+	 * one that has an index chapter. Sorted by the index chapter's
+	 * `mod` date, most recent first.
 	 */
 	static listFromChapters(chapters: Chapter[]): Book[] {
 		const grouped = Books.groupByBook(chapters);
@@ -54,7 +55,9 @@ export class Books {
 			if (!index) continue; // without an index the book is not navigable
 			out.push({ slug, index, chapters: list, total: list.length });
 		}
-		return out.sort((a, b) => a.slug.localeCompare(b.slug));
+		return out.sort(
+			(a, b) => b.index.data.mod.getTime() - a.index.data.mod.getTime(),
+		);
 	}
 
 	/** Resolves a specific book from its slug. */
