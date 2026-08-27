@@ -10,6 +10,7 @@
  * `default.astro`.
  */
 import ThemePicker from "../components/theme-picker.astro";
+import TitleBlock from "../components/title-block.astro";
 import { DEFAULT_THEME, STORAGE_KEY, themes } from "../lib/themes";
 import "../styles/global.css";
 
@@ -31,6 +32,9 @@ const {
 const pathname = Astro.url.pathname;
 const isHome = pathname === "/" || pathname === "";
 const isAbout = pathname.startsWith("/about");
+
+/** SHEET for the home page is always "01 / 03". */
+const sheet = "01 / 03";
 ---
 
 <!doctype html>
@@ -93,6 +97,7 @@ const isAbout = pathname.startsWith("/about");
 
       <!-- ── footer ────────────────────────────────────────── -->
       <footer class="sheet-footer">
+        <TitleBlock sheet={sheet} />
         <div
           class="flex flex-wrap items-center justify-end gap-2 text-[0.85rem]"
         >

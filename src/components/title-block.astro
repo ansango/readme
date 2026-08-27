@@ -1,0 +1,53 @@
+---
+/**
+ * Title block — the "blueprint" footer label that sits to the
+ * left of the theme picker in the sheet footer. Four cells in a
+ * row, separated by thin borders:
+ *
+ *   DWG NO. | README-001     (static)
+ *   REV.    | A · 27.08.2026 (build date, computed at render time)
+ *   SCALE   | 1:1            (static)
+ *   SHEET   | 01 / 03        (caller-supplied, from URL depth)
+ *
+ * Used by `src/layouts/default.astro` and `src/layouts/home.astro`.
+ * Both layouts compute the SHEET value from `Astro.url.pathname`:
+ *
+ *   /                     → "01 / 03"  (home)
+ *   /<book-slug>/         → "02 / 03"  (book index)
+ *   /<book-slug>/<cap>/   → "03 / 03"  (chapter)
+ */
+interface Props {
+  sheet: string;
+}
+
+const { sheet } = Astro.props;
+
+// Build date is the same for every page of the build, so
+// compute it here once and let it propagate through the
+// static HTML. The "A" revision letter is fixed (we only
+// ever ship one revision per build).
+const buildDate = new Date();
+const day = String(buildDate.getDate()).padStart(2, "0");
+const month = String(buildDate.getMonth() + 1).padStart(2, "0");
+const year = buildDate.getFullYear();
+const rev = `A · ${day}.${month}.${year}`;
+---
+
+<div class="title-block">
+  <div class="cell">
+    <span class="cell-label">DWG NO.</span>
+    <span class="cell-value">README-001</span>
+  </div>
+  <div class="cell">
+    <span class="cell-label">REV.</span>
+    <span class="cell-value rev">{rev}</span>
+  </div>
+  <div class="cell">
+    <span class="cell-label">SCALE</span>
+    <span class="cell-value">1:1</span>
+  </div>
+  <div class="cell">
+    <span class="cell-label">SHEET</span>
+    <span class="cell-value">{sheet}</span>
+  </div>
+</div>

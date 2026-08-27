@@ -9,6 +9,7 @@
  * `<ThemePicker />`.
  */
 import ThemePicker from "../components/theme-picker.astro";
+import TitleBlock from "../components/title-block.astro";
 import { DEFAULT_THEME, STORAGE_KEY, themes } from "../lib/themes";
 import "../styles/global.css";
 
@@ -30,6 +31,17 @@ const {
 const pathname = Astro.url.pathname;
 const isHome = pathname === "/" || pathname === "";
 const isAbout = pathname.startsWith("/about");
+
+/**
+ * SHEET value for the title block, derived from the URL depth:
+ *   /<book-slug>/         → "02 / 03"  (book index)
+ *   /<book-slug>/<cap>/   → "03 / 03"  (chapter)
+ *   anything deeper       → "03 / 03"  (fallback)
+ * The home layout (home.astro) passes "01 / 03" itself.
+ */
+const segments = pathname.split("/").filter(Boolean).length;
+const sheet =
+  segments <= 0 ? "01 / 03" : segments === 1 ? "02 / 03" : "03 / 03";
 ---
 
 <!doctype html>
@@ -92,6 +104,7 @@ const isAbout = pathname.startsWith("/about");
 
       <!-- ── footer ────────────────────────────────────────── -->
       <footer class="sheet-footer">
+        <TitleBlock sheet={sheet} />
         <div
           class="flex flex-wrap items-center justify-end gap-2 text-[0.85rem]"
         >
