@@ -121,6 +121,133 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Sheet chrome. The "blueprint" look: a 40x40 grid on the body
+   and a content card with a double border (solid outer + dashed
+   inner, both inset 28/34px from the sheet edge). 1240px max
+   width, fluid padding down to 32x18 on mobile where the double
+   border is hidden.
+   ───────────────────────────────────────────────────────────── */
+body {
+	background-color: var(--bg);
+	background-image:
+		linear-gradient(var(--grid-line) 1px, transparent 1px),
+		linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+	background-size:
+		40px 40px,
+		40px 40px;
+	background-position:
+		0 0,
+		0 0;
+}
+
+.sheet {
+	max-width: 1240px;
+	margin: 0 auto;
+	padding: 56px 72px 80px;
+	position: relative;
+}
+.sheet::before,
+.sheet::after {
+	content: "";
+	position: absolute;
+	pointer-events: none;
+}
+.sheet::before {
+	inset: 28px;
+	border: 1px solid var(--ink);
+}
+.sheet::after {
+	inset: 34px;
+	border: 1px dashed var(--ink);
+}
+
+@media (max-width: 1024px) {
+	.sheet {
+		padding: 48px 48px 64px;
+	}
+}
+@media (max-width: 640px) {
+	.sheet {
+		padding: 32px 18px 56px;
+	}
+	.sheet::before,
+	.sheet::after {
+		display: none;
+	}
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Sheet header: brand "README · by ansango" + nav row.
+   The theme picker stays in the footer (per the design decision)
+   and is rendered by `<ThemePicker />` there. The header is just
+   identity + nav.
+   ───────────────────────────────────────────────────────────── */
+.sheet-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 20px;
+	border-bottom: 1px solid var(--border);
+	margin-bottom: 40px;
+	position: relative;
+	z-index: 2;
+	flex-wrap: wrap;
+	gap: 14px;
+}
+.sheet-brand {
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--text-1);
+}
+.sheet-brand em {
+	font-style: normal;
+	font-weight: 400;
+	color: var(--text-3);
+	text-transform: lowercase;
+	letter-spacing: 0.08em;
+	margin-left: 8px;
+}
+.sheet-nav {
+	display: flex;
+	gap: 24px;
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}
+.sheet-nav a {
+	color: var(--text-3);
+	position: relative;
+	padding: 4px 0;
+	transition: color 0.15s;
+}
+.sheet-nav a:hover,
+.sheet-nav a.active {
+	color: var(--text-1);
+}
+.sheet-nav a.active::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -2px;
+	height: 1px;
+	background: var(--accent-3);
+}
+
+@media (max-width: 640px) {
+	.sheet-header {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.sheet-nav {
+		gap: 18px;
+	}
+}
+
+/* ─────────────────────────────────────────────────────────────
    Themed scrollbars. Variables resolve inside each `[data-theme]`
    (defined in `default.astro`), so the thumb repaints automatically
    when switching distro.
