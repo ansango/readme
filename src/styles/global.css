@@ -130,7 +130,7 @@
 	--accent-3: var(--color-c1);
 
 	/* sheet decoration */
-	--grid-line: color-mix(in srgb, var(--color-fg) 5.5%, transparent);
+	--grid-line: color-mix(in srgb, var(--color-fg) 3.75%, transparent);
 
 	/* radius — fixed, not themed */
 	--radius: 2px;
