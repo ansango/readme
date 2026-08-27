@@ -74,6 +74,53 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Blueprint design tokens.
+
+   The active per-theme palette is exposed via the `--color-*`
+   variables emitted by `tools/generate-theme-css.mjs`. The
+   tokens below are a parallel naming system used by the
+   sheet/header/footer/title-block chrome and derived from those
+   per-theme values via `color-mix()`. The naming follows the
+   Glance-inspired design system that ships in
+   `DESIGN-MANIFEST.json` (see `--accent-3` for the hot
+   highlight, `--ink` for the sheet double border, etc.).
+
+   Because the per-theme blocks live in `public/theme.css`
+   and load before this stylesheet, the `color-mix()` calls
+   resolve against the active palette on every paint. No new
+   per-theme CSS is required when a new theme is added to
+   `src/config.json`.
+   ───────────────────────────────────────────────────────────── */
+:root {
+	/* surfaces */
+	--bg: var(--color-bg);
+	--bg-soft: var(--color-panel);
+	--surface: color-mix(in srgb, var(--color-fg) 5%, transparent);
+	--surface-2: color-mix(in srgb, var(--color-fg) 9%, transparent);
+
+	/* borders */
+	--border: var(--color-border);
+	--border-strong: color-mix(in srgb, var(--color-fg) 32%, transparent);
+	--ink: color-mix(in srgb, var(--color-fg) 28%, transparent);
+
+	/* text */
+	--text-1: var(--color-fg);
+	--text-2: color-mix(in srgb, var(--color-fg) 70%, var(--color-bg));
+	--text-3: var(--color-dim);
+
+	/* accents */
+	--accent: var(--color-accent);
+	--accent-2: var(--color-c2);
+	--accent-3: var(--color-c1);
+
+	/* sheet decoration */
+	--grid-line: color-mix(in srgb, var(--color-fg) 5.5%, transparent);
+
+	/* radius — fixed, not themed */
+	--radius: 2px;
+}
+
+/* ─────────────────────────────────────────────────────────────
    Themed scrollbars. Variables resolve inside each `[data-theme]`
    (defined in `default.astro`), so the thumb repaints automatically
    when switching distro.
