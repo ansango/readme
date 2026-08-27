@@ -1,0 +1,106 @@
+---
+/**
+ * One book card. Mirrors the existing visual design from the
+ * previous `book-list.astro`:
+ *
+ *   - `border border-border border-t-2 border-t-accent` — top
+ *     accent stripe is the site's signature
+ *   - `text-accent` for the title, `text-dim` for chapter count
+ *   - `font-mono text-2xs` for meta and tag chips
+ *   - `opacity-0 group-hover:opacity-100` for the "ver →" arrow
+ *     (appears on hover, just like the previous list)
+ *
+ * The improvement over the old list: tag chips are real buttons,
+ * so clicking one applies the same filter as the global tag bar.
+ * The whole card stays clickable via the "stretched-link" pattern:
+ * the outer element is an `<article>` (NOT an `<a>`, because having
+ * `<button>`s inside an `<a>` is invalid HTML). The title is a real
+ * `<a>` whose `::after` pseudo-element covers the whole card, so
+ * any click outside a tag button navigates. Tag buttons sit above
+ * the stretched link with a higher z-index.
+ *
+ * `MAX_TAGS = 3` matches the previous list's overflow rule; the
+ * `+N` indicator uses `title=` to expose the hidden tags on hover.
+ *
+ * `book.total` is the count of chapters INCLUDING the `00-` index
+ * of each book. The visible chapter count for the UI is `total - 1`
+ * (the 00- is the book home, not a numbered chapter).
+ */
+
+import type { Book } from "../lib/books";
+import { DateFormatter } from "../lib/date-formatter";
+
+interface Props {
+  book: Book;
+}
+
+const { book } = Astro.props;
+const data = book.index.data;
+const MAX_TAGS = 3;
+const visibleTags = data.tags.slice(0, MAX_TAGS);
+const hiddenCount = data.tags.length - visibleTags.length;
+const visibleChapters = Math.max(0, book.total - 1);
+const chaptersText = `${visibleChapters} ${visibleChapters === 1 ? "cap." : "caps."}`;
+---
+
+<li class="flex h-full">
+  <article
+    class="bookshelf-card group relative flex h-full w-full flex-col border border-border border-t-2 border-t-accent bg-transparent p-5 transition-colors hover:border-accent"
+  >
+    <div class="mb-3 flex items-start justify-between gap-3">
+      <h2
+        class="min-h-[2lh] font-medium text-accent leading-tight line-clamp-2"
+      >
+        <a
+          href={`/${book.slug}/`}
+          class="card-stretched-link text-accent no-underline visited:text-accent hover:text-fg"
+        >
+          {data.title}
+        </a>
+      </h2>
+      <span class="shrink-0 font-mono text-2xs text-dim">
+        {chaptersText}
+      </span>
+    </div>
+
+    <p
+      class="bookshelf-card-desc mb-4 line-clamp-3 text-sm leading-relaxed text-fg"
+    >
+      {data.description}
+    </p>
+
+    {data.tags.length > 0 && (
+      <div class="bookshelf-card-tags mb-4 flex flex-wrap items-center gap-1.5">
+        {visibleTags.map((t) => (
+          <button
+            type="button"
+            class="bookshelf-tag-btn relative z-10 border border-dim px-1.5 py-0.5 font-mono text-2xs text-dim hover:border-accent hover:text-accent"
+            data-tag={t}
+          >
+            #{t}
+          </button>
+        ))}
+        {hiddenCount > 0 && (
+          <span
+            class="border border-dim px-1.5 py-0.5 font-mono text-2xs text-dim"
+            title={data.tags.slice(MAX_TAGS).map((t) => `#${t}`).join(" ")}
+          >
+            +{hiddenCount}
+          </span>
+        )}
+      </div>
+    )}
+
+    <div
+      class="mt-auto flex items-center justify-between border-t border-dim pt-3 font-mono text-2xs text-dim"
+    >
+      <span>{DateFormatter.iso(data.mod)}</span>
+      <span
+        class="opacity-0 transition-opacity group-hover:opacity-100"
+        aria-hidden="true"
+      >
+        ver →
+      </span>
+    </div>
+  </article>
+</li>

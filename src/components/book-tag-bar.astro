@@ -1,0 +1,22 @@
+---
+/**
+ * Tag-filter chip bar for the bookshelf. Server-renders an empty
+ * shell — the actual chips are injected by the client script in
+ * `book-list.astro` once the book list is in hand, so the counts
+ * always reflect the *current* set of books (not stale data).
+ *
+ * Keep this component dumb: it provides a stable target for
+ * `getElementById("bookshelf-tag-bar")` and a sensible empty state.
+ */
+---
+
+<ul
+  id="bookshelf-tag-bar"
+  class="bookshelf-tags flex flex-wrap items-center gap-1.5"
+  aria-label="filtrar por tag"
+  data-empty="cargando tags…"
+>
+  <li>
+    <span class="font-mono text-2xs text-dim">cargando tags…</span>
+  </li>
+</ul>

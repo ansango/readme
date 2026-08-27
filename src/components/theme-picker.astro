@@ -1,0 +1,143 @@
+---
+/**
+ * Theme picker for the footer.
+ *
+ * A single dropdown listing all 14 Glance palettes. The trigger
+ * itself shows a small color swatch filled with the active
+ * theme's accent color, so the user sees at a glance what they're
+ * on without opening the menu. Each option in the menu has its
+ * own swatch too, for picking at sight.
+ *
+ *   [ ● catppuccin-latte ▾ ]
+ *     ● catppuccin-latte
+ *     ● peachy
+ *     ● zebra
+ *     ● teal-city
+ *     ● catppuccin-frappe
+ *     …
+ *
+ * The active option is highlighted (text in accent color).
+ */
+import { DEFAULT_THEME, STORAGE_KEY, themeAccent, themes } from "../lib/themes";
+---
+
+<div class="theme-picker relative inline-block font-mono text-2xs">
+  <button
+    type="button"
+    id="theme-trigger"
+    class="theme-trigger inline-flex cursor-pointer items-center gap-1.5 border border-border bg-panel px-2 py-1 text-fg hover:border-accent hover:text-accent aria-expanded:border-accent aria-expanded:text-accent"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+  >
+    <span
+      class="theme-swatch inline-block h-2.5 w-2.5 shrink-0 rounded-full border border-black/15 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]"
+      data-current-swatch
+      style={`background:${themeAccent[DEFAULT_THEME]}`}
+      aria-hidden="true"
+    ></span>
+    <span data-current-theme>{DEFAULT_THEME}</span>
+    <span class="text-border" aria-hidden="true">▾</span>
+  </button>
+  <div
+    id="theme-menu"
+    class="theme-menu absolute right-0 bottom-full z-50 mb-1 max-h-64 w-52 overflow-y-auto border border-border bg-panel text-[0.75rem] shadow-lg"
+    role="listbox"
+    aria-label="temas"
+    hidden
+  >
+    {themes.map((t) => (
+      <button
+        type="button"
+        class="theme-menu-item flex w-full cursor-pointer items-center gap-2 px-3 py-1 text-left text-dim hover:bg-fg/10 hover:text-accent aria-selected:text-accent"
+        data-theme-option={t}
+        role="option"
+        aria-selected="false"
+      >
+        <span
+          class="theme-swatch inline-block h-2.5 w-2.5 shrink-0 rounded-full border border-black/15 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]"
+          style={`background:${themeAccent[t]}`}
+          aria-hidden="true"
+        ></span>
+        <span class="truncate">{t}</span>
+      </button>
+    ))}
+  </div>
+</div>
+
+<script>
+  /**
+   * Theme picker client. Single dropdown, vanilla TS, no framework.
+   * Mirrors the layout's anti-FOUC logic so the SSR markup and
+   * the live state always agree.
+   */
+  import { DEFAULT_THEME, STORAGE_KEY, themeAccent } from "../lib/themes";
+
+  const root = document.documentElement;
+  const trigger = document.getElementById(
+    "theme-trigger",
+  ) as HTMLButtonElement | null;
+  const menu = document.getElementById("theme-menu") as HTMLDivElement | null;
+  const label = document.querySelector<HTMLElement>("[data-current-theme]");
+  const swatch = document.querySelector<HTMLElement>("[data-current-swatch]");
+  const options = document.querySelectorAll<HTMLButtonElement>(
+    "[data-theme-option]",
+  );
+
+  function apply(theme: string) {
+    root.dataset.theme = theme;
+    localStorage.setItem(STORAGE_KEY, theme);
+    if (label) label.textContent = theme;
+    if (swatch) {
+      const color = themeAccent[theme as keyof typeof themeAccent];
+      if (color) swatch.style.background = color;
+    }
+    for (const option of options) {
+      option.setAttribute(
+        "aria-selected",
+        option.dataset.themeOption === theme ? "true" : "false",
+      );
+    }
+  }
+
+  function open() {
+    if (!menu || !trigger) return;
+    menu.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+  }
+  function close() {
+    if (!menu || !trigger) return;
+    menu.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+  }
+  function toggle() {
+    if (!menu) return;
+    if (menu.hidden) open();
+    else close();
+  }
+
+  trigger?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggle();
+  });
+  menu?.addEventListener("click", (e) => e.stopPropagation());
+  for (const option of options) {
+    const theme = option.dataset.themeOption;
+    if (theme) {
+      option.addEventListener("click", (e) => {
+        e.stopPropagation();
+        apply(theme);
+        close();
+      });
+    }
+  }
+  document.addEventListener("click", close);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+
+  // Initial sync — read what's already in storage (or in the
+  // SSR-applied data-theme) and reflect it on the trigger.
+  const stored = localStorage.getItem(STORAGE_KEY);
+  const initial = stored ?? root.dataset.theme ?? DEFAULT_THEME;
+  apply(initial);
+</script>

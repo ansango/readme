@@ -2,6 +2,46 @@
 @plugin "@tailwindcss/typography";
 
 /* ─────────────────────────────────────────────────────────────
+   `color-scheme` per theme: light Glance palettes force light UA
+   form controls, the rest stay dark. This complements the
+   `color-scheme: light dark` meta tag in `default.astro` — the
+   CSS rule wins over the meta when both are present.
+   ───────────────────────────────────────────────────────────── */
+:root {
+	color-scheme: dark;
+}
+:root[data-theme="catppuccin-latte"],
+:root[data-theme="peachy"],
+:root[data-theme="zebra"] {
+	color-scheme: light;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Bookshelf cards: stretched-link pattern. The card itself is an
+   `<article>` (not an `<a>`) so we can put real `<button>` tag
+   chips inside without invalid HTML. The title `<a>` carries a
+   `::after` that covers the whole card, so any click outside a
+   tag button navigates. Tag buttons sit above it with z-index: 10
+   + `position: relative` so they receive the click instead of
+   bubbling to the link.
+   ───────────────────────────────────────────────────────────── */
+.bookshelf-card {
+	position: relative;
+	isolation: isolate;
+}
+.bookshelf-card .card-stretched-link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border-radius: inherit;
+}
+.bookshelf-card .bookshelf-tag-btn {
+	position: relative;
+	z-index: 10;
+}
+
+/* ─────────────────────────────────────────────────────────────
    Base tokens (= `arch` theme).
    The `[data-theme]` blocks are generated at build time from
    `src/config.json` by `default.astro` and injected into `<head>`.
