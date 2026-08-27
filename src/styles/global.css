@@ -271,7 +271,7 @@ body {
    ───────────────────────────────────────────────────────────── */
 .title-block {
 	display: flex;
-	border: 1px solid var(--border-strong);
+	border: 1px dashed var(--border-strong);
 	border-radius: var(--radius);
 	overflow: hidden;
 }
@@ -311,6 +311,32 @@ body {
 		min-width: 0;
 		flex: 1;
 		padding: 8px 10px;
+	}
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Sheet footer — holds the title block (left) and the theme
+   picker (right). Both children are dashed-bordered chips, so
+   the gap between them keeps the row from looking fused.
+   ───────────────────────────────────────────────────────────── */
+.sheet-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 24px;
+	padding-top: 24px;
+	margin-top: 40px;
+	border-top: 1px solid var(--border);
+	position: relative;
+	z-index: 2;
+}
+
+@media (max-width: 640px) {
+	.sheet-footer {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 16px;
 	}
 }
 
