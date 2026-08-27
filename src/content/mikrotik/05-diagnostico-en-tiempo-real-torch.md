@@ -19,21 +19,11 @@ tags: [beginners, diagnostics, homelab, mikrotik, monitoring, routeros, torch]
 Para abrir Torch:
 👉 Ve al menú lateral **Tools > Torch** (o abre cualquier interfaz en `Interfaces` y haz clic en el botón **Torch** en el panel superior/derecho).
 
-```
-┌────────────────────────────────────────────────────────────────────────────────┐
-│ Torch <ether1>                                                                 │
-├────────────────────────────────────────────────────────────────────────────────┤
-│ Interface: [ ether1 (WAN) ]               [✓] Src. Address   [✓] Dst. Address  │
-│                                           [✓] Port           [✓] Protocol      │
-├────────────────────────────────────────────────────────────────────────────────┤
-│ [ Start ]  [ Stop ]                                                            │
-├────────────────────────────────────────────────────────────────────────────────┤
-│ SRC-ADDRESS       DST-ADDRESS        PRO. PORT   TX-RATE    RX-RATE            │
-│ 192.168.88.45     162.254.195.34     udp  27015  1.2 Mbps   485.4 Mbps (Steam) │
-│ 192.168.88.20     142.250.200.14     tcp  443    120 kbps   1.8 Mbps   (Web)   │
-│ 192.168.88.80     52.84.12.90        tcp  443    45 kbps    600 kbps   (TV)    │
-└────────────────────────────────────────────────────────────────────────────────┘
-```
+| IP Origen (Src) | IP Destino (Dst) | Protocolo | Puerto | Tx Rate (Subida) | Rx Rate (Bajada) | Servicio / Diagnóstico |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `192.168.88.45` | `162.254.195.34` | UDP | 27015 | 1.2 Mbps | **485.4 Mbps** | PC descargando juego en Steam. |
+| `192.168.88.20` | `142.250.200.14` | TCP | 443 | 120 kbps | 1.8 Mbps | Portátil navegando en web HTTPS. |
+| `192.168.88.80` | `52.84.12.90` | TCP | 443 | 45 kbps | 600 kbps | Smart TV reproduciendo streaming. |
 
 ### Cómo usarla paso a paso:
 1. **Interface:** Elige la interfaz que quieres monitorizar:
@@ -68,18 +58,12 @@ Si solo quieres ver el volumen de megabits totales que circulan por un puerto:
 RouterOS registra todos los eventos clave en el menú:
 👉 **Log**
 
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│ Log                                                                    │
-├────────────────────────────────────────────────────────────────────────┤
-│ TIME       TOPICS          MESSAGE                                     │
-│ 10:14:02   dhcp, info      defconf assigned 192.168.88.45 to 48:A9:... │
-│ 10:15:20   system, info    user admin logged in from 192.168.88.20     │
-│ 10:18:05   wireless, info  48:A9:8A:11:22:33@wifi1 connected           │
-│ 10:22:40   wireless, info  48:A9:8A:11:22:33@wifi1 disconnected,       │
-│                            extensive data loss                         │
-└────────────────────────────────────────────────────────────────────────┘
-```
+| Hora | Categoría (Topics) | Mensaje del sistema | Interpretación |
+| :--- | :--- | :--- | :--- |
+| `10:14:02` | `dhcp, info` | `defconf assigned 192.168.88.45 to 48:A9:...` | Un nuevo equipo ha pedido IP y se ha conectado. |
+| `10:15:20` | `system, info` | `user admin logged in from 192.168.88.20` | Inicio de sesión correcto en Winbox o SSH. |
+| `10:18:05` | `wireless, info` | `48:A9:8A:11:22:33@wifi1 connected` | Un móvil se ha asociado a la red Wi-Fi de 5 GHz. |
+| `10:22:40` | `wireless, info` | `48:A9:8A:11:22:33@wifi1 disconnected, extensive data loss` | Desconexión por cobertura baja o alejamiento del router. |
 
 ### Mensajes habituales a los que prestar atención:
 - `dhcp, info ... assigned`: Un dispositivo ha solicitado IP y se ha conectado a la red.

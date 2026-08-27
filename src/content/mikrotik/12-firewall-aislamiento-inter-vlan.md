@@ -18,18 +18,11 @@ tags: [firewall, homelab, mikrotik, networking, routeros, security, vlan]
 
 Para diseñar un firewall seguro, es fundamental diferenciar las dos cadenas de tráfico principales:
 
-```
-                  ┌─────────────────────────────────────────┐
-Tráfico hacia el  │                CADENA INPUT             │  (Winbox, SSH, DNS local,
-propio router ──► │  Protege los servicios del propio router │   DHCP, WireGuard)
-                  └─────────────────────────────────────────┘
-
-                  ┌─────────────────────────────────────────┐
-Tráfico que cruza │               CADENA FORWARD            │  (LAN -> Internet,
-de una red a otra │   Regula la comunicación Inter-VLAN    │   VLAN 20 -> VLAN 10,
-                  │      y el tráfico LAN hacia WAN         │   VLAN 30 -> Internet)
-                  └─────────────────────────────────────────┘
-```
+| Cadena de Firewall | Tipo de tráfico que procesa | Ejemplos de tráfico |
+| :--- | :--- | :--- |
+| **`input`** | **Tráfico dirigido al propio router.** Protege los servicios internos y puertos de administración de RouterOS. | Conexiones a Winbox (8291), SSH (22), peticiones DNS locales (53), DHCP local (67), túnel WireGuard (51820). |
+| **`forward`** | **Tráfico que atraviesa el router de una red a otra.** Regula la salida a Internet y el paso entre VLANs. | Tráfico de la LAN saliendo a Internet (WAN), móviles en VLAN 20 intentando acceder a servidores en VLAN 10. |
+| **`output`** | **Tráfico que origina el propio router hacia el exterior.** | Consultas NTP del router, comprobación de actualizaciones de RouterOS, ping lanzado desde el router. |
 
 ---
 

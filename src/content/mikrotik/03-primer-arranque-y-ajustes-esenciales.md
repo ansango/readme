@@ -16,24 +16,12 @@ tags: [beginners, defconf, homelab, mikrotik, routeros, safemode, setup]
 
 ## 1. Conexión física de los cables
 
-La mayoría de routers MikroTik domésticos y de laboratorio (como la gama **hAP** o **hEX**) tienen los puertos asignados por convención:
+La mayoría de routers MikroTik domésticos y de laboratorio (como la gama **hAP** o **hEX**) tienen los puertos asignados por convención de fábrica:
 
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                        MIKROTIK ROUTER (PANEL TRASERO)                 │
-│                                                                        │
-│   [ether1]            [ether2]      [ether3]      [ether4]    [ether5] │
-│      │                   │             │             │           │     │
-│   (WAN / Internet)    (────── LAN / Red Local / Tu Ordenador ────────) │
-└──────┼───────────────────┼─────────────────────────────────────────────┘
-       │                   │
-       ▼                   ▼
- Módem / ONT          Tu PC / Switch
- de la Operadora      del Homelab
-```
-
-- **Puerto `ether1` (WAN):** Conecta aquí el cable Ethernet que viene del módem o de la ONT de fibra de tu operadora.
-- **Puertos `ether2` a `ether5` (LAN):** Conecta aquí tu ordenador con Winbox, puntos de acceso Wi-Fi o el switch principal de tu red.
+| Puerto Físico | Rol asignado | Conexión requerida |
+| :--- | :--- | :--- |
+| **`ether1`** | **WAN (Internet)** | Conecta el cable Ethernet que viene del módem o la ONT de tu operadora. |
+| **`ether2`** a **`ether5`** | **LAN (Red Local)** | Conecta tu ordenador con Winbox, puntos de acceso o el switch principal de tu casa. |
 
 ---
 
@@ -57,11 +45,8 @@ Esta configuración inicial (*defconf*) crea automáticamente:
 
 En la esquina superior izquierda de Winbox verás el botón **Safe Mode** (o puedes pulsar el atajo de teclado **Ctrl + X**).
 
-```
- ┌──────────────────────────────────────────────────────────────┐
- │ [ Safe Mode ] ◄── ¡PÚLSALO ANTES DE TOCAR RED O FIREWALL!   │
- └──────────────────────────────────────────────────────────────┘
-```
+> [!tip] La regla del administrador: Usa siempre Safe Mode
+> Pulsa `Ctrl + X` siempre que vayas a tocar reglas de cortafuegos, interfaces de red o VLANs. Es la diferencia entre un susto de 5 segundos y tener que resetear el router físicamente.
 
 ### ¿Cómo funciona la protección de Safe Mode?
 1. Al pulsarlo, el botón queda presionado y RouterOS guarda una copia instantánea de la configuración en la memoria RAM.
