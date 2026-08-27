@@ -1,18 +1,16 @@
 ---
 /**
- * Home layout.
- *
- * Same chrome as `default.astro` (header + footer), but the
- * `<main>` content area is wider (max-w-7xl) so the bookshelf and
- * the hero can breathe on desktop. The header and footer stay at
- * the original max-w-3xl so the site identity and the theme
- * picker remain anchored to the same column as the rest of the
- * site.
+ * Home layout — same chrome as `default.astro` (sheet, header,
+ * footer with title block + theme picker), but the content
+ * inside the sheet is allowed to span the full sheet width
+ * (1240px) so the bookshelf grid can breathe. The header and
+ * footer stay anchored to the sheet edges.
  *
  * Used by `src/pages/index.astro` only. Every other page uses
  * `default.astro`.
  */
-import ThemePicker from "../components/theme-picker.astro";
+import SheetFooter from "../components/sheet-footer.astro";
+import SheetHeader from "../components/sheet-header.astro";
 import { DEFAULT_THEME, STORAGE_KEY, themes } from "../lib/themes";
 import "../styles/global.css";
 
@@ -75,44 +73,12 @@ const {
     </script>
   </head>
   <body
-    class="min-h-screen size-full bg-bg p-6 font-mono text-sm sm:text-base leading-normal text-fg antialiased selection:bg-accent selection:text-bg"
+    class="min-h-screen font-mono text-sm sm:text-base leading-normal text-fg antialiased selection:bg-accent selection:text-bg"
   >
-    <!-- ── header (narrow, same as the rest of the site) ──────── -->
-    <header class="mx-auto mb-6 max-w-3xl pb-3 sm:mb-8 font-mono">
-      <div
-        class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm"
-      >
-        <div>
-          <a href="/" class="hover:text-fg">
-            <span class="font-medium text-accent">README</span>
-            <span class="text-dim"> · </span>
-          </a>
-          <span class="italic text-dim">by </span>
-          <a
-            href="https://ansango.com"
-            target="_blank"
-            class="italic text-dim hover:text-fg"
-            >ansango</a
-          >
-        </div>
-        <nav class="flex items-center gap-2 text-xs text-dim">
-          <a href="/" class="hover:text-fg">home</a>
-          <span class="text-border">·</span>
-          <a href="/about" class="hover:text-fg">about</a>
-        </nav>
-      </div>
-    </header>
-
-    <!-- ── main (wider for the bookshelf + hero) ──────────────── -->
-    <main class="mx-auto max-w-7xl">
+    <main class="sheet">
+      <SheetHeader />
       <slot />
+      <SheetFooter />
     </main>
-
-    <!-- ── footer (narrow, same as the rest of the site) ──────── -->
-    <footer class="mx-auto max-w-3xl mt-10 text-dim">
-      <div class="flex flex-wrap items-center justify-end gap-2 text-[0.85rem]">
-        <ThemePicker />
-      </div>
-    </footer>
   </body>
 </html>

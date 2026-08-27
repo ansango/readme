@@ -1,0 +1,60 @@
+---
+/**
+ * Title block — the "blueprint" footer label. Four cells in a
+ * row, separated by thin borders:
+ *
+ *   DWG NO. | README-001     (static)
+ *   REV.    | A · 27.08.2026 (build date, computed at render time)
+ *   SCALE   | 1:1            (static)
+ *   SHEET   | 01 / 03        (caller-supplied, from URL depth)
+ *
+ * All visual styling lives in this file as Tailwind utilities
+ * (no global CSS). The dashed border and the responsive cell
+ * width are the only "design tokens" that vary with the theme
+ * (--border-strong, --text-1, --text-3, --accent-3, --surface),
+ * and those are exposed as Tailwind color tokens in
+ * `src/styles/global.css → @theme static`.
+ */
+interface Props {
+  sheet: string;
+}
+
+const { sheet } = Astro.props;
+
+// Build date is the same for every page of the build, so
+// compute it here once and let it propagate through the
+// static HTML. The "A" revision letter is fixed (we only
+// ever ship one revision per build).
+const buildDate = new Date();
+const day = String(buildDate.getDate()).padStart(2, "0");
+const month = String(buildDate.getMonth() + 1).padStart(2, "0");
+const year = buildDate.getFullYear();
+const rev = `A · ${day}.${month}.${year}`;
+
+const cells = [
+  { label: "DWG NO.", value: "README-001" },
+  { label: "REV.", value: rev, isRev: true },
+  { label: "SCALE", value: "1:1" },
+  { label: "SHEET", value: sheet },
+];
+---
+
+<div
+  class="flex w-full overflow-hidden rounded-sm border border-dashed border-border-strong sm:w-auto"
+>
+  {cells.map(({ label, value, isRev }) => (
+      <div class="flex min-w-0 flex-1 flex-col gap-1 border-r border-border bg-surface px-2.5 py-2 last:border-r-0 sm:min-w-[120px] sm:flex-initial sm:gap-1 sm:px-[18px] sm:py-2.5">
+        <span class="text-[9px] tracking-[0.22em] uppercase text-text-3">
+          {label}
+        </span>
+        <span
+          class:list={[
+            "text-[12px] font-semibold tracking-[0.04em] text-text-1",
+            isRev && "text-accent-3",
+          ]}
+        >
+          {value}
+        </span>
+      </div>
+    ))}
+</div>

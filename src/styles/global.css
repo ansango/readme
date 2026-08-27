@@ -69,8 +69,127 @@
 	--color-c2: #7eb8d8;
 	--color-c3: #0d5a85;
 
+	/* Blueprint design tokens — aliases of the per-theme
+	   --color-* variables. Tailwind generates bg-*, text-*
+	   and border-* utilities for each. `color-mix()` calls
+	   resolve lazily, so the per-theme overrides in
+	   `public/theme.css` still win. */
+	--color-bg-soft: var(--color-panel);
+	--color-surface: color-mix(in srgb, var(--color-fg) 5%, transparent);
+	--color-surface-2: color-mix(in srgb, var(--color-fg) 9%, transparent);
+	--color-border-strong: color-mix(in srgb, var(--color-fg) 32%, transparent);
+	--color-ink: color-mix(in srgb, var(--color-fg) 28%, transparent);
+	--color-text-1: var(--color-fg);
+	--color-text-2: color-mix(in srgb, var(--color-fg) 70%, var(--color-bg));
+	--color-text-3: var(--color-dim);
+	--color-accent-2: var(--color-c2);
+	--color-accent-3: var(--color-c1);
+
 	--text-2xs: 0.625rem;
 	--text-3xs: 0.5rem;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Blueprint design tokens.
+
+   The active per-theme palette is exposed via the `--color-*`
+   variables emitted by `tools/generate-theme-css.mjs`. The
+   tokens below are a parallel naming system used by the
+   sheet/header/footer/title-block chrome and derived from those
+   per-theme values via `color-mix()`. The naming follows the
+   Glance-inspired design system that ships in
+   `DESIGN-MANIFEST.json` (see `--accent-3` for the hot
+   highlight, `--ink` for the sheet double border, etc.).
+
+   Because the per-theme blocks live in `public/theme.css`
+   and load before this stylesheet, the `color-mix()` calls
+   resolve against the active palette on every paint. No new
+   per-theme CSS is required when a new theme is added to
+   `src/config.json`.
+   ───────────────────────────────────────────────────────────── */
+:root {
+	/* surfaces */
+	--bg: var(--color-bg);
+	--bg-soft: var(--color-panel);
+	--surface: color-mix(in srgb, var(--color-fg) 5%, transparent);
+	--surface-2: color-mix(in srgb, var(--color-fg) 9%, transparent);
+
+	/* borders */
+	--border: var(--color-border);
+	--border-strong: color-mix(in srgb, var(--color-fg) 32%, transparent);
+	--ink: color-mix(in srgb, var(--color-fg) 28%, transparent);
+
+	/* text */
+	--text-1: var(--color-fg);
+	--text-2: color-mix(in srgb, var(--color-fg) 70%, var(--color-bg));
+	--text-3: var(--color-dim);
+
+	/* accents */
+	--accent: var(--color-accent);
+	--accent-2: var(--color-c2);
+	--accent-3: var(--color-c1);
+
+	/* sheet decoration */
+	--grid-line: color-mix(in srgb, var(--color-fg) 3.75%, transparent);
+
+	/* radius — fixed, not themed */
+	--radius: 2px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Sheet chrome. The "blueprint" look: a 40x40 grid on the body
+   and a content card with a double border (solid outer + dashed
+   inner, both inset 28/34px from the sheet edge). 1240px max
+   width, fluid padding down to 32x18 on mobile where the double
+   border is hidden.
+   ───────────────────────────────────────────────────────────── */
+body {
+	background-color: var(--bg);
+	background-image:
+		linear-gradient(var(--grid-line) 1px, transparent 1px),
+		linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+	background-size:
+		40px 40px,
+		40px 40px;
+	background-position:
+		0 0,
+		0 0;
+}
+
+.sheet {
+	max-width: 1240px;
+	margin: 0 auto;
+	padding: 56px 72px 80px;
+	position: relative;
+}
+.sheet::before,
+.sheet::after {
+	content: "";
+	position: absolute;
+	pointer-events: none;
+}
+.sheet::before {
+	inset: 28px;
+	border: 1px solid var(--ink);
+}
+.sheet::after {
+	inset: 34px;
+	border: 1px dashed var(--ink);
+}
+
+@media (max-width: 1024px) {
+	.sheet {
+		padding: 48px 48px 64px;
+	}
+}
+@media (max-width: 640px) {
+	.sheet {
+		padding: 32px 18px 56px;
+	}
+	.sheet::before,
+	.sheet::after {
+		display: none;
+	}
 }
 
 /* ─────────────────────────────────────────────────────────────

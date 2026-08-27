@@ -11,6 +11,20 @@
  * Moving them out of the head saves ~25 KB per page and lets the
  * browser cache the CSS across pages.
  *
+ * The "blueprint" design tokens (--bg, --surface, --border-strong,
+ * --text-1/2/3, --accent-2/3, --ink, --grid-line) are NOT emitted
+ * here. They are defined in the `@theme static` block of
+ * `src/styles/global.css` and derived from the per-theme --color-*
+ * values via `color-mix()`. This means:
+ *
+ *   - Adding a new theme to `src/config.json` automatically gets
+ *     the full design token set, no generator changes.
+ *   - The fallback values in `@theme` (used when no per-theme
+ *     override matches) keep a sane look on browsers without
+ *     `color-mix` support.
+ *   - No duplicate definitions between this file and the theme
+ *     block — the per-theme values are the only source of truth.
+ *
  * Re-run whenever `src/config.json` or `src/lib/themes.ts` change:
  *   node tools/generate-theme-css.mjs
  */

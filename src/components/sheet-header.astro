@@ -1,0 +1,45 @@
+---
+/**
+ * Sheet header — the brand row at the top of every page.
+ * Brand on the left ("README" + "by ansango"), nav on the right
+ * ("home" / "about"). The active nav item gets an underline in
+ * --accent-3.
+ *
+ * Computes the active state from `Astro.url.pathname` so the
+ * layout can stay dumb. Encapsulated: the visual style lives
+ * here as Tailwind utilities, not in `global.css`.
+ */
+const pathname = Astro.url.pathname;
+const isHome = pathname === "/" || pathname === "";
+const isAbout = pathname.startsWith("/about");
+
+/**
+ * Classes applied to the active nav link. Combined with the
+ * base classes via `class:list` so the result is a single
+ * `class` attribute Tailwind can pick up at build time.
+ */
+const activeLink =
+  "text-text-1 after:absolute after:inset-x-0 after:bottom-[-2px] after:h-px after:bg-accent-3 after:content-['']";
+const baseLink =
+  "relative py-1 text-text-3 transition-colors hover:text-text-1";
+---
+
+<header
+  class="relative z-[2] mb-10 flex flex-wrap items-center justify-between gap-3.5 border-b border-border pb-5 max-sm:flex-col max-sm:items-start"
+>
+  <div class="text-[13px] font-bold uppercase tracking-[0.22em] text-text-1">
+    README
+    <em
+      class="ml-2 font-normal not-italic lowercase tracking-[0.08em] text-text-3"
+    >
+      by ansango
+    </em>
+  </div>
+  <nav
+    class="flex gap-6 text-[12px] font-medium uppercase tracking-[0.18em] max-sm:gap-[18px]"
+    aria-label="principal"
+  >
+    <a href="/" class:list={[baseLink, isHome && activeLink]}>home</a>
+    <a href="/about" class:list={[baseLink, isAbout && activeLink]}>about</a>
+  </nav>
+</header>

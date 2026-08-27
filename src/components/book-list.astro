@@ -201,13 +201,24 @@ const projection = bookList.map((b) => ({
       );
       const chips: string[] = [];
       const allActive = state.activeTags.size === 0;
+      /**
+       * Chip style mirrors the in-card tag chips in `book-card.astro`:
+       * dashed border, text-text-2 by default, accent-3 border on the
+       * active filter. The static `border-border-strong` is the same
+       * weight as the card so they read as a single visual family.
+       */
+      const baseChip =
+        "relative z-10 rounded-sm border border-dashed border-border-strong px-1.5 py-0.5 font-mono text-2xs tracking-wider uppercase";
+      const activeChip = "border-accent-3 text-accent-3";
+      const inactiveChip =
+        "text-text-2 hover:border-accent-2 hover:text-accent-3";
       chips.push(
-        `<button type="button" class="bookshelf-tag-btn relative z-10 border border-dim px-1.5 py-0.5 font-mono text-2xs ${allActive ? "border-accent bg-accent/10 text-accent" : "text-dim hover:border-accent hover:text-accent"}" data-tag="__all__">todos <span class="opacity-60">${total}</span></button>`,
+        `<button type="button" class="bookshelf-tag-btn ${baseChip} ${allActive ? activeChip : inactiveChip}" data-tag="__all__">todos <span class="opacity-60">${total}</span></button>`,
       );
       for (const [tag, count] of sorted) {
         const isActive = state.activeTags.has(tag);
         chips.push(
-          `<button type="button" class="bookshelf-tag-btn relative z-10 border border-dim px-1.5 py-0.5 font-mono text-2xs ${isActive ? "border-accent bg-accent/10 text-accent" : "text-dim hover:border-accent hover:text-accent"}" data-tag="${escapeHtml(tag)}">#${escapeHtml(tag)} <span class="opacity-60">${count}</span></button>`,
+          `<button type="button" class="bookshelf-tag-btn ${baseChip} ${isActive ? activeChip : inactiveChip}" data-tag="${escapeHtml(tag)}">#${escapeHtml(tag)} <span class="opacity-60">${count}</span></button>`,
         );
       }
       tagBar.innerHTML = chips.join("");
@@ -249,6 +260,7 @@ const projection = bookList.map((b) => ({
       // Reflect the active state on the *server-rendered* tag
       // buttons inside the cards. The bar's chips are rebuilt
       // from scratch; the in-card ones live in the SSR markup.
+      // Matches the chip style emitted by `rebuildTagBar` above.
       for (const btn of root.querySelectorAll<HTMLButtonElement>(
         ".bookshelf-tag-btn",
       )) {
@@ -257,10 +269,10 @@ const projection = bookList.map((b) => ({
           t === "__all__"
             ? state.activeTags.size === 0
             : state.activeTags.has(t);
-        btn.classList.toggle("border-accent", isActive);
-        btn.classList.toggle("bg-accent/10", isActive);
-        btn.classList.toggle("text-accent", isActive);
-        btn.classList.toggle("text-dim", !isActive);
+        btn.classList.toggle("border-accent-3", isActive);
+        btn.classList.toggle("text-accent-3", isActive);
+        btn.classList.toggle("border-border-strong", !isActive);
+        btn.classList.toggle("text-text-2", !isActive);
       }
     }
 
