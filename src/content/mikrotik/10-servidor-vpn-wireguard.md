@@ -19,12 +19,18 @@ tags: [homelab, mikrotik, networking, routeros, vpn, wireguard]
 
 ## 1. Modelo de arquitectura de red
 
-```
- ┌─────────────────┐    Internet (UDP 51820)    ┌─────────────────────────┐         Red Local (LAN)
- │ Dispositivo     │ ─────────────────────────► │ MikroTik RouterOS       │ ──────────────────────────────► Equipos LAN (192.168.88.x)
- │ Remoto (Móvil / │ ◄───────────────────────── │ Interfaz: wg0 (10.0.0.1)│ ◄────────────────────────────── Salida a Internet WAN
- │ Laptop)         │                            └─────────────────────────┘
- └─────────────────┘
+```mermaid
+flowchart LR
+    DEV["📱 Dispositivo Remoto<br/>(iOS / Android / Laptop)"]
+    WAN["🌐 Internet<br/>(Puerto UDP 51820)"]
+    MKT["🛡️ MikroTik RouterOS<br/>Interfaz wg0: 10.0.0.1"]
+    LAN["🏠 Red Local LAN<br/>192.168.88.x"]
+    INET["🌍 Navegación WAN<br/>a Internet"]
+
+    DEV <-->|Túnel WireGuard| WAN
+    WAN <--> MKT
+    MKT <--> LAN
+    MKT <--> INET
 ```
 
 - **Subred VPN dedicada:** `10.0.0.0/24` (aislada de la LAN interna `192.168.88.0/24`).

@@ -48,19 +48,13 @@ Dispositivo Cliente                                   Router MikroTik (DHCP Serv
 
 Para evitar que tu red se convierta en un caos de IPs aleatorias, la mejor práctica en redes domésticas y Homelab es reservar rangos lógicos dentro de los 254 números disponibles (`192.168.88.1` a `192.168.88.254`):
 
-```
-┌─────────────────────────────────────────────────────────────────────────────────────────┐
-│                        PLAN DE DIRECCIONAMIENTO RECOMENDADO (/24)                       │
-├───────────────────┬───────────────────────────────┬─────────────────────────────────────┤
-│ RANGO IP          │ TIPO DE DISPOSITIVO           │ EJEMPLOS                            │
-├───────────────────┼───────────────────────────────┼─────────────────────────────────────┤
-│ .1                │ Puerta de Enlace (Gateway)    │ Router MikroTik                     │
-│ .2 - .19          │ Infraestructura de red        │ Switches gestionados, APs Wi-Fi     │
-│ .20 - .49         │ Servidores y Homelab          │ Proxmox VE, TrueNAS, AdGuard, NPM   │
-│ .50 - .99         │ Dispositivos fijos del hogar  │ PCs de sobremesa, impresoras, TVs   │
-│ .100 - .254       │ Pool Dinámico DHCP            │ Móviles, tablets, portátiles, visitas│
-└───────────────────┴───────────────────────────────┴─────────────────────────────────────┘
-```
+| Rango IP | Tipo de dispositivo | Ejemplos |
+| :--- | :--- | :--- |
+| **`.1`** | **Puerta de Enlace (Gateway)** | Router MikroTik principal. |
+| **`.2` a `.19`** | **Infraestructura de red** | Switches gestionados, puntos de acceso Wi-Fi. |
+| **`.20` a `.49`** | **Servidores y Homelab** | Servidor Proxmox VE, NAS (TrueNAS), AdGuard Home, Nginx Proxy Manager. |
+| **`.50` a `.99`** | **Dispositivos fijos del hogar** | PCs de sobremesa, impresoras, Smart TVs, consola de videojuegos. |
+| **`.100` a `.254`** | **Pool Dinámico DHCP** | Móviles, tablets, portátiles y dispositivos de visitas. |
 
 ---
 
@@ -69,18 +63,12 @@ Para evitar que tu red se convierta en un caos de IPs aleatorias, la mejor prác
 En Winbox, accede al menú:
 👉 **IP > DHCP Server > pestaña Leases**
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ Flags: D - dynamic, B - blocked, S - static                                            │
-│   #   Address          MAC Address        Host Name        Status   Expires After      │
-│ 0 D   192.168.88.245   48:A9:8A:11:22:33  MacBook-Air      bound    09:42:15           │
-│ 1 D   192.168.88.180   B8:27:EB:44:55:66  pve-homelab      bound    08:15:30           │
-│ 2 D   192.168.88.192   00:11:32:77:88:99  Brother-Printer  bound    07:55:10           │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
+Verás una tabla con las columnas:
+- **`Address`:** Dirección IP asignada al dispositivo.
+- **`MAC Address`:** Dirección física del cliente (ej. `B8:27:EB:44:55:66`).
+- **`Host Name`:** Nombre que el dispositivo reporta (ej. `pve-homelab`, `MacBook-Air`).
+- **`Status`:** Estado de la conexión (`bound` = equipo activo y conectado).
 - **Bandera `D` (*Dynamic*):** Indica que es un alquiler temporal. Si el equipo se apaga varios días, el router podría asignarle otra IP diferente.
-- **Status `bound`:** El equipo está conectado activamente y comunicándose con esa IP.
 
 ---
 
@@ -93,17 +81,8 @@ Nunca configures una IP fija en los ajustes del propio aparato (riesgo de IP dup
 2. Haz doble clic sobre la fila para abrir sus detalles.
 3. En la botonera de la derecha, haz clic en **Make Static**.
 4. Verás que la letra **`D` desaparece**. Ahora esa IP está vinculada de por vida a esa dirección MAC.
-
-```
-┌──────────────────────────────────────────────┐
-│ DHCP Lease <192.168.88.180>                  │
-├──────────────────────────────────────────────┤
-│ Address:     [ 192.168.88.10              ]  │ ◄── ¡Puedes editar el número a .10!
-│ MAC Address: [ B8:27:EB:44:55:66          ]  │
-│ Server:      [ defconf                    ]  │
-│ Comment:     [ Servidor Proxmox VE        ]  │ ◄── Pon un comentario identificativo
-└──────────────────────────────────────────────┘
-```
+5. Edita el campo **Address** para asignarle la IP limpia de tu mapa (ej. `192.168.88.10`) y añade un **Comment** descriptivo (*"Servidor Proxmox VE"*).
+6. Haz clic en **Apply**.
 
 > [!tip] Renumerar a una IP limpia
 > Una vez convertida en estática, edita el campo **Address** para asignarle la IP que le corresponde según tu mapa (por ejemplo, cambiar la aleatoria `192.168.88.180` por la limpia `192.168.88.10`). Pulsa **Apply**, y en tu servidor o PC desconecta y vuelve a conectar el cable de red para renovar la concesión al instante.
