@@ -69,6 +69,22 @@
 	--color-c2: #7eb8d8;
 	--color-c3: #0d5a85;
 
+	/* Blueprint design tokens — aliases of the per-theme
+	   --color-* variables. Tailwind generates bg-*, text-*
+	   and border-* utilities for each. `color-mix()` calls
+	   resolve lazily, so the per-theme overrides in
+	   `public/theme.css` still win. */
+	--color-bg-soft: var(--color-panel);
+	--color-surface: color-mix(in srgb, var(--color-fg) 5%, transparent);
+	--color-surface-2: color-mix(in srgb, var(--color-fg) 9%, transparent);
+	--color-border-strong: color-mix(in srgb, var(--color-fg) 32%, transparent);
+	--color-ink: color-mix(in srgb, var(--color-fg) 28%, transparent);
+	--color-text-1: var(--color-fg);
+	--color-text-2: color-mix(in srgb, var(--color-fg) 70%, var(--color-bg));
+	--color-text-3: var(--color-dim);
+	--color-accent-2: var(--color-c2);
+	--color-accent-3: var(--color-c1);
+
 	--text-2xs: 0.625rem;
 	--text-3xs: 0.5rem;
 }
